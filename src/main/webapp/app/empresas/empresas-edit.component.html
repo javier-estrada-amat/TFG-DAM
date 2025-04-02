@@ -1,0 +1,14 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@empresas.edit.headline">Edit Empresas</h1>
+    <div>
+        <a routerLink="/empresass" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@empresas.edit.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="editForm" field="idempresa" rowType="number" i18n-label="@@empresas.idempresa.label" label="Idempresa" />
+    <app-input-row [group]="editForm" field="nombre" i18n-label="@@empresas.nombre.label" label="Nombre" />
+    <app-input-row [group]="editForm" field="direccion" i18n-label="@@empresas.direccion.label" label="Direccion" />
+    <app-input-row [group]="editForm" field="telefono" i18n-label="@@empresas.telefono.label" label="Telefono" />
+    <app-input-row [group]="editForm" field="email" i18n-label="@@empresas.email.label" label="Email" />
+    <input type="submit" i18n-value="@@empresas.edit.headline" value="Edit Empresas" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

@@ -1,0 +1,47 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@horasextras.list.headline">Horasextrases</h1>
+    <div>
+        <a routerLink="/horasextrass/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@horasextras.list.createNew">Create new Horasextras</a>
+    </div>
+</div>
+@if (!horasextrases || horasextrases.length === 0) {
+<div i18n="@@horasextras.list.empty">No Horasextrases could be found.</div>
+} @else {
+<div class="overflow-x-auto">
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.idhoraextra.label">Idhoraextra</th>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.usuarioid.label">Usuarioid</th>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.fecha.label">Fecha</th>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.horassolicitadas.label">Horassolicitadas</th>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.horasaprobadas.label">Horasaprobadas</th>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.estado.label">Estado</th>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.aprobadopor.label">Aprobadopor</th>
+                <th scope="col" class="text-left p-2" i18n="@@horasextras.usuarios.label">Usuarios</th>
+                <th><!-- --></th>
+            </tr>
+        </thead>
+        <tbody class="border-t-2 border-black">
+            @for (horasextras of horasextrases; track horasextras.idhoraextra) {
+            <tr class="odd:bg-gray-100">
+                <td class="p-2">{{ horasextras.idhoraextra }}</td>
+                <td class="p-2">{{ horasextras.usuarioid }}</td>
+                <td class="p-2">{{ horasextras.fecha }}</td>
+                <td class="p-2">{{ horasextras.horassolicitadas }}</td>
+                <td class="p-2">{{ horasextras.horasaprobadas }}</td>
+                <td class="p-2">{{ horasextras.estado }}</td>
+                <td class="p-2">{{ horasextras.aprobadopor }}</td>
+                <td class="p-2">{{ horasextras.usuarios }}</td>
+                <td class="p-2">
+                    <div class="float-right whitespace-nowrap">
+                        <a [routerLink]="['/horasextrass/edit', horasextras.idhoraextra]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@horasextras.list.edit">Edit</a>
+                        <button type="button" (click)="confirmDelete(horasextras.idhoraextra!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@horasextras.list.delete">Delete</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}

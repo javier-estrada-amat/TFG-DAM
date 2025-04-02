@@ -1,0 +1,16 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@historialactividad.edit.headline">Edit Historialactividad</h1>
+    <div>
+        <a routerLink="/historialactividads" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@historialactividad.edit.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="editForm" field="idhistorial" rowType="number" i18n-label="@@historialactividad.idhistorial.label" label="Idhistorial" />
+    <app-input-row [group]="editForm" field="usuarioid" rowType="number" i18n-label="@@historialactividad.usuarioid.label" label="Usuarioid" />
+    <app-input-row [group]="editForm" field="accion" i18n-label="@@historialactividad.accion.label" label="Accion" />
+    <app-input-row [group]="editForm" field="entidadafectada" i18n-label="@@historialactividad.entidadafectada.label" label="Entidadafectada" />
+    <app-input-row [group]="editForm" field="descripcion" rowType="textarea" i18n-label="@@historialactividad.descripcion.label" label="Descripcion" />
+    <app-input-row [group]="editForm" field="fecha" rowType="datetimepicker" i18n-label="@@historialactividad.fecha.label" label="Fecha" />
+    <app-input-row [group]="editForm" field="usuarios" rowType="select" [options]="usuariosValues" i18n-label="@@historialactividad.usuarios.label" label="Usuarios" />
+    <input type="submit" i18n-value="@@historialactividad.edit.headline" value="Edit Historialactividad" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

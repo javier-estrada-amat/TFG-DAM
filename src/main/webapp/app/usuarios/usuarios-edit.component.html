@@ -1,0 +1,21 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@usuarios.edit.headline">Edit Usuarios</h1>
+    <div>
+        <a routerLink="/usuarioss" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@usuarios.edit.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <input type="submit" i18n-value="@@usuarios.edit.headline" value="Edit Usuarios" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6 mb-5" />
+    <app-input-row [group]="editForm" field="idusuario" rowType="number" i18n-label="@@usuarios.idusuario.label" label="Idusuario" />
+    <app-input-row [group]="editForm" field="nombre" i18n-label="@@usuarios.nombre.label" label="Nombre" />
+    <app-input-row [group]="editForm" field="apellidos" i18n-label="@@usuarios.apellidos.label" label="Apellidos" />
+    <app-input-row [group]="editForm" field="email" i18n-label="@@usuarios.email.label" label="Email" />
+    <app-input-row [group]="editForm" field="password" i18n-label="@@usuarios.password.label" label="Password" />
+    <app-input-row [group]="editForm" field="activo" rowType="checkbox" i18n-label="@@usuarios.activo.label" label="Activo" />
+    <app-input-row [group]="editForm" field="primeracceso" rowType="checkbox" i18n-label="@@usuarios.primeracceso.label" label="Primeracceso" />
+    <app-input-row [group]="editForm" field="empresas" rowType="select" [options]="empresasValues" i18n-label="@@usuarios.empresas.label" label="Empresas" />
+    <app-input-row [group]="editForm" field="roles" rowType="multiselect" [options]="rolesValues" i18n-label="@@usuarios.roles.label" label="Roles" />
+    <app-input-row [group]="editForm" field="configuracionautenticacion" rowType="select" [options]="configuracionautenticacionValues" i18n-label="@@usuarios.configuracionautenticacion.label" label="Configuracionautenticacion" />
+    <app-input-row [group]="editForm" field="horasextrasusuarios" rowType="select" [options]="horasextrasusuariosValues" i18n-label="@@usuarios.horasextrasusuarios.label" label="Horasextrasusuarios" />
+    <input type="submit" i18n-value="@@usuarios.edit.headline" value="Edit Usuarios" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

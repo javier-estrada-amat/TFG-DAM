@@ -1,0 +1,15 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@fichajes.add.headline">Add Fichajes</h1>
+    <div>
+        <a routerLink="/fichajess" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@fichajes.add.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="addForm" field="usuarioid" rowType="number" i18n-label="@@fichajes.usuarioid.label" label="Usuarioid" />
+    <app-input-row [group]="addForm" field="fecha" rowType="datetimepicker" i18n-label="@@fichajes.fecha.label" label="Fecha" />
+    <app-input-row [group]="addForm" field="horaentrada" rowType="datetimepicker" i18n-label="@@fichajes.horaentrada.label" label="Horaentrada" />
+    <app-input-row [group]="addForm" field="horasalida" rowType="datetimepicker" i18n-label="@@fichajes.horasalida.label" label="Horasalida" />
+    <app-input-row [group]="addForm" field="estado" i18n-label="@@fichajes.estado.label" label="Estado" />
+    <app-input-row [group]="addForm" field="usuarios" rowType="select" [options]="usuariosValues" i18n-label="@@fichajes.usuarios.label" label="Usuarios" />
+    <input type="submit" i18n-value="@@fichajes.add.headline" value="Add Fichajes" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

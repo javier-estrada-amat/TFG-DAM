@@ -1,0 +1,18 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@horasextras.edit.headline">Edit Horasextras</h1>
+    <div>
+        <a routerLink="/horasextrass" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@horasextras.edit.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="editForm" field="idhoraextra" rowType="number" i18n-label="@@horasextras.idhoraextra.label" label="Idhoraextra" />
+    <app-input-row [group]="editForm" field="usuarioid" rowType="number" i18n-label="@@horasextras.usuarioid.label" label="Usuarioid" />
+    <app-input-row [group]="editForm" field="fecha" rowType="datetimepicker" i18n-label="@@horasextras.fecha.label" label="Fecha" />
+    <app-input-row [group]="editForm" field="horassolicitadas" i18n-label="@@horasextras.horassolicitadas.label" label="Horassolicitadas" />
+    <app-input-row [group]="editForm" field="horasaprobadas" i18n-label="@@horasextras.horasaprobadas.label" label="Horasaprobadas" />
+    <app-input-row [group]="editForm" field="motivo" rowType="textarea" i18n-label="@@horasextras.motivo.label" label="Motivo" />
+    <app-input-row [group]="editForm" field="estado" i18n-label="@@horasextras.estado.label" label="Estado" />
+    <app-input-row [group]="editForm" field="aprobadopor" rowType="number" i18n-label="@@horasextras.aprobadopor.label" label="Aprobadopor" />
+    <app-input-row [group]="editForm" field="usuarios" rowType="select" [options]="usuariosValues" i18n-label="@@horasextras.usuarios.label" label="Usuarios" />
+    <input type="submit" i18n-value="@@horasextras.edit.headline" value="Edit Horasextras" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

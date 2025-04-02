@@ -1,0 +1,11 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@roles.add.headline">Add Roles</h1>
+    <div>
+        <a routerLink="/roless" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@roles.add.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="addForm" field="nombre" i18n-label="@@roles.nombre.label" label="Nombre" />
+    <app-input-row [group]="addForm" field="descripcion" rowType="textarea" i18n-label="@@roles.descripcion.label" label="Descripcion" />
+    <input type="submit" i18n-value="@@roles.add.headline" value="Add Roles" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

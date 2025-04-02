@@ -1,0 +1,47 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@usuarios.list.headline">Usuarioses</h1>
+    <div>
+        <a routerLink="/usuarioss/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@usuarios.list.createNew">Create new Usuarios</a>
+    </div>
+</div>
+@if (!usuarioses || usuarioses.length === 0) {
+<div i18n="@@usuarios.list.empty">No Usuarioses could be found.</div>
+} @else {
+<div class="overflow-x-auto">
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.idusuario.label">Idusuario</th>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.nombre.label">Nombre</th>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.apellidos.label">Apellidos</th>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.email.label">Email</th>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.password.label">Password</th>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.activo.label">Activo</th>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.primeracceso.label">Primeracceso</th>
+                <th scope="col" class="text-left p-2" i18n="@@usuarios.empresas.label">Empresas</th>
+                <th><!-- --></th>
+            </tr>
+        </thead>
+        <tbody class="border-t-2 border-black">
+            @for (usuarios of usuarioses; track usuarios.idusuario) {
+            <tr class="odd:bg-gray-100">
+                <td class="p-2">{{ usuarios.idusuario }}</td>
+                <td class="p-2">{{ usuarios.nombre }}</td>
+                <td class="p-2">{{ usuarios.apellidos }}</td>
+                <td class="p-2">{{ usuarios.email }}</td>
+                <td class="p-2">{{ usuarios.password }}</td>
+                <td class="p-2">{{ usuarios.activo }}</td>
+                <td class="p-2">{{ usuarios.primeracceso }}</td>
+                <td class="p-2">{{ usuarios.empresas }}</td>
+                <td class="p-2">
+                    <div class="float-right whitespace-nowrap">
+                        <a [routerLink]="['/usuarioss/edit', usuarios.idusuario]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.edit">Edit</a>
+                        <button type="button" (click)="confirmDelete(usuarios.idusuario!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.delete">Delete</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}

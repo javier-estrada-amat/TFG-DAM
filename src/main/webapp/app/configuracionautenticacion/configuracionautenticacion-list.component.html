@@ -1,0 +1,39 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@configuracionautenticacion.list.headline">Configuracionautenticacions</h1>
+    <div>
+        <a routerLink="/configuracionautenticacions/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@configuracionautenticacion.list.createNew">Create new Configuracionautenticacion</a>
+    </div>
+</div>
+@if (!configuracionautenticacions || configuracionautenticacions.length === 0) {
+<div i18n="@@configuracionautenticacion.list.empty">No Configuracionautenticacions could be found.</div>
+} @else {
+<div class="overflow-x-auto">
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left p-2" i18n="@@configuracionautenticacion.idautenticacion.label">Idautenticacion</th>
+                <th scope="col" class="text-left p-2" i18n="@@configuracionautenticacion.usuarioid.label">Usuarioid</th>
+                <th scope="col" class="text-left p-2" i18n="@@configuracionautenticacion.codigosecreto.label">Codigosecreto</th>
+                <th scope="col" class="text-left p-2" i18n="@@configuracionautenticacion.activado.label">Activado</th>
+                <th><!-- --></th>
+            </tr>
+        </thead>
+        <tbody class="border-t-2 border-black">
+            @for (configuracionautenticacion of configuracionautenticacions; track configuracionautenticacion.idautenticacion) {
+            <tr class="odd:bg-gray-100">
+                <td class="p-2">{{ configuracionautenticacion.idautenticacion }}</td>
+                <td class="p-2">{{ configuracionautenticacion.usuarioid }}</td>
+                <td class="p-2">{{ configuracionautenticacion.codigosecreto }}</td>
+                <td class="p-2">{{ configuracionautenticacion.activado }}</td>
+                <td class="p-2">
+                    <div class="float-right whitespace-nowrap">
+                        <a [routerLink]="['/configuracionautenticacions/edit', configuracionautenticacion.idautenticacion]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@configuracionautenticacion.list.edit">Edit</a>
+                        <button type="button" (click)="confirmDelete(configuracionautenticacion.idautenticacion!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@configuracionautenticacion.list.delete">Delete</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}

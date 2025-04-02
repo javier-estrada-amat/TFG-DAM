@@ -1,0 +1,13 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@registrocambioscontrasenia.edit.headline">Edit Registrocambioscontrasenia</h1>
+    <div>
+        <a routerLink="/registrocambioscontrasenias" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@registrocambioscontrasenia.edit.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="editForm" field="idregistro" rowType="number" i18n-label="@@registrocambioscontrasenia.idregistro.label" label="Idregistro" />
+    <app-input-row [group]="editForm" field="usuarioid" rowType="number" i18n-label="@@registrocambioscontrasenia.usuarioid.label" label="Usuarioid" />
+    <app-input-row [group]="editForm" field="fechacambio" rowType="datetimepicker" i18n-label="@@registrocambioscontrasenia.fechacambio.label" label="Fechacambio" />
+    <app-input-row [group]="editForm" field="usuarios" rowType="select" [options]="usuariosValues" i18n-label="@@registrocambioscontrasenia.usuarios.label" label="Usuarios" />
+    <input type="submit" i18n-value="@@registrocambioscontrasenia.edit.headline" value="Edit Registrocambioscontrasenia" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+</form>

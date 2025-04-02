@@ -1,0 +1,45 @@
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@fichajes.list.headline">Fichajeses</h1>
+    <div>
+        <a routerLink="/fichajess/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@fichajes.list.createNew">Create new Fichajes</a>
+    </div>
+</div>
+@if (!fichajeses || fichajeses.length === 0) {
+<div i18n="@@fichajes.list.empty">No Fichajeses could be found.</div>
+} @else {
+<div class="overflow-x-auto">
+    <table class="w-full">
+        <thead>
+            <tr>
+                <th scope="col" class="text-left p-2" i18n="@@fichajes.idfichaje.label">Idfichaje</th>
+                <th scope="col" class="text-left p-2" i18n="@@fichajes.usuarioid.label">Usuarioid</th>
+                <th scope="col" class="text-left p-2" i18n="@@fichajes.fecha.label">Fecha</th>
+                <th scope="col" class="text-left p-2" i18n="@@fichajes.horaentrada.label">Horaentrada</th>
+                <th scope="col" class="text-left p-2" i18n="@@fichajes.horasalida.label">Horasalida</th>
+                <th scope="col" class="text-left p-2" i18n="@@fichajes.estado.label">Estado</th>
+                <th scope="col" class="text-left p-2" i18n="@@fichajes.usuarios.label">Usuarios</th>
+                <th><!-- --></th>
+            </tr>
+        </thead>
+        <tbody class="border-t-2 border-black">
+            @for (fichajes of fichajeses; track fichajes.idfichaje) {
+            <tr class="odd:bg-gray-100">
+                <td class="p-2">{{ fichajes.idfichaje }}</td>
+                <td class="p-2">{{ fichajes.usuarioid }}</td>
+                <td class="p-2">{{ fichajes.fecha }}</td>
+                <td class="p-2">{{ fichajes.horaentrada }}</td>
+                <td class="p-2">{{ fichajes.horasalida }}</td>
+                <td class="p-2">{{ fichajes.estado }}</td>
+                <td class="p-2">{{ fichajes.usuarios }}</td>
+                <td class="p-2">
+                    <div class="float-right whitespace-nowrap">
+                        <a [routerLink]="['/fichajess/edit', fichajes.idfichaje]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@fichajes.list.edit">Edit</a>
+                        <button type="button" (click)="confirmDelete(fichajes.idfichaje!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@fichajes.list.delete">Delete</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
