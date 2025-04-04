@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/config-autenticacion")
+@RequestMapping("/api/config-autenticacion")
 public class ConfigAutenticacionController {
 
     @Autowired

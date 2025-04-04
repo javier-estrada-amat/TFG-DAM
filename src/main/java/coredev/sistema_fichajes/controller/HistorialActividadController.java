@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/historial-actividad")
+@RequestMapping("/api/historial-actividad")
 public class HistorialActividadController {
 
     @Autowired

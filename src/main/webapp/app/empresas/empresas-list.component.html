@@ -1,41 +1,43 @@
 <div class="flex flex-wrap mb-6">
-    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@empresas.list.headline">Empresases</h1>
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@empresas.list.headline">Empresas</h1>
     <div>
-        <a routerLink="/empresass/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@empresas.list.createNew">Create new Empresas</a>
+        <a routerLink="/empresas/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@empresas.list.createNew">Crear nueva empresa</a>
     </div>
 </div>
-@if (!empresases || empresases.length === 0) {
-<div i18n="@@empresas.list.empty">No Empresases could be found.</div>
-} @else {
-<div class="overflow-x-auto">
-    <table class="w-full">
+@if (!empresas || empresas.length === 0) {
+    <div>No se han encontrado empresas.</div>
+  } @else {
+    <div class="overflow-x-auto">
+      <table class="w-full">
         <thead>
-            <tr>
-                <th scope="col" class="text-left p-2" i18n="@@empresas.idempresa.label">Idempresa</th>
-                <th scope="col" class="text-left p-2" i18n="@@empresas.nombre.label">Nombre</th>
-                <th scope="col" class="text-left p-2" i18n="@@empresas.direccion.label">Direccion</th>
-                <th scope="col" class="text-left p-2" i18n="@@empresas.telefono.label">Telefono</th>
-                <th scope="col" class="text-left p-2" i18n="@@empresas.email.label">Email</th>
-                <th><!-- --></th>
-            </tr>
+          <tr>
+            <th class="text-left p-2">ID</th>
+            <th class="text-left p-2">Nombre</th>
+            <th class="text-left p-2">CIF</th>
+            <th class="text-left p-2">Dirección</th>
+            <th class="text-left p-2">Teléfono</th>
+            <th class="text-left p-2">Email</th>
+          </tr>
         </thead>
         <tbody class="border-t-2 border-black">
-            @for (empresas of empresases; track empresas.idempresa) {
-            <tr class="odd:bg-gray-100">
-                <td class="p-2">{{ empresas.idempresa }}</td>
-                <td class="p-2">{{ empresas.nombre }}</td>
-                <td class="p-2">{{ empresas.direccion }}</td>
-                <td class="p-2">{{ empresas.telefono }}</td>
-                <td class="p-2">{{ empresas.email }}</td>
-                <td class="p-2">
-                    <div class="float-right whitespace-nowrap">
-                        <a [routerLink]="['/empresass/edit', empresas.idempresa]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.edit">Edit</a>
-                        <button type="button" (click)="confirmDelete(empresas.idempresa!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.delete">Delete</button>
-                    </div>
-                </td>
-            </tr>
-            }
+          @for (empresa of empresas; track empresa.idempresa) {
+          <tr class="odd:bg-gray-100">
+            <td class="p-2">{{ empresa.idempresa }}</td>
+            <td class="p-2">{{ empresa.nombre }}</td>
+            <td class="p-2">{{ empresa.cif }}</td>
+            <td class="p-2">{{ empresa.direccion }}</td>
+            <td class="p-2">{{ empresa.telefono }}</td>
+            <td class="p-2">{{ empresa.email }}</td>
+            <td class="p-2">
+                <div class="float-right whitespace-nowrap">
+                    <a [routerLink]="['/empresas/edit/'+ empresa.idempresa]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.edit">Editar</a>
+                    <button type="button" (click)="confirmDelete(empresa.idempresa!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.delete">Eliminar</button>
+                </div>
+            </td>
+          </tr>
+          }
         </tbody>
-    </table>
-</div>
-}
+      </table>
+    </div>
+  }
+

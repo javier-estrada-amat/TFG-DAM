@@ -1,4 +1,6 @@
 package coredev.sistema_fichajes.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +20,8 @@ public class Fichaje implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_fichaje;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER) // Cargamos siempre el usuario asociado
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 

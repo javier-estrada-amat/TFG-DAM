@@ -13,27 +13,32 @@ import { EmpresasDTO } from 'app/empresas/empresas.model';
   templateUrl: './empresas-list.component.html'})
 export class EmpresasListComponent implements OnInit, OnDestroy {
 
-  empresasService = inject(EmpresasService);
+  
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
-  empresases?: EmpresasDTO[];
   navigationSubscription?: Subscription;
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      confirm: $localize`:@@delete.confirm:Do you really want to delete this element? This cannot be undone.`,
-      deleted: $localize`:@@empresas.delete.success:Empresas was removed successfully.`,
+      confirm: $localize`:@@delete.confirm:Estas seguro de que quieres borrar la empresa? Se eleminara permanentemente.`,
+      deleted: $localize`:@@empresas.delete.success:Empresa eliminada correctamente.`,
       'empresas.usuarios.empresas.referenced': $localize`:@@empresas.usuarios.empresas.referenced:This entity is still referenced by Usuarios ${details?.id} via field Empresas.`
     };
     return messages[key];
   }
+  empresas: EmpresasDTO[] = [];
+  constructor(private empresasService: EmpresasService) {}
 
   ngOnInit() {
-    this.loadData();
-    this.navigationSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.loadData();
-      }
+    console.log('EmpresasListComponent cargado');
+    this.empresasService.getAllEmpresas().subscribe({
+      next: (data) => {
+        this.empresas = data;
+        console.log('Empresas recibidas:', data);
+      },
+      error: (error) => {
+        console.error('Error cargando empresas:', error);
+      },
     });
   }
 
@@ -42,9 +47,11 @@ export class EmpresasListComponent implements OnInit, OnDestroy {
   }
   
   loadData() {
-    this.empresasService.getAllEmpresases()
+    this.empresasService.getAllEmpresas()
         .subscribe({
-          next: (data) => this.empresases = data,
+          next: (data) => {
+            this.empresas = data;
+          },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
   }
@@ -55,7 +62,7 @@ export class EmpresasListComponent implements OnInit, OnDestroy {
     }
     this.empresasService.deleteEmpresas(idempresa)
         .subscribe({
-          next: () => this.router.navigate(['/empresass'], {
+          next: () => this.router.navigate(['/empresas'], {
             state: {
               msgInfo: this.getMessage('deleted')
             }
@@ -63,7 +70,7 @@ export class EmpresasListComponent implements OnInit, OnDestroy {
           error: (error) => {
             if (error.error?.code === 'REFERENCED') {
               const messageParts = error.error.message.split(',');
-              this.router.navigate(['/empresass'], {
+              this.router.navigate(['/empresas'], {
                 state: {
                   msgError: this.getMessage(messageParts[0], { id: messageParts[1] })
                 }
