@@ -1,9 +1,11 @@
 package coredev.sistema_fichajes.dto;
 
-import java.util.Date;
+import lombok.Data;
+import java.time.LocalDateTime;
 
+@Data
 public class HistorialCambioPasswordDTO {
-    private int id;
-    private Date fechaCambio;
+    private int idRegistro;
     private int usuarioId;
+    private LocalDateTime fechaCambio;
 }

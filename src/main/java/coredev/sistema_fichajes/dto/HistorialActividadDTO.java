@@ -1,10 +1,14 @@
 package coredev.sistema_fichajes.dto;
 
-import java.util.Date;
+import lombok.Data;
+import java.time.LocalDateTime;
 
+@Data
 public class HistorialActividadDTO {
-    private int id;
-    private String actividad;
-    private Date fecha;
+    private int idHistorial;
     private int usuarioId;
+    private String accion;
+    private String entidadAfectada;
+    private String descripcion;
+    private LocalDateTime fecha;
 }
