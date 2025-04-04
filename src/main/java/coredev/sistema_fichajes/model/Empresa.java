@@ -14,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
 public class Empresa implements Serializable {
 
     @Id
@@ -38,4 +40,5 @@ public class Empresa implements Serializable {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Usuario> empleados;
+
 }
