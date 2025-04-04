@@ -2,6 +2,8 @@ package coredev.sistema_fichajes.controller;
 
 import coredev.sistema_fichajes.model.Rol;
 import coredev.sistema_fichajes.service.RolService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/roles")
+
+@RequestMapping("/api/roles")
 public class RolController {
 
     @Autowired

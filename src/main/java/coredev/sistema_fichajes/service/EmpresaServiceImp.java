@@ -2,6 +2,7 @@ package coredev.sistema_fichajes.service;
 
 import coredev.sistema_fichajes.model.Empresa;
 import coredev.sistema_fichajes.repository.EmpresaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class EmpresaServiceImp implements EmpresaService {
     }
 
     @Override
+    @Transactional
     public List<Empresa> getAllEmpresas() {
         return empresaRepository.findAll();
     }

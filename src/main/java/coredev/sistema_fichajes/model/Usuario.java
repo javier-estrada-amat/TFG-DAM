@@ -1,5 +1,6 @@
 package coredev.sistema_fichajes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
+
 public class Usuario implements Serializable {
 
     @Id
@@ -34,30 +38,41 @@ public class Usuario implements Serializable {
     @Column(name = "fecha_registro")
     private Date fechaRegistro;
 
-    @ManyToOne
-    @JoinColumn(name = "empresa_id", referencedColumnName = "id_empresa", nullable = false) // Aquí indicamos el nombre real en la tabla empresas
+    @ManyToOne(fetch = FetchType.EAGER) // Queremos que venga con el usuario
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id_empresa", nullable = false)
     private Empresa empresa;
 
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Fichaje> fichajes;
 
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HoraExtra> horasExtras;
 
+
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private ConfigAutenticacion configAutenticacion;
 
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HistorialCambioPassword> historialCambioPassword;
 
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HistorialActividad> historialActividad;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) // si quieres que vengan los roles directamente
     @JoinTable(
         name = "usuarios_roles",
         joinColumns = @JoinColumn(name = "usuario_id"),
         inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private List<Rol> roles;
+
 }

@@ -21,12 +21,11 @@ export class RolesAddComponent {
 
   addForm = new FormGroup({
     nombre: new FormControl(null, [Validators.maxLength(50)]),
-    descripcion: new FormControl(null)
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      created: $localize`:@@roles.create.success:Roles was created successfully.`
+      created: $localize`:@@roles.create.success:El rol ha sido creado correctamente.`
     };
     return messages[key];
   }
@@ -40,7 +39,7 @@ export class RolesAddComponent {
     const data = new RolesDTO(this.addForm.value);
     this.rolesService.createRoles(data)
         .subscribe({
-          next: () => this.router.navigate(['/roless'], {
+          next: () => this.router.navigate(['/roles'], {
             state: {
               msgSuccess: this.getMessage('created')
             }

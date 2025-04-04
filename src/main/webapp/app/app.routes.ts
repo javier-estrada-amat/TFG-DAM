@@ -31,12 +31,12 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    title: $localize`:@@home.index.headline:Welcome to your new app!`
+    title: $localize`:@@home.index.headline:Bienvenido!`
   },
   {
     path: 'usuarios',
     component: UsuariosListComponent,
-    title: $localize`:@@usuarios.list.headline:Usuarioses`
+    title: $localize`:@@usuarios.list.headline:Usuarios`
   },
   {
     path: 'usuarios/add',
@@ -66,7 +66,7 @@ export const routes: Routes = [
   {
     path: 'empresas',
     component: EmpresasListComponent,
-    title: $localize`:@@empresas.list.headline:Empresases`
+    title: $localize`:@@empresas.list.headline:Empresas`
   },
   {
     path: 'empresas/add',
@@ -161,6 +161,6 @@ export const routes: Routes = [
   {
     path: '**',
     component: ErrorComponent,
-    title: $localize`:@@notFound.headline:Page not found`
+    title: $localize`:@@notFound.headline:Página no encontrada`
   }
 ];

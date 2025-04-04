@@ -1,6 +1,6 @@
 package coredev.sistema_fichajes.model;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
+
 public class Rol implements Serializable {
 
     @Id
@@ -22,6 +25,7 @@ public class Rol implements Serializable {
     @Column(nullable = false, unique = true)
     private String nombre;
 
-    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private List<Usuario> usuarios;
 }
