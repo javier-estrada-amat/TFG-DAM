@@ -31,7 +31,7 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    title: $localize`:@@home.index.headline:Welcome to your new app!`
+    title: $localize`:@@home.index.headline:Bienvenido!`
   },
   {
     path: 'usuarios',
@@ -161,6 +161,6 @@ export const routes: Routes = [
   {
     path: '**',
     component: ErrorComponent,
-    title: $localize`:@@notFound.headline:Page not found`
+    title: $localize`:@@notFound.headline:Página no encontrada`
   }
 ];

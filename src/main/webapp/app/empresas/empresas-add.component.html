@@ -1,7 +1,7 @@
 <div class="flex flex-wrap mb-6">
-    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@empresas.add.headline">Add Empresas</h1>
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@empresas.add.headline">Añadir empresa</h1>
     <div>
-        <a routerLink="/empresass" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@empresas.add.back">Back to list</a>
+        <a routerLink="/empresas" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@empresas.add.back">Back to list</a>
     </div>
 </div>
 <form [formGroup]="addForm" (ngSubmit)="handleSubmit()">

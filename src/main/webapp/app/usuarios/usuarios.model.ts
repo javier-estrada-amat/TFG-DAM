@@ -8,9 +8,7 @@ export class UsuariosDTO {
   nombre?: string|null;
   apellidos?: string|null;
   email?: string|null;
-  password?: string|null;
-  activo?: boolean|null;
-  primeracceso?: boolean|null;
+  fechaRegistro?: boolean|null;
   empresas?: number|null;
   roles?: number[]|null;
   configuracionautenticacion?: number|null;

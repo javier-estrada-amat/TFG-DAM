@@ -37,7 +37,7 @@ export class RolesEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentIdrol = +this.route.snapshot.params['idrol'];
+    this.currentIdrol = +this.route.snapshot.params['id_rol'];
     this.rolesService.getRoles(this.currentIdrol!)
         .subscribe({
           next: (data) => updateForm(this.editForm, data),
@@ -54,7 +54,7 @@ export class RolesEditComponent implements OnInit {
     const data = new RolesDTO(this.editForm.value);
     this.rolesService.updateRoles(this.currentIdrol!, data)
         .subscribe({
-          next: () => this.router.navigate(['/roless'], {
+          next: () => this.router.navigate(['/roles'], {
             state: {
               msgSuccess: this.getMessage('updated')
             }
