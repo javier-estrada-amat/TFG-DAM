@@ -6,6 +6,7 @@
 </div>
 <form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
     <app-input-row [group]="addForm" field="nombre" i18n-label="@@empresas.nombre.label" label="Nombre" />
+    <app-input-row [group]="addForm" field="cif" i18n-label="@@empresas.cif.label" label="CIF" />
     <app-input-row [group]="addForm" field="direccion" i18n-label="@@empresas.direccion.label" label="Direccion" />
     <app-input-row [group]="addForm" field="telefono" i18n-label="@@empresas.telefono.label" label="Telefono" />
     <app-input-row [group]="addForm" field="email" i18n-label="@@empresas.email.label" label="Email" />

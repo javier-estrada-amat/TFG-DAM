@@ -16,7 +16,7 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
   usuariosService = inject(UsuariosService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
-  usuarioses?: UsuariosDTO[];
+  usuarios?: UsuariosDTO[];
   navigationSubscription?: Subscription;
 
   getMessage(key: string, details?: any) {
@@ -47,7 +47,7 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
   loadData() {
     this.usuariosService.getAllUsuarioses()
         .subscribe({
-          next: (data) => this.usuarioses = data,
+          next: (data) => this.usuarios = data,
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
   }
@@ -58,7 +58,7 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
     }
     this.usuariosService.deleteUsuarios(idusuario)
         .subscribe({
-          next: () => this.router.navigate(['/usuarioss'], {
+          next: () => this.router.navigate(['/usuarios'], {
             state: {
               msgInfo: this.getMessage('deleted')
             }
@@ -66,7 +66,7 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
           error: (error) => {
             if (error.error?.code === 'REFERENCED') {
               const messageParts = error.error.message.split(',');
-              this.router.navigate(['/usuarioss'], {
+              this.router.navigate(['/usuarios'], {
                 state: {
                   msgError: this.getMessage(messageParts[0], { id: messageParts[1] })
                 }

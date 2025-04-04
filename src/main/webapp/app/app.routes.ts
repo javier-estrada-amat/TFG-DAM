@@ -36,7 +36,7 @@ export const routes: Routes = [
   {
     path: 'usuarios',
     component: UsuariosListComponent,
-    title: $localize`:@@usuarios.list.headline:Usuarioses`
+    title: $localize`:@@usuarios.list.headline:Usuarios`
   },
   {
     path: 'usuarios/add',
@@ -66,7 +66,7 @@ export const routes: Routes = [
   {
     path: 'empresas',
     component: EmpresasListComponent,
-    title: $localize`:@@empresas.list.headline:Empresases`
+    title: $localize`:@@empresas.list.headline:Empresas`
   },
   {
     path: 'empresas/add',

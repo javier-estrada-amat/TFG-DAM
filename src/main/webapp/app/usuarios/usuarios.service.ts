@@ -12,10 +12,10 @@ import { transformRecordToMap } from 'app/common/utils';
 export class UsuariosService {
 
   http = inject(HttpClient);
-  resourcePath = environment.apiPath + '/api/usuarios';
+  resourcePath = environment.apiPath + 'usuarios';
 
   getAllUsuarioses() {
-    return this.http.get<UsuariosDTO[]>(this.resourcePath);
+    return this.http.get<UsuariosDTO[]>(this.resourcePath+'/getAll');
   }
 
   getUsuarios(idusuario: number) {

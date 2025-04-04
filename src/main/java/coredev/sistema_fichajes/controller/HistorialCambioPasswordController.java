@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/registro-password")
+@RequestMapping("/api/registro-password")
 public class HistorialCambioPasswordController {
 
     @Autowired

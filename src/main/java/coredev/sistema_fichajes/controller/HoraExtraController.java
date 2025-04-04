@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/horas-extras")
+@RequestMapping("/api/horas-extras")
 public class HoraExtraController {
 
     @Autowired

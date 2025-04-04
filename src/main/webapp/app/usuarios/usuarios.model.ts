@@ -4,7 +4,7 @@ export class UsuariosDTO {
     Object.assign(this, data);
   }
 
-  idusuario?: number|null;
+  id_usuario?: number|null;
   nombre?: string|null;
   apellidos?: string|null;
   email?: string|null;

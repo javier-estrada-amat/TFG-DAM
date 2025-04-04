@@ -21,6 +21,7 @@ export class EmpresasAddComponent {
 
   addForm = new FormGroup({
     nombre: new FormControl(null, [Validators.maxLength(100)]),
+    cif: new FormControl(null, [Validators.maxLength(30)]),
     direccion: new FormControl(null, [Validators.maxLength(255)]),
     telefono: new FormControl(null, [Validators.maxLength(20)]),
     email: new FormControl(null, [Validators.maxLength(100)])
@@ -28,7 +29,7 @@ export class EmpresasAddComponent {
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      created: $localize`:@@empresas.create.success:Empresas was created successfully.`
+      created: $localize`:@@empresas.create.success:Empresa creada correctamente.`
     };
     return messages[key];
   }
@@ -42,7 +43,7 @@ export class EmpresasAddComponent {
     const data = new EmpresasDTO(this.addForm.value);
     this.empresasService.createEmpresas(data)
         .subscribe({
-          next: () => this.router.navigate(['/empresass'], {
+          next: () => this.router.navigate(['/empresas'], {
             state: {
               msgSuccess: this.getMessage('created')
             }
