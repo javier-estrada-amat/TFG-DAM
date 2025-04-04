@@ -38,31 +38,36 @@ public class Usuario implements Serializable {
     @Column(name = "fecha_registro")
     private Date fechaRegistro;
 
-    @ManyToOne
-    @JoinColumn(name = "empresa_id", referencedColumnName = "id_empresa", nullable = false) // Aquí indicamos el nombre real en la tabla empresas
+    @ManyToOne(fetch = FetchType.EAGER) // Queremos que venga con el usuario
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id_empresa", nullable = false)
     private Empresa empresa;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Fichaje> fichajes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<HoraExtra> horasExtras;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private ConfigAutenticacion configAutenticacion;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<HistorialCambioPassword> historialCambioPassword;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<HistorialActividad> historialActividad;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) // si quieres que vengan los roles directamente
     @JoinTable(
         name = "usuarios_roles",
         joinColumns = @JoinColumn(name = "usuario_id"),

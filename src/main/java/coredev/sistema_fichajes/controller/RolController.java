@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/roles")
-@Getter
-@Setter
 
+@RequestMapping("/api/roles")
 public class RolController {
 
     @Autowired

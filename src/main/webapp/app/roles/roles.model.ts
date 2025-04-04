@@ -4,7 +4,7 @@ export class RolesDTO {
     Object.assign(this, data);
   }
 
-  idrol?: number|null;
+  id_rol?: number|null;
   nombre?: string|null;
   descripcion?: string|null;
 

@@ -26,6 +26,7 @@ export class EmpresasEditComponent implements OnInit {
   editForm = new FormGroup({
     idempresa: new FormControl({ value: null, disabled: true }),
     nombre: new FormControl(null, [Validators.maxLength(100)]),
+    cif: new FormControl(null, [Validators.maxLength(30)]),
     direccion: new FormControl(null, [Validators.maxLength(255)]),
     telefono: new FormControl(null, [Validators.maxLength(20)]),
     email: new FormControl(null, [Validators.maxLength(100)])
@@ -33,7 +34,7 @@ export class EmpresasEditComponent implements OnInit {
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      updated: $localize`:@@empresas.update.success:Empresas was updated successfully.`
+      updated: $localize`:@@empresas.update.success:La empresa ha sido modificada correctamente.`
     };
     return messages[key];
   }
@@ -56,7 +57,7 @@ export class EmpresasEditComponent implements OnInit {
     const data = new EmpresasDTO(this.editForm.value);
     this.empresasService.updateEmpresas(this.currentIdempresa!, data)
         .subscribe({
-          next: () => this.router.navigate(['/empresass'], {
+          next: () => this.router.navigate(['/empresas'], {
             state: {
               msgSuccess: this.getMessage('updated')
             }
