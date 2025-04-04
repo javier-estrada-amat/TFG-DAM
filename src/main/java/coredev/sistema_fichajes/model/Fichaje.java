@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
+
 public class Fichaje implements Serializable {
 
     @Id

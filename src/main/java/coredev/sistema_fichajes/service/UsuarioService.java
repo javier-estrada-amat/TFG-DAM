@@ -3,6 +3,7 @@ package coredev.sistema_fichajes.service;
 import coredev.sistema_fichajes.model.Usuario;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioService {
     Usuario agregarUsuario(Usuario usuario);
@@ -10,4 +11,6 @@ public interface UsuarioService {
     Usuario actualizarUsuario(Usuario usuario);
     void eliminarUsuario(int id);
     List<Usuario> buscarPorNombre(String nombre);
+    Optional<Usuario> findByEmail(String email);
 }
+

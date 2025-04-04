@@ -1,5 +1,6 @@
 package coredev.sistema_fichajes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
+
 public class Usuario implements Serializable {
 
     @Id
@@ -39,18 +43,23 @@ public class Usuario implements Serializable {
     private Empresa empresa;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Fichaje> fichajes;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HoraExtra> horasExtras;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private ConfigAutenticacion configAutenticacion;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HistorialCambioPassword> historialCambioPassword;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HistorialActividad> historialActividad;
 
     @ManyToMany
@@ -60,4 +69,5 @@ public class Usuario implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private List<Rol> roles;
+
 }
