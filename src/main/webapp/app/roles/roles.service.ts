@@ -10,10 +10,10 @@ import { RolesDTO } from 'app/roles/roles.model';
 export class RolesService {
 
   http = inject(HttpClient);
-  resourcePath = environment.apiPath + '/api/roless';
+  resourcePath = environment.apiPath + 'roles';
 
   getAllRoleses() {
-    return this.http.get<RolesDTO[]>(this.resourcePath);
+    return this.http.get<RolesDTO[]>(this.resourcePath+'/getAll');
   }
 
   getRoles(idrol: number) {

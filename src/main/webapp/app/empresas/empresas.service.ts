@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { EmpresasDTO } from 'app/empresas/empresas.model';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -10,14 +11,21 @@ import { EmpresasDTO } from 'app/empresas/empresas.model';
 export class EmpresasService {
 
   http = inject(HttpClient);
-  resourcePath = environment.apiPath + '/api/empresass';
+  resourcePath = environment.apiPath + 'empresas';
 
-  getAllEmpresases() {
-    return this.http.get<EmpresasDTO[]>(this.resourcePath);
+  getAllEmpresas() {
+    return this.http.get<any[]>(this.resourcePath+'/getAll').pipe(
+      map(data => {
+        console.log('Datos crudos desde API:', data);
+        return data.map(item => new EmpresasDTO(item));
+      })
+    );
   }
-
+  
   getEmpresas(idempresa: number) {
-    return this.http.get<EmpresasDTO>(this.resourcePath + '/' + idempresa);
+    return this.http.get<any>(this.resourcePath + '/' + idempresa).pipe(
+      map(item => new EmpresasDTO(item))
+    );
   }
 
   createEmpresas(empresasDTO: EmpresasDTO) {
@@ -25,7 +33,7 @@ export class EmpresasService {
   }
 
   updateEmpresas(idempresa: number, empresasDTO: EmpresasDTO) {
-    return this.http.put<number>(this.resourcePath + '/' + idempresa, empresasDTO);
+    return this.http.put<number>(this.resourcePath + '/update' + idempresa, empresasDTO);
   }
 
   deleteEmpresas(idempresa: number) {

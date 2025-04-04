@@ -21,8 +21,8 @@ export class RolesListComponent implements OnInit, OnDestroy {
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      confirm: $localize`:@@delete.confirm:Do you really want to delete this element? This cannot be undone.`,
-      deleted: $localize`:@@roles.delete.success:Roles was removed successfully.`    };
+      confirm: $localize`:@@delete.confirm:Estas seguro de que quieres eliminar este rol?.`,
+      deleted: $localize`:@@roles.delete.success:El rol ha sido eliminado correctamente.`    };
     return messages[key];
   }
 
@@ -53,7 +53,7 @@ export class RolesListComponent implements OnInit, OnDestroy {
     }
     this.rolesService.deleteRoles(idrol)
         .subscribe({
-          next: () => this.router.navigate(['/roless'], {
+          next: () => this.router.navigate(['/roles'], {
             state: {
               msgInfo: this.getMessage('deleted')
             }
