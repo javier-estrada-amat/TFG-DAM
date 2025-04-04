@@ -14,6 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
+
 public class Usuario implements Serializable {
 
     @Id
@@ -41,22 +44,27 @@ public class Usuario implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Fichaje> fichajes;
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HoraExtra> horasExtras;
 
     @JsonIgnore
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private ConfigAutenticacion configAutenticacion;
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HistorialCambioPassword> historialCambioPassword;
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HistorialActividad> historialActividad;
 
     @ManyToMany(fetch = FetchType.EAGER) // si quieres que vengan los roles directamente
@@ -66,4 +74,5 @@ public class Usuario implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private List<Rol> roles;
+
 }

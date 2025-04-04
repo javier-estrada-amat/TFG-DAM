@@ -14,6 +14,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
+
 public class HoraExtra implements Serializable {
 
     @Id

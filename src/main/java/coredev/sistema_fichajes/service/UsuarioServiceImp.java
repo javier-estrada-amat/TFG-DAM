@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioServiceImp implements UsuarioService {
@@ -36,5 +37,9 @@ public class UsuarioServiceImp implements UsuarioService {
     @Override
     public List<Usuario> buscarPorNombre(String nombre) {
         return usuarioRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+    @Override
+    public Optional<Usuario> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
     }
 }
