@@ -9,7 +9,7 @@ public class UsuarioMapper {
         if (usuario == null) return null;
 
         UsuarioDTO dto = new UsuarioDTO();
-        dto.setIdUsuario(usuario.getId_usuario());
+        dto.setId_usuario(usuario.getId_usuario());
         dto.setNombre(usuario.getNombre());
         dto.setApellidos(usuario.getApellidos());
         dto.setEmail(usuario.getEmail());
@@ -22,7 +22,7 @@ public class UsuarioMapper {
         if (dto == null) return null;
 
         Usuario usuario = new Usuario();
-        usuario.setId_usuario(dto.getIdUsuario());
+        usuario.setId_usuario(dto.getId_usuario());
         usuario.setNombre(dto.getNombre());
         usuario.setApellidos(dto.getApellidos());
         usuario.setEmail(dto.getEmail());

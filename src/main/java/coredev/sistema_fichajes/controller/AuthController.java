@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final UsuarioService usuarioService;
@@ -35,7 +35,7 @@ public class AuthController {
         Optional<Usuario> user = usuarioService.findByEmail(usuario.getEmail());
 
         if (user.isPresent() && passwordEncoder.matches(usuario.getPassword(), user.get().getPassword())) {
-            String token = jwtUtil.generarToken(usuario.getEmail());
+            String token = jwtUtil.generarToken(user.get().getEmail());
             return ResponseEntity.ok(Map.of("code", 1, "token", token));
         } else {
             return ResponseEntity.ok(Map.of("code", 2));

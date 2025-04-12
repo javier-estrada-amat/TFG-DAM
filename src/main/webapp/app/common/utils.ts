@@ -15,10 +15,10 @@ export function updateForm(group: FormGroup, data: any) {
 /**
  * Helper function for transforming a Record to a Map to support number as a key.
  */
-export function transformRecordToMap(data:Record<number, number|string>):Map<number, string> {
-  const dataMap = new Map();
+export function transformRecordToMap(data:Record<string, number | string>):Map<number, string> {
+  const dataMap = new Map<number, string>();
   for (const [key, value] of Object.entries(data)) {
-    dataMap.set(+key, '' + value);
+    dataMap.set(Number(key), String(value));
   }
   return dataMap;
 }

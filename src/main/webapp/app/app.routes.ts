@@ -15,6 +15,7 @@ import { FichajesEditComponent } from './fichajes/fichajes-edit.component';
 import { HorasextrasListComponent } from './horasextras/horasextras-list.component';
 import { HorasextrasAddComponent } from './horasextras/horasextras-add.component';
 import { HorasextrasEditComponent } from './horasextras/horasextras-edit.component';
+import { LoginComponent } from './auth/login/login.component';
 import { RegistrocambioscontraseniaListComponent } from './registrocambioscontrasenia/registrocambioscontrasenia-list.component';
 import { RegistrocambioscontraseniaAddComponent } from './registrocambioscontrasenia/registrocambioscontrasenia-add.component';
 import { RegistrocambioscontraseniaEditComponent } from './registrocambioscontrasenia/registrocambioscontrasenia-edit.component';
@@ -28,11 +29,8 @@ import { ErrorComponent } from './error/error.component';
 
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-    title: $localize`:@@home.index.headline:Bienvenido!`
-  },
+   { path: '', redirectTo: 'login', pathMatch: 'full' },
+   { path: 'login', component: LoginComponent },
   {
     path: 'usuarios',
     component: UsuariosListComponent,
@@ -42,6 +40,11 @@ export const routes: Routes = [
     path: 'usuarios/add',
     component: UsuariosAddComponent,
     title: $localize`:@@usuarios.add.headline:Add Usuarios`
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    title: $localize`:@@home.headline:Inicio`
   },
   {
     path: 'usuarios/edit/:idusuario',
@@ -162,5 +165,6 @@ export const routes: Routes = [
     path: '**',
     component: ErrorComponent,
     title: $localize`:@@notFound.headline:Página no encontrada`
-  }
+  },
+  { path: 'login', component: LoginComponent }
 ];

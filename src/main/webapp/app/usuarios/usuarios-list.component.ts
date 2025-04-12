@@ -11,12 +11,15 @@ import { UsuariosDTO } from 'app/usuarios/usuarios.model';
   selector: 'app-usuarios-list',
   imports: [CommonModule, RouterLink],
   templateUrl: './usuarios-list.component.html'})
+
 export class UsuariosListComponent implements OnInit, OnDestroy {
 
   usuariosService = inject(UsuariosService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
-  usuarios?: UsuariosDTO[];
+
+  usuarios: UsuariosDTO[] = [];
+  isLoading = true;
   navigationSubscription?: Subscription;
 
   getMessage(key: string, details?: any) {
@@ -43,13 +46,15 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.navigationSubscription!.unsubscribe();
   }
-  
+
   loadData() {
-    this.usuariosService.getAllUsuarioses()
-        .subscribe({
-          next: (data) => this.usuarios = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+    this.usuariosService.getAllUsuarios().subscribe({
+        next: (data) => {
+          this.usuarios = data;
+          this.isLoading = false;
+          },
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
   confirmDelete(idusuario: number) {
@@ -77,5 +82,7 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
           }
         });
   }
-
+  trackById(index: number, item: UsuariosDTO): number {
+    return item.id_usuario ?? 0;
+  }
 }

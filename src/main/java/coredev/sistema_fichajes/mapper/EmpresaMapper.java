@@ -9,7 +9,7 @@ public class EmpresaMapper {
         if (empresa == null) return null;
 
         EmpresaDTO dto = new EmpresaDTO();
-        dto.setIdEmpresa(empresa.getId_empresa());
+        dto.setId_empresa(empresa.getId_empresa());
         dto.setNombre(empresa.getNombre());
         dto.setCif(empresa.getCif());
         dto.setDireccion(empresa.getDireccion());
@@ -22,7 +22,7 @@ public class EmpresaMapper {
         if (dto == null) return null;
 
         Empresa empresa = new Empresa();
-        empresa.setId_empresa(dto.getIdEmpresa());
+        empresa.setId_empresa(dto.getId_empresa());
         empresa.setNombre(dto.getNombre());
         empresa.setCif(dto.getCif());
         empresa.setDireccion(dto.getDireccion());

@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, ExtraOptions, TitleStrategy } from '@angular/router';
 import { routes } from 'app/app.routes';
 import { CustomTitleStrategy } from 'app/common/title-strategy.injectable';
+import { FormsModule } from '@angular/forms';
 
 
 const routeConfig: ExtraOptions = {
@@ -13,7 +14,7 @@ const routeConfig: ExtraOptions = {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom(RouterModule.forRoot(routes, routeConfig), BrowserAnimationsModule, HttpClientModule),
+    importProvidersFrom(RouterModule.forRoot(routes, routeConfig), BrowserAnimationsModule, HttpClientModule, FormsModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     {
       provide: TitleStrategy,
