@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/empresas")
@@ -40,5 +42,12 @@ public class EmpresaController {
     @GetMapping("/search")
     public ResponseEntity<List<Empresa>> searchByNombre(@RequestParam String nombre) {
         return new ResponseEntity<>(empresaService.buscarPorNombre(nombre), HttpStatus.OK);
+    }
+    @GetMapping("/values")
+    public ResponseEntity<Map<Integer, String>> getEmpresasValues() {
+        List<Empresa> empresas = empresaService.getAllEmpresas();
+        Map<Integer, String> valores = empresas.stream()
+            .collect(Collectors.toMap(Empresa::getId_empresa, Empresa::getNombre));
+        return new ResponseEntity<>(valores, HttpStatus.OK);
     }
 }

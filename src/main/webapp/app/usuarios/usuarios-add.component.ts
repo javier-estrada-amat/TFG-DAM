@@ -6,6 +6,7 @@ import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { UsuariosService } from 'app/usuarios/usuarios.service';
 import { UsuariosDTO } from 'app/usuarios/usuarios.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
+import { EmpresasService } from 'app/empresas/empresas.service';
 
 
 @Component({
@@ -18,11 +19,12 @@ export class UsuariosAddComponent implements OnInit {
   usuariosService = inject(UsuariosService);
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
+  empresasService = inject(EmpresasService);
 
-  empresasValues?: Map<number,string>;
-  rolesValues?: Map<number,string>;
-  configuracionautenticacionValues?: Map<number,string>;
-  horasextrasusuariosValues?: Map<number,string>;
+  empresasValues: Map<number, string> = new Map();
+  rolesValues: Map<number, string> = new Map();
+  configuracionautenticacionValues: Map<number, string> = new Map();
+  horasextrasusuariosValues: Map<number, string> = new Map();
 
   addForm = new FormGroup({
     nombre: new FormControl(null, [Validators.maxLength(50)]),
@@ -31,7 +33,7 @@ export class UsuariosAddComponent implements OnInit {
     password: new FormControl(null, [Validators.maxLength(255)]),
     activo: new FormControl(false),
     primeracceso: new FormControl(false),
-    empresas: new FormControl(null),
+    empresa: new FormControl(null),
     roles: new FormControl([]),
     configuracionautenticacion: new FormControl(null),
     horasextrasusuarios: new FormControl(null)
@@ -47,24 +49,32 @@ export class UsuariosAddComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.usuariosService.getEmpresasValues()
-        .subscribe({
-          next: (data) => this.empresasValues = data,
+    this.empresasService.getEmpresasValues().subscribe({
+          next: (data) => {
+            this.empresasValues = data;
+            console.log('Empresas cargadas:', data);
+          },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
-    this.usuariosService.getRolesValues()
-        .subscribe({
-          next: (data) => this.rolesValues = data,
+    this.usuariosService.getRolesValues().subscribe({
+          next: (data) => {
+            this.rolesValues = data;
+            console.log('Roles cargados:', data);
+          },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
-    this.usuariosService.getConfiguracionautenticacionValues()
-        .subscribe({
-          next: (data) => this.configuracionautenticacionValues = data,
+    this.usuariosService.getConfiguracionautenticacionValues().subscribe({
+          next: (data) => {
+            this.configuracionautenticacionValues = data;
+            console.log('Configuración autenticación cargados:', data);
+          },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
-    this.usuariosService.getHorasextrasusuariosValues()
-        .subscribe({
-          next: (data) => this.horasextrasusuariosValues = data,
+    this.usuariosService.getHorasextrasusuariosValues().subscribe({
+          next: (data) => {
+            this.horasextrasusuariosValues = data;
+            console.log('Horas extras cargadas:', data);
+            },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
   }
@@ -75,16 +85,23 @@ export class UsuariosAddComponent implements OnInit {
     if (!this.addForm.valid) {
       return;
     }
-    const data = new UsuariosDTO(this.addForm.value);
-    this.usuariosService.createUsuarios(data)
-        .subscribe({
-          next: () => this.router.navigate(['/usuarios'], {
-            state: {
-              msgSuccess: this.getMessage('created')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
-        });
+
+    const rawData = this.addForm.value;
+    const empresaId = rawData.empresa;
+    const usuarioPayload = new UsuariosDTO({
+      ...rawData,
+      empresa: empresaId != null ? { id_empresa: Number(empresaId) } : null
+    });
+
+    this.usuariosService.createUsuarios(usuarioPayload)
+      .subscribe({
+        next: () => this.router.navigate(['/usuarios'], {
+          state: {
+            msgSuccess: this.getMessage('created')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
+      });
   }
 
 }

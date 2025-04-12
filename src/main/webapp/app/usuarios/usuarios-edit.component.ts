@@ -7,6 +7,7 @@ import { UsuariosService } from 'app/usuarios/usuarios.service';
 import { UsuariosDTO } from 'app/usuarios/usuarios.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { updateForm } from 'app/common/utils';
+import { EmpresasService } from 'app/empresas/empresas.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class UsuariosEditComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
+  empresasService = inject(EmpresasService);
 
   empresasValues?: Map<number,string>;
   rolesValues?: Map<number,string>;
@@ -52,7 +54,7 @@ export class UsuariosEditComponent implements OnInit {
 
   ngOnInit() {
     this.currentIdusuario = +this.route.snapshot.params['idusuario'];
-    this.usuariosService.getEmpresasValues()
+    this.empresasService.getEmpresasValues()
         .subscribe({
           next: (data) => this.empresasValues = data,
           error: (error) => this.errorHandler.handleServerError(error.error)

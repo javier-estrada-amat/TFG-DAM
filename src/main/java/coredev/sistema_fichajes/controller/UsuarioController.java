@@ -1,5 +1,7 @@
 package coredev.sistema_fichajes.controller;
 
+import coredev.sistema_fichajes.dto.UsuarioDTO;
+import coredev.sistema_fichajes.mapper.UsuarioMapper;
 import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -17,18 +20,26 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/add")
-    public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) {
-        return new ResponseEntity<>(usuarioService.agregarUsuario(usuario), HttpStatus.CREATED);
+    public ResponseEntity<UsuarioDTO> addUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
+        Usuario creado = usuarioService.agregarUsuario(usuario);
+        return new ResponseEntity<>(UsuarioMapper.toDTO(creado), HttpStatus.CREATED);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Usuario>> getAllUsuarios() {
-        return new ResponseEntity<>(usuarioService.getAllUsuarios(), HttpStatus.OK);
+    public ResponseEntity<List<UsuarioDTO>> getAllUsuarios() {
+        List<Usuario> usuarios = usuarioService.getAllUsuarios();
+        List<UsuarioDTO> usuariosDTO = usuarios.stream()
+            .map(UsuarioMapper::toDTO)
+            .collect(Collectors.toList());
+        return new ResponseEntity<>(usuariosDTO, HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Usuario> updateUsuario(@RequestBody Usuario usuario) {
-        return new ResponseEntity<>(usuarioService.actualizarUsuario(usuario), HttpStatus.OK);
+    public ResponseEntity<UsuarioDTO> updateUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
+        Usuario actualizado = usuarioService.actualizarUsuario(usuario);
+        return new ResponseEntity<>(UsuarioMapper.toDTO(actualizado), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -38,7 +49,10 @@ public class UsuarioController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Usuario>> searchByNombre(@RequestParam String nombre) {
-        return new ResponseEntity<>(usuarioService.buscarPorNombre(nombre), HttpStatus.OK);
+    public ResponseEntity<List<UsuarioDTO>> searchByNombre(@RequestParam String nombre) {
+        List<UsuarioDTO> resultados = usuarioService.buscarPorNombre(nombre).stream()
+            .map(UsuarioMapper::toDTO)
+            .collect(Collectors.toList());
+        return new ResponseEntity<>(resultados, HttpStatus.OK);
     }
 }
