@@ -24,7 +24,7 @@ export class EmpresasEditComponent implements OnInit {
   currentIdempresa?: number;
 
   editForm = new FormGroup({
-    idempresa: new FormControl({ value: null, disabled: true }),
+    id_empresa: new FormControl({ value: null, disabled: true }),
     nombre: new FormControl(null, [Validators.maxLength(100)]),
     cif: new FormControl(null, [Validators.maxLength(30)]),
     direccion: new FormControl(null, [Validators.maxLength(255)]),

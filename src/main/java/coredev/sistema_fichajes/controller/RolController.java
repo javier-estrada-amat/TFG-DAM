@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 
@@ -43,6 +45,14 @@ public class RolController {
     @GetMapping("/search")
     public ResponseEntity<List<Rol>> searchByNombre(@RequestParam String nombre) {
         return new ResponseEntity<>(rolService.buscarPorNombre(nombre), HttpStatus.OK);
+    }
+
+    @GetMapping("/values")
+    public ResponseEntity<Map<Integer, String>> getRolesValues() {
+        List<Rol> roles = rolService.getAllRoles();
+        Map<Integer, String> valores = roles.stream()
+            .collect(Collectors.toMap(Rol::getId_rol, Rol::getNombre));
+        return new ResponseEntity<>(valores, HttpStatus.OK);
     }
 }
 

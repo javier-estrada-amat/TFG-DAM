@@ -1,13 +1,7 @@
-@if (control?.invalid && (control?.dirty || control?.touched)) {
-<div class="mt-1">
-    @for (error of control?.errors | keyvalue; track error.key) {
-    <div class="text-red-600 text-sm">
-        @if (isString(error.value)) {
-            {{ error.value }}
-        } @else {
-            {{ getMessage(error.key, error.value) }}
-        }
-    </div>
-    }
+<div *ngIf="control && control.invalid && (control.dirty || control.touched)" class="text-red-500 text-sm mt-1">
+    <div *ngIf="control.errors?.['required']">Este campo es obligatorio.</div>
+    <div *ngIf="control.errors?.['maxlength']">Has superado el límite de caracteres.</div>
+    <div *ngIf="control.errors?.['email']">El correo electrónico no es válido.</div>
+    <div *ngIf="control.errors?.['minlength']">Este campo es demasiado corto.</div>
+    <div *ngIf="control.errors?.['pattern']">El formato no es válido.</div>
 </div>
-}

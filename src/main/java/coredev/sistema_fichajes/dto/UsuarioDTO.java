@@ -2,7 +2,8 @@ package coredev.sistema_fichajes.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UsuarioDTO {
@@ -11,6 +12,8 @@ public class UsuarioDTO {
     private String apellidos;
     private String email;
     private String password;
-    private Date fecha_registro;;
+    private LocalDateTime fecha_registro;
+    private boolean activo;
     private EmpresaDTO empresa;
+    private List<Integer> roles;
 }
