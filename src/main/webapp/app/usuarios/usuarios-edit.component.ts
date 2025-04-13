@@ -8,6 +8,7 @@ import { UsuariosDTO } from 'app/usuarios/usuarios.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { updateForm } from 'app/common/utils';
 import { EmpresasService } from 'app/empresas/empresas.service';
+import { RolesService } from 'app/roles/roles.service';
 
 
 @Component({
@@ -22,32 +23,30 @@ export class UsuariosEditComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
   empresasService = inject(EmpresasService);
+  rolesService = inject(RolesService);
 
   empresasValues?: Map<number,string>;
   rolesValues?: Map<number,string>;
-  configuracionautenticacionValues?: Map<number,string>;
-  horasextrasusuariosValues?: Map<number,string>;
   currentIdusuario?: number;
+  mostrarCampoPassword = false;
 
   editForm = new FormGroup({
-    idusuario: new FormControl({ value: null, disabled: true }),
+    id_usuario: new FormControl<number | null>({ value: null, disabled: true }),
     nombre: new FormControl(null, [Validators.maxLength(50)]),
     apellidos: new FormControl(null, [Validators.maxLength(100)]),
     email: new FormControl(null, [Validators.maxLength(100)]),
     password: new FormControl(null, [Validators.maxLength(255)]),
     activo: new FormControl(false),
     primeracceso: new FormControl(false),
-    empresas: new FormControl(null),
+    empresa: new FormControl(null),
     roles: new FormControl([]),
-    configuracionautenticacion: new FormControl(null),
-    horasextrasusuarios: new FormControl(null)
+
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
       updated: $localize`:@@usuarios.update.success:Usuarios was updated successfully.`,
-      USUARIOS_EMAIL_UNIQUE: $localize`:@@Exists.usuarios.email:This Email is already taken.`,
-      USUARIOS_CONFIGURACIONAUTENTICACION_UNIQUE: $localize`:@@Exists.usuarios.configuracionautenticacion:This Configuracionautenticacion is already referenced by another Usuarios.`
+      USUARIOS_EMAIL_UNIQUE: $localize`:@@Exists.usuarios.email:This Email is already taken.`
     };
     return messages[key];
   }
@@ -59,19 +58,9 @@ export class UsuariosEditComponent implements OnInit {
           next: (data) => this.empresasValues = data,
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
-    this.usuariosService.getRolesValues()
+    this.rolesService.getRolesValues()
         .subscribe({
           next: (data) => this.rolesValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
-    this.usuariosService.getConfiguracionautenticacionValues()
-        .subscribe({
-          next: (data) => this.configuracionautenticacionValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
-    this.usuariosService.getHorasextrasusuariosValues()
-        .subscribe({
-          next: (data) => this.horasextrasusuariosValues = data,
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
     this.usuariosService.getUsuarios(this.currentIdusuario!)
@@ -84,19 +73,23 @@ export class UsuariosEditComponent implements OnInit {
   handleSubmit() {
     window.scrollTo(0, 0);
     this.editForm.markAllAsTouched();
-    if (!this.editForm.valid) {
-      return;
-    }
-    const data = new UsuariosDTO(this.editForm.value);
-    this.usuariosService.updateUsuarios(this.currentIdusuario!, data)
-        .subscribe({
-          next: () => this.router.navigate(['/usuarioss'], {
-            state: {
-              msgSuccess: this.getMessage('updated')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
-        });
-  }
+    if (!this.editForm.valid) return;
 
+    const rawData = this.editForm.getRawValue();
+    if (!this.mostrarCampoPassword || !rawData.password) {
+      rawData.password = null;
+    }
+    rawData.id_usuario = this.currentIdusuario ?? null;
+    const data = new UsuariosDTO(rawData);
+    this.usuariosService.updateUsuarios(this.currentIdusuario!, data)
+      .subscribe({
+        next: () => this.router.navigate(['/usuarios'], {
+          state: {
+            msgSuccess: this.getMessage('updated')
+          }
+        }),
+        error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
+      });
+  }
 }
+

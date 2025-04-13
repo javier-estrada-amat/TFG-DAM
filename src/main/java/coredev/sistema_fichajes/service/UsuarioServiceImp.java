@@ -3,6 +3,7 @@ package coredev.sistema_fichajes.service;
 import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,12 @@ public class UsuarioServiceImp implements UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Usuario agregarUsuario(Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
     }
 
@@ -26,6 +31,18 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public Usuario actualizarUsuario(Usuario usuario) {
+        Usuario original = usuarioRepository.findById(usuario.getId_usuario()).orElseThrow();
+
+        if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
+            original.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        }
+        original.setNombre(usuario.getNombre());
+        original.setApellidos(usuario.getApellidos());
+        original.setEmail(usuario.getEmail());
+        original.setActivo(usuario.isActivo());
+        original.setEmpresa(usuario.getEmpresa());
+        original.setRoles(usuario.getRoles());
+
         return usuarioRepository.save(usuario);
     }
 
@@ -41,5 +58,9 @@ public class UsuarioServiceImp implements UsuarioService {
     @Override
     public Optional<Usuario> findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+    @Override
+    public Optional<Usuario> getUsuarioById(int id) {
+        return usuarioRepository.findById(id);
     }
 }

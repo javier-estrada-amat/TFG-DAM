@@ -12,5 +12,6 @@ public interface UsuarioService {
     void eliminarUsuario(int id);
     List<Usuario> buscarPorNombre(String nombre);
     Optional<Usuario> findByEmail(String email);
+    Optional<Usuario> getUsuarioById(int id);
 }
 

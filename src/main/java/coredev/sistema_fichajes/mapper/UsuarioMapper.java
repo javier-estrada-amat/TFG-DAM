@@ -1,7 +1,10 @@
 package coredev.sistema_fichajes.mapper;
 
 import coredev.sistema_fichajes.dto.UsuarioDTO;
+import coredev.sistema_fichajes.model.Rol;
 import coredev.sistema_fichajes.model.Usuario;
+
+import java.util.List;
 
 public class UsuarioMapper {
 
@@ -15,6 +18,8 @@ public class UsuarioMapper {
         dto.setEmail(usuario.getEmail());
         dto.setPassword(usuario.getPassword());
         dto.setEmpresa(EmpresaMapper.toDTO(usuario.getEmpresa()));
+        dto.setActivo(usuario.isActivo());
+        dto.setFecha_registro(usuario.getFecha_registro());
         return dto;
     }
 
@@ -28,6 +33,18 @@ public class UsuarioMapper {
         usuario.setEmail(dto.getEmail());
         usuario.setPassword(dto.getPassword());
         usuario.setEmpresa(EmpresaMapper.toEntity(dto.getEmpresa()));
+        usuario.setActivo(dto.isActivo());
+        usuario.setFecha_registro(dto.getFecha_registro());
+        if (dto.getRoles() != null) {
+            List<Rol> roles = dto.getRoles().stream()
+                .map(id -> {
+                    Rol r = new Rol();
+                    r.setId_rol(id);
+                    return r;
+                })
+                .toList();
+            usuario.setRoles(roles);
+        }
         return usuario;
     }
 }

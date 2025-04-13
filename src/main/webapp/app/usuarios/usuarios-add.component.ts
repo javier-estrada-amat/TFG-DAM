@@ -7,7 +7,7 @@ import { UsuariosService } from 'app/usuarios/usuarios.service';
 import { UsuariosDTO } from 'app/usuarios/usuarios.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { EmpresasService } from 'app/empresas/empresas.service';
-
+import { RolesService } from 'app/roles/roles.service';
 
 @Component({
   selector: 'app-usuarios-add',
@@ -20,29 +20,25 @@ export class UsuariosAddComponent implements OnInit {
   router = inject(Router);
   errorHandler = inject(ErrorHandler);
   empresasService = inject(EmpresasService);
+  rolesService = inject(RolesService);
 
   empresasValues: Map<number, string> = new Map();
   rolesValues: Map<number, string> = new Map();
-  configuracionautenticacionValues: Map<number, string> = new Map();
-  horasextrasusuariosValues: Map<number, string> = new Map();
 
   addForm = new FormGroup({
-    nombre: new FormControl(null, [Validators.maxLength(50)]),
-    apellidos: new FormControl(null, [Validators.maxLength(100)]),
-    email: new FormControl(null, [Validators.maxLength(100)]),
-    password: new FormControl(null, [Validators.maxLength(255)]),
-    activo: new FormControl(false),
-    primeracceso: new FormControl(false),
-    empresa: new FormControl(null),
-    roles: new FormControl([]),
-    configuracionautenticacion: new FormControl(null),
-    horasextrasusuarios: new FormControl(null)
+    nombre: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+    apellidos: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    email: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    password: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
+    activo: new FormControl(true, [Validators.required]),
+    empresa: new FormControl(null, [Validators.required]),
+    roles: new FormControl(null,[Validators.required])
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      created: $localize`:@@usuarios.create.success:Usuarios was created successfully.`,
-      USUARIOS_EMAIL_UNIQUE: $localize`:@@Exists.usuarios.email:This Email is already taken.`,
+      created: $localize`:@@usuarios.create.success:Usuario creado satisfactoriamente.`,
+      USUARIOS_EMAIL_UNIQUE: $localize`:@@Exists.usuarios.email:El e-mail ya está en uso.`,
       USUARIOS_CONFIGURACIONAUTENTICACION_UNIQUE: $localize`:@@Exists.usuarios.configuracionautenticacion:This Configuracionautenticacion is already referenced by another Usuarios.`
     };
     return messages[key];
@@ -56,28 +52,14 @@ export class UsuariosAddComponent implements OnInit {
           },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
-    this.usuariosService.getRolesValues().subscribe({
+    this.rolesService.getRolesValues().subscribe({
           next: (data) => {
             this.rolesValues = data;
             console.log('Roles cargados:', data);
           },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
-    this.usuariosService.getConfiguracionautenticacionValues().subscribe({
-          next: (data) => {
-            this.configuracionautenticacionValues = data;
-            console.log('Configuración autenticación cargados:', data);
-          },
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
-    this.usuariosService.getHorasextrasusuariosValues().subscribe({
-          next: (data) => {
-            this.horasextrasusuariosValues = data;
-            console.log('Horas extras cargadas:', data);
-            },
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
-  }
+    }
 
   handleSubmit() {
     window.scrollTo(0, 0);
@@ -90,7 +72,8 @@ export class UsuariosAddComponent implements OnInit {
     const empresaId = rawData.empresa;
     const usuarioPayload = new UsuariosDTO({
       ...rawData,
-      empresa: empresaId != null ? { id_empresa: Number(empresaId) } : null
+      empresa: empresaId != null ? { id_empresa: Number(empresaId) } : null,
+      roles: rawData.roles ? [Number(rawData.roles)] : null
     });
 
     this.usuariosService.createUsuarios(usuarioPayload)

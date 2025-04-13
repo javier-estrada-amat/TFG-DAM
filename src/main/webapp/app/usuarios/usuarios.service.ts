@@ -45,20 +45,4 @@ export class UsuariosService {
   deleteUsuarios(idusuario: number) {
     return this.http.delete(`${this.resourcePath}/${idusuario}`, this.getAuthHeaders());
   }
-
-  getRolesValues() {
-    return this.http.get<Record<string, number>>(`${this.resourcePath}/rolesValues`, this.getAuthHeaders())
-        .pipe(map(transformRecordToMap));
-  }
-
-  getConfiguracionautenticacionValues() {
-    return this.http.get<Record<string, number>>(`${this.resourcePath}/configuracionautenticacionValues`, this.getAuthHeaders())
-        .pipe(map(transformRecordToMap));
-  }
-
-  getHorasextrasusuariosValues() {
-    return this.http.get<Record<string, number>>(`${this.resourcePath}/horasextrasusuariosValues`, this.getAuthHeaders())
-        .pipe(map(transformRecordToMap));
-  }
-
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -54,5 +55,14 @@ public class UsuarioController {
             .map(UsuarioMapper::toDTO)
             .collect(Collectors.toList());
         return new ResponseEntity<>(resultados, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> getUsuarioById(@PathVariable int id) {
+        Optional<Usuario> usuarioOpt = usuarioService.getUsuarioById(id);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(UsuarioMapper.toDTO(usuarioOpt.get()));
     }
 }

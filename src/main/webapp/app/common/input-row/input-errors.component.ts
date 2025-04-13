@@ -1,13 +1,13 @@
-import { KeyValuePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { getGlobalErrorMessage } from 'app/common/error-handler.injectable';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-input-errors',
+  standalone: true,
   templateUrl: './input-errors.component.html',
-  imports: [KeyValuePipe]
+  imports: [CommonModule]
 })
 export class InputErrorsComponent {
 
