@@ -14,6 +14,11 @@
 
 <!-- Si hay usuarios -->
 <div *ngIf="!isLoading && usuarios && usuarios.length > 0" class="overflow-x-auto">
+    <button
+        (click)="alternarFiltro()"
+        class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2 mr-2">
+        {{ mostrarSoloActivos ? 'Mostrar todos los usuarios' : 'Mostrar solo activos' }}
+    </button>
     <table class="w-full">
         <thead>
         <tr>
@@ -27,7 +32,7 @@
         </tr>
         </thead>
         <tbody class="border-t-2 border-black">
-        <tr *ngFor="let usuario of usuarios; trackBy: trackById" class="odd:bg-gray-100">
+        <tr *ngFor="let usuario of usuarios; trackBy: trackById" [ngClass]="{ 'text-red-700': !usuario.activo }" class="odd:bg-gray-100">
             <td class="p-2">{{ usuario.id_usuario }}</td>
             <td class="p-2">{{ usuario.nombre }}</td>
             <td class="p-2">{{ usuario.apellidos }}</td>
@@ -37,7 +42,7 @@
             <td class="p-2">
                 <div class="float-right whitespace-nowrap">
                     <a [routerLink]="['/usuarios/edit', usuario.id_usuario]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.edit">Editar</a>
-                    <button type="button" (click)="confirmDelete(usuario.id_usuario ?? 0)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.delete">Borrar</button>
+                    <!--<button type="button" (click)="confirmDelete(usuario.id_usuario ?? 0)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.delete">Borrar</button>-->
                 </div>
             </td>
         </tr>

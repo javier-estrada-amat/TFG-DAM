@@ -37,4 +37,11 @@ public class RolServiceImp implements RolService {
     public List<Rol> buscarPorNombre(String nombre) {
         return rolRepository.findByNombreContainingIgnoreCase(nombre);
     }
+
+    @Override
+    public Rol getRolById(int id) {
+        return rolRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+    }
+
 }

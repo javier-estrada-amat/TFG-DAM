@@ -1,5 +1,7 @@
 package coredev.sistema_fichajes.controller;
 
+import coredev.sistema_fichajes.dto.EmpresaDTO;
+import coredev.sistema_fichajes.mapper.EmpresaMapper;
 import coredev.sistema_fichajes.model.Empresa;
 import coredev.sistema_fichajes.service.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +25,22 @@ public class EmpresaController {
         return new ResponseEntity<>(empresaService.agregarEmpresa(empresa), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EmpresaDTO> getEmpresaById(@PathVariable int id) {
+        Empresa empresa = empresaService.getEmpresaById(id);
+        return ResponseEntity.ok(EmpresaMapper.toDTO(empresa));
+    }
+
     @GetMapping("/getAll")
     public ResponseEntity<List<Empresa>> getAllEmpresas() {
         return new ResponseEntity<>(empresaService.getAllEmpresas(), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Empresa> updateEmpresa(@RequestBody Empresa empresa) {
-        return new ResponseEntity<>(empresaService.actualizarEmpresa(empresa), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<EmpresaDTO> updateEmpresa(@PathVariable int id, @RequestBody EmpresaDTO empresaDto) {
+        empresaDto.setId_empresa(id); // aseguramos que coincida
+        Empresa empresaActualizada = empresaService.actualizarEmpresa(EmpresaMapper.toEntity(empresaDto));
+        return ResponseEntity.ok(EmpresaMapper.toDTO(empresaActualizada));
     }
 
     @DeleteMapping("/delete/{id}")

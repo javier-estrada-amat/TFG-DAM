@@ -9,5 +9,6 @@ public interface EmpresaService {
     List<Empresa> getAllEmpresas();
     Empresa actualizarEmpresa(Empresa empresa);
     void eliminarEmpresa(int id);
+    Empresa getEmpresaById(int id);
     List<Empresa> buscarPorNombre(String nombre);
 }

@@ -30,6 +30,10 @@ export class UsuariosService {
     return this.http.get<UsuariosDTO[]>(`${this.resourcePath}/getAll`,this.getAuthHeaders());
   }
 
+  getUsuariosActivos() {
+    return this.http.get<UsuariosDTO[]>(`${this.resourcePath}/list/activos`, this.getAuthHeaders());
+  }
+
   getUsuarios(idusuario: number) {
     return this.http.get<UsuariosDTO>(`${this.resourcePath}/${idusuario}`, this.getAuthHeaders());
   }
@@ -42,7 +46,8 @@ export class UsuariosService {
     return this.http.put<number>(`${this.resourcePath}/update`, usuariosDTO, this.getAuthHeaders());
   }
 
-  deleteUsuarios(idusuario: number) {
+  desactivarUsuarios(idusuario: number) {
     return this.http.delete(`${this.resourcePath}/${idusuario}`, this.getAuthHeaders());
   }
+
 }

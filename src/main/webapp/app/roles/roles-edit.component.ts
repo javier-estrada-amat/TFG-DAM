@@ -24,10 +24,9 @@ export class RolesEditComponent implements OnInit {
   currentIdrol?: number;
 
   editForm = new FormGroup({
-    idrol: new FormControl({ value: null, disabled: true }),
-    nombre: new FormControl(null, [Validators.maxLength(50)]),
-    descripcion: new FormControl(null)
-  }, { updateOn: 'submit' });
+    idrol: new FormControl<number | null>({ value: null, disabled: true }),
+    nombre: new FormControl(null, [Validators.maxLength(50)])
+    }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
@@ -37,11 +36,14 @@ export class RolesEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentIdrol = +this.route.snapshot.params['id_rol'];
+    this.currentIdrol = +this.route.snapshot.params['idrol'];
     this.rolesService.getRoles(this.currentIdrol!)
         .subscribe({
-          next: (data) => updateForm(this.editForm, data),
-          error: (error) => this.errorHandler.handleServerError(error.error)
+          next: (data) => {
+            updateForm(this.editForm, data);
+            this.editForm.get('idrol')?.setValue(data.id_rol ?? null);
+          },
+        error: (error) => this.errorHandler.handleServerError(error.error)
         });
   }
 
@@ -52,6 +54,8 @@ export class RolesEditComponent implements OnInit {
       return;
     }
     const data = new RolesDTO(this.editForm.value);
+    data.id_rol = this.currentIdrol!;
+
     this.rolesService.updateRoles(this.currentIdrol!, data)
         .subscribe({
           next: () => this.router.navigate(['/roles'], {

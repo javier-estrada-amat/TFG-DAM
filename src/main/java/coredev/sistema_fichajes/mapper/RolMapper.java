@@ -9,7 +9,7 @@ public class RolMapper {
         if (rol == null) return null;
 
         RolDTO dto = new RolDTO();
-        dto.setIdRol(rol.getId_rol());
+        dto.setId_rol(rol.getId_rol());
         dto.setNombre(rol.getNombre());
         return dto;
     }
@@ -18,7 +18,7 @@ public class RolMapper {
         if (dto == null) return null;
 
         Rol rol = new Rol();
-        rol.setId_rol(dto.getIdRol());
+        rol.setId_rol(dto.getId_rol());
         rol.setNombre(dto.getNombre());
         return rol;
     }

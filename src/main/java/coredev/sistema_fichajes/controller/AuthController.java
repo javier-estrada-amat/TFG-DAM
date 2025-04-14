@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,10 +36,13 @@ public class AuthController {
         Optional<Usuario> user = usuarioService.findByEmail(usuario.getEmail());
 
         if (user.isPresent() && passwordEncoder.matches(usuario.getPassword(), user.get().getPassword())) {
-            String token = jwtUtil.generarToken(user.get().getEmail());
+            List<String> roles = user.get().getRoles().stream()
+                .map(rol -> "ROLE_" + rol.getNombre())
+                .toList();
+
+            String token = jwtUtil.generarToken(user.get().getEmail(), roles);
             return ResponseEntity.ok(Map.of("code", 1, "token", token));
-        } else {
-            return ResponseEntity.ok(Map.of("code", 2));
         }
+        return ResponseEntity.status(401).body(Map.of("code", 2, "mensaje", "Credenciales incorrectas"));
     }
 }
