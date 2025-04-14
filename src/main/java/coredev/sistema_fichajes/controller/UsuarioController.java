@@ -26,6 +26,14 @@ public class UsuarioController {
         Usuario creado = usuarioService.agregarUsuario(usuario);
         return new ResponseEntity<>(UsuarioMapper.toDTO(creado), HttpStatus.CREATED);
     }
+    @GetMapping("/list/activos")
+    public ResponseEntity<List<UsuarioDTO>> getUsuariosActivos() {
+        List<Usuario> usuarios = usuarioService.getAllUsuariosActivos();
+        List<UsuarioDTO> usuariosDTO = usuarios.stream()
+            .map(UsuarioMapper::toDTO)
+            .collect(Collectors.toList());
+        return new ResponseEntity<>(usuariosDTO, HttpStatus.OK);
+    }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<UsuarioDTO>> getAllUsuarios() {
@@ -43,7 +51,7 @@ public class UsuarioController {
         return new ResponseEntity<>(UsuarioMapper.toDTO(actualizado), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable int id) {
         usuarioService.eliminarUsuario(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -64,5 +72,13 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(UsuarioMapper.toDTO(usuarioOpt.get()));
+    }
+
+    @PutMapping("/desactivar/{id}")
+    public ResponseEntity<Void> desactivarUsuario(@PathVariable int id) {
+        Usuario usuario = usuarioService.getUsuarioById(id).orElseThrow();
+        usuario.setActivo(false);
+        usuarioService.actualizarUsuario(usuario);
+        return ResponseEntity.ok().build();
     }
 }

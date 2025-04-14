@@ -40,11 +40,11 @@ export class EmpresasService {
   }
 
   createEmpresas(empresasDTO: EmpresasDTO) {
-    return this.http.post<number>(this.resourcePath, empresasDTO, this.getAuthHeaders());
+    return this.http.post<number>(`${this.resourcePath}/add`, empresasDTO, this.getAuthHeaders());
   }
 
   updateEmpresas(idempresa: number, empresasDTO: EmpresasDTO) {
-    return this.http.put<number>(`${this.resourcePath}/update${idempresa}`, empresasDTO, this.getAuthHeaders());
+    return this.http.put<number>(`${this.resourcePath}/update/${idempresa}`, empresasDTO, this.getAuthHeaders());
   }
 
   deleteEmpresas(idempresa: number) {

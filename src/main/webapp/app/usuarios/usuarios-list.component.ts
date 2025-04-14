@@ -20,6 +20,7 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
 
   usuarios: UsuariosDTO[] = [];
   isLoading = true;
+  mostrarSoloActivos: boolean = true;
   navigationSubscription?: Subscription;
 
   getMessage(key: string, details?: any) {
@@ -47,21 +48,30 @@ export class UsuariosListComponent implements OnInit, OnDestroy {
     this.navigationSubscription!.unsubscribe();
   }
 
-  loadData() {
-    this.usuariosService.getAllUsuarios().subscribe({
-        next: (data) => {
-          this.usuarios = data;
-          this.isLoading = false;
-          },
-        error: (error) => this.errorHandler.handleServerError(error.error)
-      });
+loadData() {
+  const request = this.mostrarSoloActivos
+    ? this.usuariosService.getUsuariosActivos()
+    : this.usuariosService.getAllUsuarios();
+
+  request.subscribe({
+    next: (data) => {
+      this.usuarios = data;
+      this.isLoading = false;
+    },
+    error: (error) => this.errorHandler.handleServerError(error.error)
+  });
+}
+
+  alternarFiltro() {
+    this.mostrarSoloActivos = !this.mostrarSoloActivos;
+    this.loadData();
   }
 
   confirmDelete(idusuario: number) {
     if (!confirm(this.getMessage('confirm'))) {
       return;
     }
-    this.usuariosService.deleteUsuarios(idusuario)
+    this.usuariosService.desactivarUsuarios(idusuario)
         .subscribe({
           next: () => this.router.navigate(['/usuarios'], {
             state: {

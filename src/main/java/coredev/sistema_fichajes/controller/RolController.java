@@ -1,5 +1,7 @@
 package coredev.sistema_fichajes.controller;
 
+import coredev.sistema_fichajes.dto.RolDTO;
+import coredev.sistema_fichajes.mapper.RolMapper;
 import coredev.sistema_fichajes.model.Rol;
 import coredev.sistema_fichajes.service.RolService;
 import lombok.Getter;
@@ -22,18 +24,29 @@ public class RolController {
     private RolService rolService;
 
     @PostMapping("/add")
-    public ResponseEntity<Rol> addRol(@RequestBody Rol rol) {
-        return new ResponseEntity<>(rolService.agregarRol(rol), HttpStatus.CREATED);
+    public ResponseEntity<RolDTO> addRol(@RequestBody RolDTO rolDto) {
+        Rol nuevo = rolService.agregarRol(RolMapper.toEntity(rolDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(RolMapper.toDTO(nuevo));
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Rol>> getAllRoles() {
-        return new ResponseEntity<>(rolService.getAllRoles(), HttpStatus.OK);
+    public ResponseEntity<List<RolDTO>> getAllRoles() {
+        List<Rol> roles = rolService.getAllRoles();
+        List<RolDTO> dtoList = roles.stream().map(RolMapper::toDTO).toList();
+        return ResponseEntity.ok(dtoList);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Rol> updateRol(@RequestBody Rol rol) {
-        return new ResponseEntity<>(rolService.actualizarRol(rol), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<RolDTO> getRolById(@PathVariable int id) {
+        Rol rol = rolService.getRolById(id);
+        return ResponseEntity.ok(RolMapper.toDTO(rol));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RolDTO> updateRol(@PathVariable int id, @RequestBody RolDTO rolDto) {
+        rolDto.setId_rol(id);
+        Rol actualizado = rolService.actualizarRol(RolMapper.toEntity(rolDto));
+        return ResponseEntity.ok(RolMapper.toDTO(actualizado));
     }
 
     @DeleteMapping("/delete/{id}")
@@ -43,8 +56,10 @@ public class RolController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Rol>> searchByNombre(@RequestParam String nombre) {
-        return new ResponseEntity<>(rolService.buscarPorNombre(nombre), HttpStatus.OK);
+    public ResponseEntity<List<RolDTO>> searchByNombre(@RequestParam String nombre) {
+        List<Rol> roles = rolService.buscarPorNombre(nombre);
+        List<RolDTO> dtoList = roles.stream().map(RolMapper::toDTO).toList();
+        return ResponseEntity.ok(dtoList);
     }
 
     @GetMapping("/values")

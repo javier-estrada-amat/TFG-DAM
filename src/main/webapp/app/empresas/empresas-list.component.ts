@@ -32,16 +32,12 @@ export class EmpresasListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('EmpresasListComponent cargado');
-    this.empresasService.getAllEmpresas().subscribe({
-      next: (data) => {
-        this.empresas = data;
-        this.isLoading = false;
-        console.log('Empresas recibidas:', data);
-      },
-      error: (error) => {
-        console.error('Error cargando empresas:', error);
-      },
-    });
+      this.loadData();
+      this.navigationSubscription = this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.loadData();
+        }
+      });
   }
 
   ngOnDestroy() {

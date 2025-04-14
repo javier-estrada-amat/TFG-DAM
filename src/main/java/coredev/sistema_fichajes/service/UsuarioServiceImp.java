@@ -43,11 +43,12 @@ public class UsuarioServiceImp implements UsuarioService {
         original.setEmpresa(usuario.getEmpresa());
         original.setRoles(usuario.getRoles());
 
-        return usuarioRepository.save(usuario);
+        return usuarioRepository.save(original);
     }
 
     @Override
     public void eliminarUsuario(int id) {
+        System.out.println("Eliminando usuario con ID: " + id);
         usuarioRepository.deleteById(id);
     }
 
@@ -59,8 +60,14 @@ public class UsuarioServiceImp implements UsuarioService {
     public Optional<Usuario> findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
     }
+
     @Override
     public Optional<Usuario> getUsuarioById(int id) {
         return usuarioRepository.findById(id);
+    }
+
+    @Override
+    public List<Usuario> getAllUsuariosActivos() {
+        return usuarioRepository.findByActivoTrue();
     }
 }

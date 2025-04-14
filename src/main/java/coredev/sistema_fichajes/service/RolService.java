@@ -10,4 +10,5 @@ public interface RolService {
     Rol actualizarRol(Rol rol);
     void eliminarRol(int id);
     List<Rol> buscarPorNombre(String nombre);
+    Rol getRolById(int id);
 }

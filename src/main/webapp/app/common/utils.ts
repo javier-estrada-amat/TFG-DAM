@@ -7,8 +7,18 @@ import { FormGroup, AbstractControl, ValidationErrors, ValidatorFn } from '@angu
 export function updateForm(group: FormGroup, data: any) {
   for (const field in group.controls) {
     const control = group.get(field)!;
-    let value = data[field] === undefined ? null : data[field];
-    control.setValue(value);
+
+    let value = null;
+
+    if (field === 'empresa' && data.empresa?.id_empresa !== undefined) {
+      value = data.empresa.id_empresa;
+    } else if (field === 'roles' && Array.isArray(data.roles) && data.roles.length > 0) {
+        value = data.roles[0];
+    } else {
+      value = data[field] === undefined ? null : data[field];
+    }
+
+    control.setValue(value, { emitEvent: false });
   }
 }
 

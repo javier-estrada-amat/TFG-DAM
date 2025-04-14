@@ -20,6 +20,12 @@ public class UsuarioMapper {
         dto.setEmpresa(EmpresaMapper.toDTO(usuario.getEmpresa()));
         dto.setActivo(usuario.isActivo());
         dto.setFecha_registro(usuario.getFecha_registro());
+        if (usuario.getRoles() != null) {
+            List<Integer> idsRoles = usuario.getRoles().stream()
+                .map(Rol::getId_rol)
+                .toList();
+            dto.setRoles(idsRoles);
+        }
         return dto;
     }
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtil {
@@ -17,9 +18,10 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String generarToken(String email) {
+    public String generarToken(String email, List<String> roles) {
         return Jwts.builder()
             .setSubject(email)
+            .claim("roles", roles)
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
             .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -42,5 +44,9 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public Key getPublicSigningKey() {
+        return getSigningKey();
     }
 }
