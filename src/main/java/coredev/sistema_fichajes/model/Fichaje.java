@@ -24,18 +24,18 @@ public class Fichaje implements Serializable {
     private int id_fichaje;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER) // Cargamos siempre el usuario asociado
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario", nullable = false)
     private Usuario usuario;
 
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @Column(name = "hora_entrada", nullable = false)
-    private LocalDateTime horaEntrada;
+    @Column(nullable = false)
+    private LocalDateTime hora_entrada;
 
-    @Column(name = "hora_salida")
-    private LocalDateTime horaSalida;
+    @Column(nullable = false)
+    private LocalDateTime hora_salida;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

@@ -57,7 +57,7 @@ public class UsuarioServiceImp implements UsuarioService {
         return usuarioRepository.findByNombreContainingIgnoreCase(nombre);
     }
     @Override
-    public Optional<Usuario> findByEmail(String email) {
+    public Optional<Usuario> buscarPorEmail(String email) {
         return usuarioRepository.findByEmail(email);
     }
 

@@ -66,5 +66,4 @@ export class RolesEditComponent implements OnInit {
           error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
         });
   }
-
 }

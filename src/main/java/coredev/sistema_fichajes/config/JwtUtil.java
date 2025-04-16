@@ -2,6 +2,7 @@ package coredev.sistema_fichajes.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -48,5 +49,21 @@ public class JwtUtil {
 
     public Key getPublicSigningKey() {
         return getSigningKey();
+    }
+
+    public String extraerCorreoDesdeRequest(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+        if (token == null) {
+            throw new RuntimeException("Token no encontrado en la cabecera Authorization");
+        }
+        return obtenerEmail(token);
+    }
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }
