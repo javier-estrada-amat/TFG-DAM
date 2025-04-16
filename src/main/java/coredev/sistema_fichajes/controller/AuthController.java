@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-        Optional<Usuario> user = usuarioService.findByEmail(usuario.getEmail());
+        Optional<Usuario> user = usuarioService.buscarPorEmail(usuario.getEmail());
 
         if (user.isPresent() && passwordEncoder.matches(usuario.getPassword(), user.get().getPassword())) {
             List<String> roles = user.get().getRoles().stream()

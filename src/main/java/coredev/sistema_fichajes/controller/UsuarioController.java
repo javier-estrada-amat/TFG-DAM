@@ -16,9 +16,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
 
     @PostMapping("/add")
     public ResponseEntity<UsuarioDTO> addUsuario(@RequestBody UsuarioDTO usuarioDTO) {

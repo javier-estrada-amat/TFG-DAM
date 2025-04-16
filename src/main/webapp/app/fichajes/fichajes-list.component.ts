@@ -16,7 +16,7 @@ export class FichajesListComponent implements OnInit, OnDestroy {
   fichajesService = inject(FichajesService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
-  fichajeses?: FichajesDTO[];
+  fichajes?: FichajesDTO[];
   navigationSubscription?: Subscription;
 
   getMessage(key: string, details?: any) {
@@ -38,13 +38,12 @@ export class FichajesListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.navigationSubscription!.unsubscribe();
   }
-  
+
   loadData() {
-    this.fichajesService.getAllFichajeses()
-        .subscribe({
-          next: (data) => this.fichajeses = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+    this.fichajesService.getAllFichajes().subscribe(
+      (data: FichajesDTO[]) => this.fichajes = data,
+      (error: any) => this.errorHandler.handleServerError(error.error)
+    );
   }
 
   confirmDelete(idfichaje: number) {

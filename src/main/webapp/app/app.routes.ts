@@ -12,6 +12,7 @@ import { EmpresasEditComponent } from './empresas/empresas-edit.component';
 import { FichajesListComponent } from './fichajes/fichajes-list.component';
 import { FichajesAddComponent } from './fichajes/fichajes-add.component';
 import { FichajesEditComponent } from './fichajes/fichajes-edit.component';
+import { FichajesControlComponent } from './fichajes/fichajes-control.component';
 import { HorasextrasListComponent } from './horasextras/horasextras-list.component';
 import { HorasextrasAddComponent } from './horasextras/horasextras-add.component';
 import { HorasextrasEditComponent } from './horasextras/horasextras-edit.component';
@@ -84,7 +85,7 @@ export const routes: Routes = [
   {
     path: 'fichajes',
     component: FichajesListComponent,
-    title: $localize`:@@fichajes.list.headline:Fichajeses`
+    title: $localize`:@@fichajes.list.headline:Fichajes`
   },
   {
     path: 'fichajes/add',
@@ -115,6 +116,10 @@ export const routes: Routes = [
     path: 'registrocambioscontrasenia',
     component: RegistrocambioscontraseniaListComponent,
     title: $localize`:@@registrocambioscontrasenia.list.headline:Registrocambioscontrasenias`
+  },
+  {
+    path: 'fichajes/control',
+    loadComponent: () => import('./fichajes/fichajes-control.component').then(m => m.FichajesControlComponent)
   },
   {
     path: 'registrocambioscontrasenia/add',
@@ -165,6 +170,5 @@ export const routes: Routes = [
     path: '**',
     component: ErrorComponent,
     title: $localize`:@@notFound.headline:Página no encontrada`
-  },
-  { path: 'login', component: LoginComponent }
+  }
 ];

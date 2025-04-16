@@ -20,8 +20,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/roles")
 public class RolController {
 
-    @Autowired
-    private RolService rolService;
+    private final RolService rolService;
+
+    public RolController(RolService rolService) {
+        this.rolService = rolService;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<RolDTO> addRol(@RequestBody RolDTO rolDto) {

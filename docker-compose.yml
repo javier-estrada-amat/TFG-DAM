@@ -2,7 +2,12 @@ services:
   mysql:
     image: mysql:9.2
     environment:
+<<<<<<< Updated upstream
     - MYSQL_DATABASE=sistema_fichajes
     - MYSQL_ROOT_PASSWORD=root
+=======
+      - MYSQL_DATABASE=sistema_fichajes
+      - MYSQL_ROOT_PASSWORD=root
+>>>>>>> Stashed changes
     ports:
     - 3307:3306

@@ -39,7 +39,7 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private boolean activo;
 
-    @ManyToOne(fetch = FetchType.EAGER) // Queremos que venga con el usuario
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", referencedColumnName = "id_empresa", nullable = false)
     private Empresa empresa;
 

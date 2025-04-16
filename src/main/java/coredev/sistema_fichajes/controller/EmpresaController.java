@@ -17,8 +17,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/empresas")
 public class EmpresaController {
 
-    @Autowired
-    private EmpresaService empresaService;
+    private final EmpresaService empresaService;
+
+    public EmpresaController(EmpresaService empresaService) {
+        this.empresaService = empresaService;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<Empresa> addEmpresa(@RequestBody Empresa empresa) {
