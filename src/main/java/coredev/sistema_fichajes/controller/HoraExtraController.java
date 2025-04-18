@@ -1,7 +1,14 @@
 package coredev.sistema_fichajes.controller;
 
+import coredev.sistema_fichajes.config.JwtUtil;
+import coredev.sistema_fichajes.dto.HoraExtraDTO;
+import coredev.sistema_fichajes.dto.ResolucionHoraExtraDTO;
+import coredev.sistema_fichajes.mapper.HoraExtraMapper;
 import coredev.sistema_fichajes.model.HoraExtra;
+import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.service.HoraExtraService;
+import coredev.sistema_fichajes.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,31 +17,44 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/horas-extras")
+@RequestMapping("/api/horasextras")
 public class HoraExtraController {
 
-    @Autowired
-    private HoraExtraService horaExtraService;
+    private final HoraExtraService horaExtraService;
+    private final JwtUtil jwtUtil;
+    private final UsuarioService usuarioService;
 
-    @PostMapping("/add")
-    public ResponseEntity<HoraExtra> addHoraExtra(@RequestBody HoraExtra horaExtra) {
-        return new ResponseEntity<>(horaExtraService.agregarHoraExtra(horaExtra), HttpStatus.CREATED);
+    public HoraExtraController(HoraExtraService horaExtraService, JwtUtil jwtUtil, UsuarioService usuarioService) {
+        this.horaExtraService = horaExtraService;
+        this.jwtUtil = jwtUtil;
+        this.usuarioService = usuarioService;
+    }
+
+    @PostMapping("/crear")
+    public ResponseEntity<HoraExtraDTO> crearHoraExtra(@RequestBody HoraExtraDTO dto, HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuario = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        HoraExtra nueva = horaExtraService.solicitarHoraExtra(usuario.getId_usuario(), dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(HoraExtraMapper.toDTO(nueva));
+    }
+
+    @PutMapping("/resolver/{id}")
+    public ResponseEntity<HoraExtraDTO> resolverHoraExtra(@PathVariable int id, @RequestBody ResolucionHoraExtraDTO dto, HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario aprobador = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        HoraExtra actualizada = horaExtraService.resolverHoraExtra(id, dto, aprobador.getId_usuario());
+        return ResponseEntity.ok(HoraExtraMapper.toDTO(actualizada));
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<HoraExtra>> getAllHorasExtras() {
+    public ResponseEntity<List<HoraExtra>> getAllHorasExtras(HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        System.out.println("Correo extraído: " + correo);
         return new ResponseEntity<>(horaExtraService.getAllHorasExtras(), HttpStatus.OK);
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<HoraExtra> updateHoraExtra(@RequestBody HoraExtra horaExtra) {
-        return new ResponseEntity<>(horaExtraService.actualizarHoraExtra(horaExtra), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteHoraExtra(@PathVariable int id) {
-        horaExtraService.eliminarHoraExtra(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/search")

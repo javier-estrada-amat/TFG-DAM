@@ -1,15 +1,8 @@
 spring:
   datasource:
-<<<<<<< Updated upstream
     url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3307/sistema_fichajes?serverTimezone=UTC}
     username: ${JDBC_DATABASE_USERNAME:root}
     password: ${JDBC_DATABASE_PASSWORD:root}
-=======
-    url: ${JDBC_DATABASE_URL:jdbc:mysql://mysql:3306/sistema_fichajes?serverTimezone=UTC}
-    username: ${JDBC_DATABASE_USERNAME:root}
-    password: ${JDBC_DATABASE_PASSWORD:root}
-
->>>>>>> Stashed changes
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10

@@ -23,7 +23,6 @@ public class HoraExtra implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_hora_extra;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -44,7 +43,6 @@ public class HoraExtra implements Serializable {
     @Column(nullable = false)
     private EstadoHoraExtra estado;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "aprobado_por")
     private Usuario aprobadoPor;
