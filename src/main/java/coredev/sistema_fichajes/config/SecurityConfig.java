@@ -31,12 +31,11 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
                 .requestMatchers("/api/usuarios/**").authenticated()
                 .requestMatchers("/api/empresas/**").authenticated()
                 .requestMatchers("/api/roles/**").authenticated()
                 .requestMatchers("/api/fichajes/**").authenticated()
-                .requestMatchers("/api/horas-extras/**").authenticated()
+                .requestMatchers("/api/horasextras/**").authenticated()
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

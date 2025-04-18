@@ -15,14 +15,24 @@ export class ErrorHandler {
    * from the server response to the matching form fields. Resolves the error message from the
    * errorMessages map if available.
    */
-  handleServerError(error: ErrorResponse, group?: FormGroup, getMessage?: (key: string) => string) {
-    // show general error page
-    if (!error || !error.fieldErrors) {
+  handleServerError(error: ErrorResponse | null | undefined, group?: FormGroup, getMessage?: (key: string) => string) {
+    // Si el error es nulo o no tiene campo `status`, muestra error 503 genérico
+    if (!error || typeof error.status === 'undefined') {
       this.router.navigate(['/error'], {
-            state: {
-              errorStatus: error.status ? '' + error.status : '503'
-            }
-          });
+        state: {
+          errorStatus: '503'
+        }
+      });
+      return;
+    }
+
+    // Si no hay fieldErrors, también redirigimos con status del error
+    if (!error.fieldErrors) {
+      this.router.navigate(['/error'], {
+        state: {
+          errorStatus: '' + error.status
+        }
+      });
       return;
     }
 

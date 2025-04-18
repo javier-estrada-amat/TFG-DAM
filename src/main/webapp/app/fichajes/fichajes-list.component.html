@@ -11,29 +11,27 @@
     <table class="w-full">
         <thead>
             <tr>
-                <th scope="col" class="text-left p-2" i18n="@@fichajes.id_fichaje.label">Id Fichaje</th>
+<!--                <th scope="col" class="text-left p-2" i18n="@@fichajes.id_fichaje.label">Id Fichaje</th>-->
                 <th scope="col" class="text-left p-2" i18n="@@fichajes.usuario_id.label">Usuario Id</th>
                 <th scope="col" class="text-left p-2" i18n="@@fichajes.fecha.label">Fecha</th>
                 <th scope="col" class="text-left p-2" i18n="@@fichajes.hora_entrada.label">Hora entrada</th>
                 <th scope="col" class="text-left p-2" i18n="@@fichajes.hora_salida.label">Hora salida</th>
                 <th scope="col" class="text-left p-2" i18n="@@fichajes.estado.label">Estado</th>
-                <th scope="col" class="text-left p-2" i18n="@@fichajes.usuarios.label">Usuarios</th>
                 <th><!-- --></th>
             </tr>
         </thead>
         <tbody class="border-t-2 border-black">
             @for (fichajes of fichajes; track fichajes.id_fichaje) {
             <tr class="odd:bg-gray-100">
-                <td class="p-2">{{ fichajes.id_fichaje }}</td>
+<!--                <td class="p-2">{{ fichajes.id_fichaje }}</td>-->
                 <td class="p-2">{{ fichajes.usuario_id }}</td>
                 <td class="p-2">{{ fichajes.fecha }}</td>
                 <td class="p-2">{{ fichajes.hora_entrada }}</td>
                 <td class="p-2">{{ fichajes.hora_salida }}</td>
                 <td class="p-2">{{ fichajes.estado }}</td>
-                <td class="p-2">{{ fichajes.usuarios }}</td>
                 <td class="p-2">
                     <div class="float-right whitespace-nowrap">
-                        <a [routerLink]="['/fichajes/edit', fichajes.id_fichaje]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@fichajes.list.edit">Edit</a>
+<!--                        <a [routerLink]="['/fichajes/edit', fichajes.id_fichaje]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@fichajes.list.edit">Edit</a>-->
 <!--                        <button type="button" (click)="confirmDelete(fichajes.id_fichaje!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@fichajes.list.delete">Delete</button>-->
                     </div>
                 </td>

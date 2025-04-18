@@ -4,6 +4,7 @@ import { environment } from 'environments/environment';
 import { HorasextrasDTO } from 'app/horasextras/horasextras.model';
 import { map } from 'rxjs';
 import { transformRecordToMap } from 'app/common/utils';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -12,18 +13,36 @@ import { transformRecordToMap } from 'app/common/utils';
 export class HorasextrasService {
 
   http = inject(HttpClient);
-  resourcePath = environment.apiPath + '/api/horasextrass';
+  private resourcePath = environment.apiPath + 'horasextras';
 
-  getAllHorasextrases() {
-    return this.http.get<HorasextrasDTO[]>(this.resourcePath);
+  getAuthHeaders(): { headers: HttpHeaders } {
+      const token = localStorage.getItem('jwt');
+      return {
+        headers: new HttpHeaders({
+          'Authorization': `Bearer ${token}`,
+        }),
+      };
+    }
+
+  getAllHorasextras() {
+    return this.http.get<HorasextrasDTO[]>(`${this.resourcePath}/getAll`, this.getAuthHeaders());
   }
 
   getHorasextras(idhoraextra: number) {
     return this.http.get<HorasextrasDTO>(this.resourcePath + '/' + idhoraextra);
   }
 
+  getHorasextrasPendientes() {
+    return this.http.get<HorasextrasDTO[]>(this.resourcePath + '/search?estado=PENDIENTE');
+  }
+
   createHorasextras(horasextrasDTO: HorasextrasDTO) {
-    return this.http.post<number>(this.resourcePath, horasextrasDTO);
+    return this.http.post(this.resourcePath + '/crear', horasextrasDTO, this.getAuthHeaders());
+
+  }
+
+  resolverHoraExtra(id: number, dto: { horasAprobadas: string, estado: string }) {
+    return this.http.put<HorasextrasDTO>(`${this.resourcePath}/resolver/${id}`, dto);
   }
 
   updateHorasextras(idhoraextra: number, horasextrasDTO: HorasextrasDTO) {
