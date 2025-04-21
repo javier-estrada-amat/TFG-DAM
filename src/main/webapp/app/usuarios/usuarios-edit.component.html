@@ -4,6 +4,17 @@
         <a routerLink="/usuarios" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@usuarios.edit.back">Back to list</a>
     </div>
 </div>
+<div *ngIf="msgSuccess" class="bg-green-200 border border-green-600 text-green-800 p-4 mb-4 rounded">
+    {{ msgSuccess }}
+</div>
+
+<div *ngIf="msgWarning" class="bg-yellow-200 border border-yellow-600 text-yellow-800 p-4 mb-4 rounded">
+    {{ msgWarning }}
+</div>
+
+<div *ngIf="msgError" class="bg-red-200 border border-red-600 text-red-800 p-4 mb-4 rounded">
+    {{ msgError }}
+</div>
 <form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
     <app-input-row [group]="editForm" field="id_usuario" i18n-label="@@usuarios.id.label" label="ID Usuario" />
     <app-input-row [group]="editForm" field="nombre" i18n-label="@@usuarios.nombre.label" label="Nombre" />
@@ -15,6 +26,11 @@
             (click)="toggleMostrarPassword()"
             class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded px-5 py-2 text-sm">
             {{ mostrarCampoPassword ? 'Cancelar cambio de contraseña' : 'Cambiar contraseña' }}
+        </button>
+        <button
+            type="button"
+            (click)="resetearPassword()"
+            class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded ml-2">Resetear contraseña
         </button>
     </div>
     <app-input-row [group]="editForm" field="activo" rowType="checkbox" i18n-label="@@usuarios.activo.label" label="Activo" />

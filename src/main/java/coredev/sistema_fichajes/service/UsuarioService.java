@@ -14,5 +14,6 @@ public interface UsuarioService {
     Optional<Usuario> buscarPorEmail(String email);
     Optional<Usuario> getUsuarioById(int id);
     List<Usuario> getAllUsuariosActivos();
+    void resetearPassword(int id);
 }
 

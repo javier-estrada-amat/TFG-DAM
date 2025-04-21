@@ -16,4 +16,5 @@ public class UsuarioDTO {
     private boolean activo;
     private EmpresaDTO empresa;
     private List<Integer> roles;
+    private boolean primerAcceso;
 }

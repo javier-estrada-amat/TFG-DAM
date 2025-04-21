@@ -4,12 +4,12 @@ import coredev.sistema_fichajes.dto.UsuarioDTO;
 import coredev.sistema_fichajes.mapper.UsuarioMapper;
 import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -83,5 +83,11 @@ public class UsuarioController {
         usuario.setActivo(false);
         usuarioService.actualizarUsuario(usuario);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/resetear-password/{id}")
+    public ResponseEntity<?> resetearPassword(@PathVariable int id) {
+        usuarioService.resetearPassword(id);
+        return ResponseEntity.ok(Map.of("mensaje", "Contraseña reseteada. Se requerirá cambio al iniciar sesión."));
     }
 }

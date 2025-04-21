@@ -22,9 +22,8 @@ export class RegistrocambioscontraseniaAddComponent implements OnInit {
   usuariosValues?: Map<number,string>;
 
   addForm = new FormGroup({
-    usuarioid: new FormControl(null),
-    fechacambio: new FormControl(null),
-    usuarios: new FormControl(null)
+    usuarioId: new FormControl(null),
+    fechaCambio: new FormControl(null),
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {

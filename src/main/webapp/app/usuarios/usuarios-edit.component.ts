@@ -30,6 +30,9 @@ export class UsuariosEditComponent implements OnInit {
   rolesValues?: Map<number,string>;
   currentIdusuario?: number;
   mostrarCampoPassword = false;
+  msgSuccess?: string;
+  msgWarning?: string;
+  msgError?: string;
 
   editForm = new FormGroup({
     id_usuario: new FormControl<number | null>({ value: null, disabled: true }),
@@ -46,10 +49,27 @@ export class UsuariosEditComponent implements OnInit {
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      updated: $localize`:@@usuarios.update.success:Usuarios was updated successfully.`,
-      USUARIOS_EMAIL_UNIQUE: $localize`:@@Exists.usuarios.email:This Email is already taken.`
+      updated: $localize`:@@usuarios.update.success:El usuario se actualizó correctamente.`,
+      USUARIOS_EMAIL_UNIQUE: $localize`:@@Exists.usuarios.email:Este correo electrónico ya está en uso.`
     };
     return messages[key];
+  }
+
+  resetearPassword(): void {
+    if (!this.currentIdusuario) return;
+
+    this.usuariosService.resetearPassword(this.currentIdusuario).subscribe({
+      next: () => {
+        this.msgSuccess = 'Contraseña reseteada. El usuario deberá cambiarla al iniciar sesión.';
+        this.msgError = undefined;
+        this.msgWarning = undefined;
+      },
+        error: () => {
+          this.msgError = 'Error al resetear la contraseña.';
+          this.msgSuccess = undefined;
+          this.msgWarning = undefined;
+        }
+    });
   }
 
   toggleMostrarPassword() {
@@ -113,15 +133,43 @@ export class UsuariosEditComponent implements OnInit {
     }
 
     const data = new UsuariosDTO(rawData);
-    this.usuariosService.updateUsuarios(this.currentIdusuario!, data)
-      .subscribe({
-        next: () => this.router.navigate(['/usuarios'], {
-          state: {
-            msgSuccess: this.getMessage('updated')
+      this.usuariosService.updateUsuarios(this.currentIdusuario!, data)
+        .subscribe({
+          next: () => {
+            this.msgSuccess = this.getMessage('updated');
+            this.msgWarning = undefined;
+            this.msgError = undefined;
+
+            setTimeout(() => {
+              this.router.navigate(['/usuarios'], {
+                state: { msgSuccess: this.msgSuccess }
+              });
+            }, 1000);
+          },
+          error: (error) => {
+            console.error('Error recibido del backend:', error);
+
+            let message =
+                    error?.error?.message || error?.error || 'Error desconocido';
+
+            if (typeof message === 'string') {
+                message = message.replace(/^.*?\"(.*?)\"$/, '$1');
+              }
+
+              if (message.includes('contraseña')) {
+              this.msgWarning = message;
+              this.msgSuccess = undefined;
+              this.msgError = undefined;
+
+              this.editForm.get('password')?.setValue(null);
+              this.toggleMostrarPassword();
+            } else {
+              this.msgError = message;
+              this.msgSuccess = undefined;
+              this.msgWarning = undefined;
+            }
           }
-        }),
-        error: (error) => this.errorHandler.handleServerError(error.error, this.editForm, this.getMessage)
-      });
+        });
   }
 }
 

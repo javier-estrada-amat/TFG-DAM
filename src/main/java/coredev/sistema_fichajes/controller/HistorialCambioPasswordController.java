@@ -1,5 +1,7 @@
 package coredev.sistema_fichajes.controller;
 
+import coredev.sistema_fichajes.dto.HistorialCambioPasswordDTO;
+import coredev.sistema_fichajes.mapper.HistorialCambioPasswordMapper;
 import coredev.sistema_fichajes.model.HistorialCambioPassword;
 import coredev.sistema_fichajes.service.HistorialCambioPasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,22 +10,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/registro-password")
+@RequestMapping("/api/registrocambioscontrasenias")
 public class HistorialCambioPasswordController {
 
     @Autowired
     private HistorialCambioPasswordService service;
 
     @PostMapping("/add")
-    public ResponseEntity<HistorialCambioPassword> addRegistro(@RequestBody HistorialCambioPassword registro) {
-        return new ResponseEntity<>(service.agregarRegistro(registro), HttpStatus.CREATED);
+    public ResponseEntity<HistorialCambioPasswordDTO> addRegistro(@RequestBody HistorialCambioPassword registro) {
+        HistorialCambioPassword saved = service.agregarRegistro(registro);
+        return new ResponseEntity<>(HistorialCambioPasswordMapper.toDTO(saved), HttpStatus.CREATED);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<HistorialCambioPassword>> getAllRegistros() {
-        return new ResponseEntity<>(service.getAllRegistros(), HttpStatus.OK);
+    public ResponseEntity<List<HistorialCambioPasswordDTO>> getAllRegistros() {
+        List<HistorialCambioPassword> registros = service.getAllRegistros();
+        List<HistorialCambioPasswordDTO> registrosDTO = registros.stream()
+            .map(HistorialCambioPasswordMapper::toDTO)
+            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(registrosDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
