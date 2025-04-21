@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { RegistrocambioscontraseniaService } from 'app/registrocambioscontrasenia/registrocambioscontrasenia.service';
@@ -9,7 +9,7 @@ import { RegistrocambioscontraseniaDTO } from 'app/registrocambioscontrasenia/re
 
 @Component({
   selector: 'app-registrocambioscontrasenia-list',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './registrocambioscontrasenia-list.component.html'})
 export class RegistrocambioscontraseniaListComponent implements OnInit, OnDestroy {
 
@@ -38,11 +38,14 @@ export class RegistrocambioscontraseniaListComponent implements OnInit, OnDestro
   ngOnDestroy() {
     this.navigationSubscription!.unsubscribe();
   }
-  
+
   loadData() {
     this.registrocambioscontraseniaService.getAllRegistrocambioscontrasenias()
         .subscribe({
-          next: (data) => this.registrocambioscontrasenias = data,
+          next: (data) => {
+            console.log('Datos recibidos:', data);
+            this.registrocambioscontrasenias = data;
+          },
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
   }
@@ -60,6 +63,9 @@ export class RegistrocambioscontraseniaListComponent implements OnInit, OnDestro
           }),
           error: (error) => this.errorHandler.handleServerError(error.error)
         });
+  }
+  trackById(index: number, item: RegistrocambioscontraseniaDTO): number | null {
+    return item.idRegistro ?? null;
   }
 
 }

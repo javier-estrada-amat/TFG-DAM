@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/roles/**").authenticated()
                 .requestMatchers("/api/fichajes/**").authenticated()
                 .requestMatchers("/api/horasextras/**").authenticated()
+                .requestMatchers("/api/registrocambioscontrasenias/**").authenticated()
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

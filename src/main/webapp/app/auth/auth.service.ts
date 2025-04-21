@@ -11,9 +11,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<{ code: number, token: string }> {
+  login(email: string, password: string): Observable<{ code: number, token: string, primerAcceso: boolean }> {
       const url = `${environment.apiPath}auth/login`;
-      return this.http.post<{ code: number, token: string }>(url, { email, password });
+      return this.http.post<{ code: number, token: string, primerAcceso: boolean }>(url, { email, password });
     }
 
   setToken(token: string): void {
@@ -30,5 +30,10 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  cambiarPassword(email: string, nuevaPassword: string): Observable<any> {
+    const url = `${environment.apiPath}auth/cambiar-password`;
+    return this.http.post(url, { email, nuevaPassword });
   }
 }

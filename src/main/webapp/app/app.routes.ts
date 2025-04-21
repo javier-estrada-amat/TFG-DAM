@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './error/error.component';
 import { LoginComponent } from './auth/login/login.component';
+import { CambiarPasswordComponent } from './auth/login/cambiarpassword.component';
 
 // --- USUARIOS ---
 import { UsuariosListComponent } from './usuarios/usuarios-list.component';
@@ -53,6 +54,7 @@ export const routes: Routes = [
 
   // --- LOGIN ---
   { path: 'login', component: LoginComponent },
+  { path: 'cambiar-password', component: CambiarPasswordComponent },
 
   // --- HOME ---
   { path: 'home', component: HomeComponent, title: $localize`:@@home.headline:Inicio` },

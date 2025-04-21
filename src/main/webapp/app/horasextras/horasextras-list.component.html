@@ -24,23 +24,21 @@
         </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
-        @for (horasextras of horasextrases; track trackByHoraExtra) {
-        <tr class="odd:bg-gray-50">
+        <tr *ngFor="let horasextras of horasextrases; trackBy: trackByHoraExtra" class="odd:bg-gray-50">
             <td class="p-3">{{ horasextras.id_hora_extra }}</td>
-            <td class="p-3">{{ horasextras.usuario?.nombre || 'Desconocido'  }} {{ horasextras.usuario?.apellidos }}</td>
+            <td class="p-3">{{ horasextras.usuario?.nombre || 'Desconocido' }} {{ horasextras.usuario?.apellidos }}</td>
             <td class="p-3">{{ horasextras.fecha }}</td>
             <td class="p-3">{{ horasextras.horasSolicitadas }}</td>
             <td class="p-3">{{ horasextras.horasAprobadas }}</td>
             <td class="p-3">
-              <span [ngClass]="{
-                  'text-yellow-600 font-medium': horasextras.estado === 'PENDIENTE',
-                  'text-green-600 font-semibold': horasextras.estado === 'APROBADA',
-                  'text-red-600 font-semibold': horasextras.estado === 'RECHAZADA'
-              }">{{ horasextras.estado }}</span>
+        <span [ngClass]="{
+            'text-yellow-600 font-medium': horasextras.estado === 'PENDIENTE',
+            'text-green-600 font-semibold': horasextras.estado === 'APROBADA',
+            'text-red-600 font-semibold': horasextras.estado === 'RECHAZADA'
+        }">{{ horasextras.estado }}</span>
             </td>
             <td class="p-3">{{ horasextras.aprobadoPor ? horasextras.aprobadoPor.nombre + ' ' + horasextras.aprobadoPor.apellidos : '—' }}</td>
         </tr>
-        }
         </tbody>
     </table>
 </div>

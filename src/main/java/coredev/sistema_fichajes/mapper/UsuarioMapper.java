@@ -19,6 +19,7 @@ public class UsuarioMapper {
         dto.setPassword(usuario.getPassword());
         dto.setEmpresa(EmpresaMapper.toDTO(usuario.getEmpresa()));
         dto.setActivo(usuario.isActivo());
+        dto.setPrimerAcceso(usuario.isPrimerAcceso());
         dto.setFecha_registro(usuario.getFecha_registro());
         if (usuario.getRoles() != null) {
             List<Integer> idsRoles = usuario.getRoles().stream()
@@ -40,6 +41,7 @@ public class UsuarioMapper {
         usuario.setPassword(dto.getPassword());
         usuario.setEmpresa(EmpresaMapper.toEntity(dto.getEmpresa()));
         usuario.setActivo(dto.isActivo());
+        usuario.setPrimerAcceso(dto.isPrimerAcceso());
         usuario.setFecha_registro(dto.getFecha_registro());
         if (dto.getRoles() != null) {
             List<Rol> roles = dto.getRoles().stream()

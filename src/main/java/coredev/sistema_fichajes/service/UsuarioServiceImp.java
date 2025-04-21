@@ -1,11 +1,15 @@
 package coredev.sistema_fichajes.service;
 
+import coredev.sistema_fichajes.model.HistorialCambioPassword;
 import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +22,13 @@ public class UsuarioServiceImp implements UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private HistorialCambioPasswordService historialCambioPasswordService;
+
     @Override
     public Usuario agregarUsuario(Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setPrimerAcceso(true);
         return usuarioRepository.save(usuario);
     }
 
@@ -34,7 +42,16 @@ public class UsuarioServiceImp implements UsuarioService {
         Usuario original = usuarioRepository.findById(usuario.getId_usuario()).orElseThrow();
 
         if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
-            original.setPassword(passwordEncoder.encode(usuario.getPassword()));
+            if (passwordEncoder.matches(usuario.getPassword(), original.getPassword())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La nueva contraseña no puede ser igual a la actual.");
+            }
+                original.setPassword(passwordEncoder.encode(usuario.getPassword()));
+                original.setPrimerAcceso(false);
+
+                HistorialCambioPassword registro = new HistorialCambioPassword();
+                registro.setUsuario(original);
+                registro.setFechaCambio(LocalDateTime.now());
+                historialCambioPasswordService.agregarRegistro(registro);
         }
         original.setNombre(usuario.getNombre());
         original.setApellidos(usuario.getApellidos());
@@ -69,5 +86,12 @@ public class UsuarioServiceImp implements UsuarioService {
     @Override
     public List<Usuario> getAllUsuariosActivos() {
         return usuarioRepository.findByActivoTrue();
+    }
+
+    @Override
+    public void resetearPassword(int id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        usuario.setPrimerAcceso(true);
+        usuarioRepository.save(usuario);
     }
 }

@@ -1,51 +1,76 @@
 <div class="flex flex-wrap mb-6">
     <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@usuarios.list.headline">Usuarios</h1>
     <div>
-        <a routerLink="/usuarios/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@usuarios.list.createNew">Crear nuevo usuario</a>
+        <a routerLink="/usuarios/add"
+           class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2"
+           i18n="@@usuarios.list.createNew">Crear nuevo usuario</a>
     </div>
 </div>
+
 <div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
     Cargando usuarios...
 </div>
-<!-- Si no hay usuarios -->
-<div *ngIf="!isLoading && (!usuarios || usuarios.length === 0)" i18n="@@usuarios.list.empty">
-    No se han encontrado usuarios.
-</div>
 
-<!-- Si hay usuarios -->
-<div *ngIf="!isLoading && usuarios && usuarios.length > 0" class="overflow-x-auto">
+<div class="overflow-x-auto mt-4">
     <button
         (click)="alternarFiltro()"
         class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2 mr-2">
         {{ mostrarSoloActivos ? 'Mostrar todos los usuarios' : 'Mostrar solo activos' }}
     </button>
-    <table class="w-full">
-        <thead>
-        <tr>
-            <th scope="col" class="text-left p-2" i18n="@@usuarios.id_usuario.label">Id usuario</th>
-            <th scope="col" class="text-left p-2" i18n="@@usuarios.nombre.label">Nombre</th>
-            <th scope="col" class="text-left p-2" i18n="@@usuarios.apellidos.label">Apellidos</th>
-            <th scope="col" class="text-left p-2" i18n="@@usuarios.email.label">Email</th>
-            <th scope="col" class="text-left p-2" i18n="@@usuarios.fecha_registro.label">Fecha Registro</th>
-            <th scope="col" class="text-left p-2" i18n="@@usuarios.empresa.label">Empresas</th>
-            <th><!-- Acciones --></th>
-        </tr>
-        </thead>
-        <tbody class="border-t-2 border-black">
-        <tr *ngFor="let usuario of usuarios; trackBy: trackById" [ngClass]="{ 'text-red-700': !usuario.activo }" class="odd:bg-gray-100">
-            <td class="p-2">{{ usuario.id_usuario }}</td>
-            <td class="p-2">{{ usuario.nombre }}</td>
-            <td class="p-2">{{ usuario.apellidos }}</td>
-            <td class="p-2">{{ usuario.email }}</td>
-            <td class="p-2">{{ usuario.fecha_registro | date: 'short' }}</td>
-            <td class="p-2">{{ usuario.empresa?.nombre }}</td>
-            <td class="p-2">
-                <div class="float-right whitespace-nowrap">
-                    <a [routerLink]="['/usuarios/edit', usuario.id_usuario]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.edit">Editar</a>
-                    <!--<button type="button" (click)="confirmDelete(usuario.id_usuario ?? 0)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.delete">Borrar</button>-->
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+
+    <mat-table [dataSource]="dataSource" matSort class="min-w-full divide-y divide-gray-200">
+
+        <!-- ID -->
+        <ng-container matColumnDef="id_usuario">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Id usuario </mat-header-cell>
+            <mat-cell *matCellDef="let usuario"> {{ usuario.id_usuario }} </mat-cell>
+        </ng-container>
+
+        <!-- Nombre -->
+        <ng-container matColumnDef="nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let usuario"> {{ usuario.nombre }} </mat-cell>
+        </ng-container>
+
+        <!-- Apellidos -->
+        <ng-container matColumnDef="apellidos">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </mat-header-cell>
+            <mat-cell *matCellDef="let usuario"> {{ usuario.apellidos }} </mat-cell>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+            <mat-cell *matCellDef="let usuario"> {{ usuario.email }} </mat-cell>
+        </ng-container>
+
+        <!-- Fecha registro -->
+        <ng-container matColumnDef="fecha_registro">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Registro </mat-header-cell>
+            <mat-cell *matCellDef="let usuario"> {{ usuario.fecha_registro | date: 'short' }} </mat-cell>
+        </ng-container>
+
+        <!-- Empresa -->
+        <ng-container matColumnDef="empresa">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </mat-header-cell>
+            <mat-cell *matCellDef="let usuario"> {{ usuario.empresa?.nombre }} </mat-cell>
+        </ng-container>
+
+        <!-- Acciones -->
+        <ng-container matColumnDef="acciones">
+            <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+            <mat-cell *matCellDef="let usuario">
+                <a [routerLink]="['/usuarios/edit', usuario.id_usuario]"
+                   class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">
+                    Editar
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
 </div>

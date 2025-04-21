@@ -36,7 +36,10 @@ export class HorasextrasListComponent implements OnInit, OnDestroy {
     this.horasextrasService.getAllHorasextras()
       .subscribe({
         next: (data) => {
-          this.horasextrases = data;
+          this.horasextrases = data.filter((item, index, self) =>
+            item.id_hora_extra != null &&
+            index === self.findIndex(t => t.id_hora_extra === item.id_hora_extra)
+          );
           // Si quieres filtrar por usuario logado, puedes hacerlo aquí
           // const userId = localStorage.getItem('usuarioId');
           // this.horasextrases = data.filter(h => h.usuarioid === Number(userId));

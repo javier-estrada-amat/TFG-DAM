@@ -5,6 +5,7 @@ import { UsuariosDTO } from './usuarios.model';
 import { map } from 'rxjs';
 import { transformRecordToMap } from 'app/common/utils';
 import { AuthService } from 'app/auth/auth.service';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -48,6 +49,10 @@ export class UsuariosService {
 
   desactivarUsuarios(idusuario: number) {
     return this.http.delete(`${this.resourcePath}/${idusuario}`, this.getAuthHeaders());
+  }
+
+  resetearPassword(id: number): Observable<any> {
+    return this.http.put(`${this.resourcePath}/resetear-password/${id}`, {}, this.getAuthHeaders());
   }
 
 }

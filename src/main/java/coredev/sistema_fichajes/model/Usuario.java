@@ -39,6 +39,9 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private boolean activo;
 
+    @Column(name = "primer_acceso")
+    private boolean primerAcceso;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", referencedColumnName = "id_empresa", nullable = false)
     private Empresa empresa;
