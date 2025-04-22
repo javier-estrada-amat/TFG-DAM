@@ -23,37 +23,49 @@
         <!-- ID -->
         <ng-container matColumnDef="id_usuario">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Id usuario </mat-header-cell>
-            <mat-cell *matCellDef="let usuario"> {{ usuario.id_usuario }} </mat-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.id_usuario }}
+            </mat-cell>
         </ng-container>
 
         <!-- Nombre -->
         <ng-container matColumnDef="nombre">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-            <mat-cell *matCellDef="let usuario"> {{ usuario.nombre }} </mat-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.nombre }}
+            </mat-cell>
         </ng-container>
 
         <!-- Apellidos -->
         <ng-container matColumnDef="apellidos">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </mat-header-cell>
-            <mat-cell *matCellDef="let usuario"> {{ usuario.apellidos }} </mat-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.apellidos }}
+            </mat-cell>
         </ng-container>
 
         <!-- Email -->
         <ng-container matColumnDef="email">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
-            <mat-cell *matCellDef="let usuario"> {{ usuario.email }} </mat-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.email }}
+            </mat-cell>
         </ng-container>
 
         <!-- Fecha registro -->
         <ng-container matColumnDef="fecha_registro">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Registro </mat-header-cell>
-            <mat-cell *matCellDef="let usuario"> {{ usuario.fecha_registro | date: 'short' }} </mat-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.fecha_registro | date: 'short' }}
+            </mat-cell>
         </ng-container>
 
         <!-- Empresa -->
         <ng-container matColumnDef="empresa">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </mat-header-cell>
-            <mat-cell *matCellDef="let usuario"> {{ usuario.empresa?.nombre }} </mat-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.empresa?.nombre }}
+            </mat-cell>
         </ng-container>
 
         <!-- Acciones -->
@@ -69,8 +81,8 @@
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
     </mat-table>
 
-    <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
+
+    <mat-paginator [pageSize]="20" [pageSizeOptions]="[20, 40, 60]" showFirstLastButtons></mat-paginator>
 </div>

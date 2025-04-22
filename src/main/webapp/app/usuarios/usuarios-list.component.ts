@@ -8,7 +8,8 @@ import { UsuariosDTO } from 'app/usuarios/usuarios.model';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginatorIntlEspañol } from 'app/shared/mat-paginator-intl-es';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +27,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule
+  ],
+providers: [
+    { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
   ],
   templateUrl: './usuarios-list.component.html'
 })

@@ -7,13 +7,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginatorIntlEspañol } from './shared/mat-paginator-intl-es';
 
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -24,7 +25,9 @@ import { AppComponent } from './app.component';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
