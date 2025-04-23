@@ -19,15 +19,6 @@ export class HorasextrasListComponent implements OnInit, OnDestroy {
   horasextrases?: HorasextrasDTO[];
   navigationSubscription?: Subscription;
 
-  getMessage(key: string, details?: any) {
-    const messages: Record<string, string> = {
-      confirm: $localize`:@@delete.confirm:Do you really want to delete this element? This cannot be undone.`,
-      deleted: $localize`:@@horasextras.delete.success:Horasextras was removed successfully.`,
-      'horasextras.usuarios.horasextrasusuarios.referenced': $localize`:@@horasextras.usuarios.horasextrasusuarios.referenced:This entity is still referenced by Usuarios ${details?.id} via field Horasextrasusuarios.`
-    };
-    return messages[key];
-  }
-
   ngOnInit() {
     this.loadData();
     this.navigationSubscription = this.router.events.subscribe((event) => {
@@ -37,42 +28,27 @@ export class HorasextrasListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.navigationSubscription!.unsubscribe();
+  ngOnDestroy(): void {
+    this.navigationSubscription?.unsubscribe();
   }
-  
+
   loadData() {
-    this.horasextrasService.getAllHorasextrases()
-        .subscribe({
-          next: (data) => this.horasextrases = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+    this.horasextrasService.getAllHorasextras()
+      .subscribe({
+        next: (data) => {
+          this.horasextrases = data.filter((item, index, self) =>
+            item.id_hora_extra != null &&
+            index === self.findIndex(t => t.id_hora_extra === item.id_hora_extra)
+          );
+          // Si quieres filtrar por usuario logado, puedes hacerlo aquí
+          // const userId = localStorage.getItem('usuarioId');
+          // this.horasextrases = data.filter(h => h.usuarioid === Number(userId));
+        },
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
-  confirmDelete(idhoraextra: number) {
-    if (!confirm(this.getMessage('confirm'))) {
-      return;
-    }
-    this.horasextrasService.deleteHorasextras(idhoraextra)
-        .subscribe({
-          next: () => this.router.navigate(['/horasextrass'], {
-            state: {
-              msgInfo: this.getMessage('deleted')
-            }
-          }),
-          error: (error) => {
-            if (error.error?.code === 'REFERENCED') {
-              const messageParts = error.error.message.split(',');
-              this.router.navigate(['/horasextrass'], {
-                state: {
-                  msgError: this.getMessage(messageParts[0], { id: messageParts[1] })
-                }
-              });
-              return;
-            }
-            this.errorHandler.handleServerError(error.error)
-          }
-        });
+  trackByHoraExtra(index: number, item: HorasextrasDTO): any {
+    return item.id_hora_extra ?? index;
   }
-
 }

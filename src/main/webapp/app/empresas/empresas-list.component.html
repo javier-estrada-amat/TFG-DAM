@@ -20,9 +20,9 @@
           </tr>
         </thead>
         <tbody class="border-t-2 border-black">
-          @for (empresa of empresas; track empresa.idempresa) {
+          @for (empresa of empresas; track empresa.id_empresa) {
           <tr class="odd:bg-gray-100">
-            <td class="p-2">{{ empresa.idempresa }}</td>
+            <td class="p-2">{{ empresa.id_empresa }}</td>
             <td class="p-2">{{ empresa.nombre }}</td>
             <td class="p-2">{{ empresa.cif }}</td>
             <td class="p-2">{{ empresa.direccion }}</td>
@@ -30,8 +30,8 @@
             <td class="p-2">{{ empresa.email }}</td>
             <td class="p-2">
                 <div class="float-right whitespace-nowrap">
-                    <a [routerLink]="['/empresas/edit/'+ empresa.idempresa]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.edit">Editar</a>
-                    <button type="button" (click)="confirmDelete(empresa.idempresa!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.delete">Eliminar</button>
+                    <a [routerLink]="['/empresas/edit/'+ empresa.id_empresa]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.edit">Editar</a>
+<!--                    <button type="button" (click)="confirmDelete(empresa.id_empresa!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@empresas.list.delete">Eliminar</button>-->
                 </div>
             </td>
           </tr>

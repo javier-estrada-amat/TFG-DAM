@@ -1,45 +1,42 @@
 package coredev.sistema_fichajes.mapper;
 
 import coredev.sistema_fichajes.dto.HoraExtraDTO;
-import coredev.sistema_fichajes.dto.UsuarioDTO;
 import coredev.sistema_fichajes.model.HoraExtra;
 import coredev.sistema_fichajes.model.Usuario;
 
 public class HoraExtraMapper {
 
-    public static HoraExtraDTO toDTO(HoraExtra horaExtra) {
-        if (horaExtra == null) return null;
-
+    public static HoraExtraDTO toDTO(HoraExtra entity) {
         HoraExtraDTO dto = new HoraExtraDTO();
-        dto.setIdHoraExtra(horaExtra.getId_hora_extra());
-        dto.setUsuario(UsuarioMapper.toDTO(horaExtra.getUsuario()));
-        dto.setFecha(horaExtra.getFecha());
-        dto.setHorasSolicitadas(horaExtra.getHorasSolicitadas());
-        dto.setHorasAprobadas(horaExtra.getHorasAprobadas());
-        dto.setMotivo(horaExtra.getMotivo());
-        dto.setEstado(horaExtra.getEstado().name());
-        dto.setAprobadoPor(
-            horaExtra.getAprobadoPor() != null ? UsuarioMapper.toDTO(horaExtra.getAprobadoPor()) : null
-        );
+        dto.setId_hora_extra(entity.getId_hora_extra());
+        dto.setUsuario(UsuarioMapper.toDTO(entity.getUsuario()));
+        dto.setFecha(entity.getFecha());
+        dto.setHorasSolicitadas(entity.getHorasSolicitadas());
+        dto.setHorasAprobadas(entity.getHorasAprobadas());
+        dto.setMotivo(entity.getMotivo());
+        dto.setEstado(entity.getEstado() != null ? entity.getEstado().name() : null); // Enum → String
+
+        if (entity.getAprobadoPor() != null) {
+            dto.setAprobadoPor(UsuarioMapper.toDTO(entity.getAprobadoPor()));
+        }
 
         return dto;
     }
 
-    public static HoraExtra toEntity(HoraExtraDTO dto) {
-        if (dto == null) return null;
+    public static HoraExtra toEntity(HoraExtraDTO dto, Usuario usuario, Usuario aprobadoPor) {
+        HoraExtra h = new HoraExtra();
+        h.setId_hora_extra(dto.getId_hora_extra());
+        h.setUsuario(usuario);
+        h.setFecha(dto.getFecha());
+        h.setHorasSolicitadas(dto.getHorasSolicitadas());
+        h.setHorasAprobadas(dto.getHorasAprobadas());
+        h.setMotivo(dto.getMotivo());
 
-        HoraExtra horaExtra = new HoraExtra();
-        horaExtra.setId_hora_extra(dto.getIdHoraExtra());
-        horaExtra.setUsuario(UsuarioMapper.toEntity(dto.getUsuario()));
-        horaExtra.setFecha(dto.getFecha());
-        horaExtra.setHorasSolicitadas(dto.getHorasSolicitadas());
-        horaExtra.setHorasAprobadas(dto.getHorasAprobadas());
-        horaExtra.setMotivo(dto.getMotivo());
-        horaExtra.setEstado(HoraExtra.EstadoHoraExtra.valueOf(dto.getEstado()));
-        horaExtra.setAprobadoPor(
-            dto.getAprobadoPor() != null ? UsuarioMapper.toEntity(dto.getAprobadoPor()) : null
-        );
+        if (dto.getEstado() != null) {
+            h.setEstado(HoraExtra.EstadoHoraExtra.valueOf(dto.getEstado()));
+        }
 
-        return horaExtra;
+        h.setAprobadoPor(aprobadoPor);
+        return h;
     }
 }

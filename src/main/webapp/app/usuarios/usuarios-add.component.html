@@ -10,10 +10,7 @@
     <app-input-row [group]="addForm" field="email" i18n-label="@@usuarios.email.label" label="Email" />
     <app-input-row [group]="addForm" field="password" i18n-label="@@usuarios.password.label" label="Password" />
     <app-input-row [group]="addForm" field="activo" rowType="checkbox" i18n-label="@@usuarios.activo.label" label="Activo" />
-    <app-input-row [group]="addForm" field="primeracceso" rowType="checkbox" i18n-label="@@usuarios.primeracceso.label" label="Primeracceso" />
-    <app-input-row [group]="addForm" field="empresas" rowType="select" [options]="empresasValues" i18n-label="@@usuarios.empresas.label" label="Empresas" />
-    <app-input-row [group]="addForm" field="roles" rowType="multiselect" [options]="rolesValues" i18n-label="@@usuarios.roles.label" label="Roles" />
-    <app-input-row [group]="addForm" field="configuracionautenticacion" rowType="select" [options]="configuracionautenticacionValues" i18n-label="@@usuarios.configuracionautenticacion.label" label="Configuracionautenticacion" />
-    <app-input-row [group]="addForm" field="horasextrasusuarios" rowType="select" [options]="horasextrasusuariosValues" i18n-label="@@usuarios.horasextrasusuarios.label" label="Horasextrasusuarios" />
+    <app-input-row [group]="addForm" field="empresa" rowType="select" [options]="empresasValues" i18n-label="@@usuarios.empresas.label" label="Empresas" />
+    <app-input-row [group]="addForm" field="roles" rowType="select" [options]="rolesValues" i18n-label="@@usuarios.roles.label" label="Roles" />
     <input type="submit" i18n-value="@@usuarios.add.headline" value="Add Usuarios" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
 </form>

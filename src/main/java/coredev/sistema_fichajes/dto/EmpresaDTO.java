@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class EmpresaDTO {
-    private int idEmpresa;
+    private int id_empresa;
     private String nombre;
     private String cif;
     private String direccion;

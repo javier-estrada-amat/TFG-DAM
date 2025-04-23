@@ -13,7 +13,7 @@ import { EmpresasDTO } from 'app/empresas/empresas.model';
   templateUrl: './empresas-list.component.html'})
 export class EmpresasListComponent implements OnInit, OnDestroy {
 
-  
+
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
   navigationSubscription?: Subscription;
@@ -27,25 +27,23 @@ export class EmpresasListComponent implements OnInit, OnDestroy {
     return messages[key];
   }
   empresas: EmpresasDTO[] = [];
+  isLoading = true;
   constructor(private empresasService: EmpresasService) {}
 
   ngOnInit() {
     console.log('EmpresasListComponent cargado');
-    this.empresasService.getAllEmpresas().subscribe({
-      next: (data) => {
-        this.empresas = data;
-        console.log('Empresas recibidas:', data);
-      },
-      error: (error) => {
-        console.error('Error cargando empresas:', error);
-      },
-    });
+      this.loadData();
+      this.navigationSubscription = this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.loadData();
+        }
+      });
   }
 
   ngOnDestroy() {
     this.navigationSubscription!.unsubscribe();
   }
-  
+
   loadData() {
     this.empresasService.getAllEmpresas()
         .subscribe({

@@ -1,10 +1,12 @@
 <header class="bg-blue-300">
     <div class="container mx-auto px-4 md:px-6">
         <nav class="flex flex-wrap items-center justify-between py-2">
-            <a routerLink="/" class="flex py-1.5 mr-4">
+            <a routerLink="/" class="flex items-center py-1.5 mr-4">
                 <img ngSrc="logo.png" i18n-alt="@@app.title" alt="SistemaFichajes" width="30" height="30" class="inline-block" />
-                <span class="text-xl pl-3" i18n="@@app.title"> <strong>SistemaFichajes</strong> </span>
+                <span class="text-xl pl-3 font-bold" i18n="@@app.title">SistemaFichajes</span>
             </a>
+
+            <!-- Botón móvil -->
             <button type="button" class="js-dropdown md:hidden border rounded cursor-pointer" data-dropdown-keepopen="true"
                     i18n-aria-label="@@navigation.toggle" aria-label="Toggle navigation" aria-controls="navbarToggle" aria-expanded="false">
                 <div class="space-y-1.5 my-2.5 mx-4">
@@ -13,26 +15,30 @@
                     <div class="w-6 h-0.5 bg-gray-500"></div>
                 </div>
             </button>
+
+            <!-- Menú principal -->
             <div class="hidden md:block flex grow md:grow-0 justify-end basis-full md:basis-auto pt-3 md:pt-1 pb-1" id="navbarToggle">
                 <ul class="flex">
                     <li>
-                        <a routerLink="" class="block text-black p-2" i18n="@@navigation.home">Home</a>
+                        <a routerLink="/" class="block text-black p-2" i18n="@@navigation.home">Inicio</a>
                     </li>
                     <li class="relative">
-                        <button type="button" class="js-dropdown block text-black p-2 cursor-pointer" id="navbarEntitiesLink"
-                                aria-expanded="false">
-                            <span i18n="@@navigation.entities">Entities</span>
+                        <button type="button" class="js-dropdown block text-black p-2 cursor-pointer" id="navbarEntitiesLink" aria-expanded="false">
+                            <span i18n="@@navigation.entities">Entidades</span>
                             <span class="text-[9px] align-[3px] pl-0.5">&#9660;</span>
                         </button>
-                        <ul class="hidden block absolute right-0 bg-white border border-gray-300 rounded min-w-[10rem] py-2" aria-labelledby="navbarEntitiesLink">
-                            <li><a routerLink="/usuarios" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@usuarios.list.headline">Usuarioses</a></li>
-                            <li><a routerLink="/roles" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@roles.list.headline">Roleses</a></li>
-                            <li><a routerLink="/empresas" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@empresas.list.headline">Empresases</a></li>
-                            <li><a routerLink="/fichajes" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@fichajes.list.headline">Fichajeses</a></li>
-                            <li><a routerLink="/horasextras" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@horasextras.list.headline">Horasextrases</a></li>
-                            <li><a routerLink="/registrocambioscontrasenia" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@registrocambioscontrasenia.list.headline">Registrocambioscontrasenias</a></li>
-                            <li><a routerLink="/configuracionautenticacion" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@configuracionautenticacion.list.headline">Configuracionautenticacions</a></li>
-                            <li><a routerLink="/historialactividad" class="inline-block w-full hover:bg-gray-200 px-4 py-1" i18n="@@historialactividad.list.headline">Historialactividads</a></li>
+                        <ul class="hidden absolute right-0 bg-white border border-gray-300 rounded min-w-[12rem] py-2 shadow-md z-50" aria-labelledby="navbarEntitiesLink">
+                            <li><a routerLink="/usuarios" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@usuarios.list.headline">Usuarios</a></li>
+                            <li><a routerLink="/roles" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@roles.list.headline">Roles</a></li>
+                            <li><a routerLink="/empresas" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@empresas.list.headline">Empresas</a></li>
+                            <li><a routerLink="/fichajes/control" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@fichajes.control.headline">Control de fichajes</a></li>
+                            <li><a routerLink="/fichajes" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@fichajes.list.headline">Ver historial de fichajes</a></li>
+                            <li><a routerLink="/horasextras/add" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@horasextras.add.headline">Solicitar horas extras</a></li>
+                            <li><a routerLink="/horasextras/aprobar" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@horasextras.aprobar.headline">Aprobar horas extras</a></li>
+                            <li><a routerLink="/horasextras/historial" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@horasextras.historial.headline">Ver historial de horas extras</a></li>
+                            <li><a routerLink="/registrocambioscontrasenia" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@registrocambioscontrasenia.list.headline">Registro cambios contraseñas</a></li>
+                            <li><a routerLink="/configuracionautenticacion" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@configuracionautenticacion.list.headline">Configuración autenticación</a></li>
+                            <li><a routerLink="/historialactividad" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@historialactividad.list.headline">Historial actividad</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -21,7 +21,6 @@ public class HistorialCambioPasswordMapper {
         HistorialCambioPassword entity = new HistorialCambioPassword();
         entity.setId_registro(dto.getIdRegistro());
         entity.setFechaCambio(dto.getFechaCambio());
-        // Usuario se debe asignar desde el servicio/controlador
         return entity;
     }
 }

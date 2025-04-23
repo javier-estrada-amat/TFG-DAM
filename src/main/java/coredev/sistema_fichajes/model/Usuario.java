@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -14,8 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Getter
-@Setter
 
 public class Usuario implements Serializable {
 
@@ -35,13 +33,18 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "fecha_registro")
-    private Date fechaRegistro;
+    @Column(updatable = false)
+    private LocalDateTime fecha_registro;
 
-    @ManyToOne(fetch = FetchType.EAGER) // Queremos que venga con el usuario
+    @Column(nullable = false)
+    private boolean activo;
+
+    @Column(name = "primer_acceso")
+    private boolean primerAcceso;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", referencedColumnName = "id_empresa", nullable = false)
     private Empresa empresa;
-
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -67,12 +70,17 @@ public class Usuario implements Serializable {
     @JsonIgnore
     private List<HistorialActividad> historialActividad;
 
-    @ManyToMany(fetch = FetchType.EAGER) // si quieres que vengan los roles directamente
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "usuarios_roles",
         joinColumns = @JoinColumn(name = "usuario_id"),
         inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private List<Rol> roles;
+
+    @PrePersist
+    public void prePersist() {
+        this.fecha_registro = LocalDateTime.now();
+    }
 
 }

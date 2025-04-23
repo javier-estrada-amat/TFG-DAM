@@ -1,17 +1,16 @@
-export class HorasextrasDTO {
+import { UsuariosDTO } from 'app/usuarios/usuarios.model';
 
-  constructor(data:Partial<HorasextrasDTO>) {
+export class HorasextrasDTO {
+  constructor(data: Partial<HorasextrasDTO>) {
     Object.assign(this, data);
   }
 
-  idhoraextra?: number|null;
-  usuarioid?: number|null;
-  fecha?: string|null;
-  horassolicitadas?: string|null;
-  horasaprobadas?: string|null;
-  motivo?: string|null;
-  estado?: string|null;
-  aprobadopor?: number|null;
-  usuarios?: number|null;
-
+  id_hora_extra?: number | null;
+  usuario?: UsuariosDTO | null;
+  fecha?: string | null;
+  horasSolicitadas?: string | null;
+  horasAprobadas?: string | null;
+  motivo?: string | null;
+  estado?: string | null;
+  aprobadoPor?: UsuariosDTO | null;
 }

@@ -7,18 +7,28 @@ import { FormGroup, AbstractControl, ValidationErrors, ValidatorFn } from '@angu
 export function updateForm(group: FormGroup, data: any) {
   for (const field in group.controls) {
     const control = group.get(field)!;
-    let value = data[field] === undefined ? null : data[field];
-    control.setValue(value);
+
+    let value = null;
+
+    if (field === 'empresa' && data.empresa?.id_empresa !== undefined) {
+      value = data.empresa.id_empresa;
+    } else if (field === 'roles' && Array.isArray(data.roles) && data.roles.length > 0) {
+        value = data.roles[0];
+    } else {
+      value = data[field] === undefined ? null : data[field];
+    }
+
+    control.setValue(value, { emitEvent: false });
   }
 }
 
 /**
  * Helper function for transforming a Record to a Map to support number as a key.
  */
-export function transformRecordToMap(data:Record<number, number|string>):Map<number, string> {
-  const dataMap = new Map();
+export function transformRecordToMap(data:Record<string, number | string>):Map<number, string> {
+  const dataMap = new Map<number, string>();
   for (const [key, value] of Object.entries(data)) {
-    dataMap.set(+key, '' + value);
+    dataMap.set(Number(key), String(value));
   }
   return dataMap;
 }

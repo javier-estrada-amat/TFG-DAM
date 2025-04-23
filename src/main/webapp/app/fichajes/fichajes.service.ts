@@ -4,6 +4,7 @@ import { environment } from 'environments/environment';
 import { FichajesDTO } from 'app/fichajes/fichajes.model';
 import { map } from 'rxjs';
 import { transformRecordToMap } from 'app/common/utils';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -11,12 +12,36 @@ import { transformRecordToMap } from 'app/common/utils';
 })
 export class FichajesService {
 
-  http = inject(HttpClient);
-  resourcePath = environment.apiPath + '/api/fichajess';
+    private resourcePath = environment.apiPath + 'fichajes';
 
-  getAllFichajeses() {
-    return this.http.get<FichajesDTO[]>(this.resourcePath);
+    constructor(
+      private http: HttpClient
+    ) {}
+
+  getAuthHeaders(): { headers: HttpHeaders } {
+    const token = localStorage.getItem('jwt');
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+      }),
+    };
   }
+
+  iniciarFichaje() {
+    return this.http.post<FichajesDTO>(`${this.resourcePath}/iniciar`, {}, this.getAuthHeaders());
+  }
+
+  finalizarFichaje() {
+    return this.http.put<FichajesDTO>(`${this.resourcePath}/finalizar`, {}, this.getAuthHeaders());
+  }
+
+ getAllFichajes() {
+   return this.http.get<FichajesDTO[]>(`${this.resourcePath}/getAll`, this.getAuthHeaders());
+ }
+
+ verEstadoFichaje() {
+   return this.http.get<boolean>(`${this.resourcePath}/estado`, this.getAuthHeaders());
+ }
 
   getFichajes(idfichaje: number) {
     return this.http.get<FichajesDTO>(this.resourcePath + '/' + idfichaje);

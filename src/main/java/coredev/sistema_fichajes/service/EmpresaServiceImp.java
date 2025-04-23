@@ -36,7 +36,13 @@ public class EmpresaServiceImp implements EmpresaService {
     }
 
     @Override
+    public Empresa getEmpresaById(int id) {
+        return empresaRepository.findById(id).orElseThrow(() -> new RuntimeException("Empresa no encontrada"));
+    }
+
+    @Override
     public List<Empresa> buscarPorNombre(String nombre) {
         return empresaRepository.findByNombreContainingIgnoreCase(nombre);
     }
+
 }
