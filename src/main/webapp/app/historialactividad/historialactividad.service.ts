@@ -12,7 +12,7 @@ import { transformRecordToMap } from 'app/common/utils';
 export class HistorialactividadService {
 
   http = inject(HttpClient);
-  resourcePath = environment.apiPath + '/api/historialactividads';
+  resourcePath = environment.apiPath + 'historial-actividad';
 
   getAllHistorialactividads() {
     return this.http.get<HistorialactividadDTO[]>(this.resourcePath);

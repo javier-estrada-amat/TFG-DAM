@@ -6,6 +6,7 @@ import coredev.sistema_fichajes.dto.ResolucionHoraExtraDTO;
 import coredev.sistema_fichajes.mapper.HoraExtraMapper;
 import coredev.sistema_fichajes.model.HoraExtra;
 import coredev.sistema_fichajes.model.Usuario;
+import coredev.sistema_fichajes.service.HistorialActividadService;
 import coredev.sistema_fichajes.service.HoraExtraService;
 import coredev.sistema_fichajes.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,11 +24,13 @@ public class HoraExtraController {
     private final HoraExtraService horaExtraService;
     private final JwtUtil jwtUtil;
     private final UsuarioService usuarioService;
+    private final HistorialActividadService historialActividadService;
 
-    public HoraExtraController(HoraExtraService horaExtraService, JwtUtil jwtUtil, UsuarioService usuarioService) {
+    public HoraExtraController(HoraExtraService horaExtraService, JwtUtil jwtUtil, UsuarioService usuarioService, HistorialActividadService historialActividadService) {
         this.horaExtraService = horaExtraService;
         this.jwtUtil = jwtUtil;
         this.usuarioService = usuarioService;
+        this.historialActividadService = historialActividadService;
     }
 
     @PostMapping("/crear")
@@ -37,6 +40,12 @@ public class HoraExtraController {
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         HoraExtra nueva = horaExtraService.solicitarHoraExtra(usuario.getId_usuario(), dto);
+        historialActividadService.registrar(
+            "MODIFICACION",
+            "Solicitud de horas extra",
+            "HORAS_EXTRA",
+            usuario
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(HoraExtraMapper.toDTO(nueva));
     }
 
@@ -47,6 +56,13 @@ public class HoraExtraController {
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         HoraExtra actualizada = horaExtraService.resolverHoraExtra(id, dto, aprobador.getId_usuario());
+        String accion = dto.getEstado() == HoraExtra.EstadoHoraExtra.APROBADA ? "APROBACION" : "RECHAZO";
+        historialActividadService.registrar(
+            accion,
+            "Resolución de horas extra (estado: " + dto.getEstado() + ")",
+            "HORAS_EXTRA",
+            aprobador
+        );
         return ResponseEntity.ok(HoraExtraMapper.toDTO(actualizada));
     }
 

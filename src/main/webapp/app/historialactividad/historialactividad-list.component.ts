@@ -21,8 +21,7 @@ export class HistorialactividadListComponent implements OnInit, OnDestroy {
 
   getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      confirm: $localize`:@@delete.confirm:Do you really want to delete this element? This cannot be undone.`,
-      deleted: $localize`:@@historialactividad.delete.success:Historialactividad was removed successfully.`    };
+   };
     return messages[key];
   }
 
@@ -38,7 +37,7 @@ export class HistorialactividadListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.navigationSubscription!.unsubscribe();
   }
-  
+
   loadData() {
     this.historialactividadService.getAllHistorialactividads()
         .subscribe({
@@ -47,19 +46,8 @@ export class HistorialactividadListComponent implements OnInit, OnDestroy {
         });
   }
 
-  confirmDelete(idhistorial: number) {
-    if (!confirm(this.getMessage('confirm'))) {
-      return;
-    }
-    this.historialactividadService.deleteHistorialactividad(idhistorial)
-        .subscribe({
-          next: () => this.router.navigate(['/historialactividads'], {
-            state: {
-              msgInfo: this.getMessage('deleted')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+  trackById(index: number, item: HistorialactividadDTO): number {
+    return item.idhistorial ?? index;
   }
 
 }
