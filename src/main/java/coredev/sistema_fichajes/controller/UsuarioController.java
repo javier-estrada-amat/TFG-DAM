@@ -3,6 +3,7 @@ package coredev.sistema_fichajes.controller;
 import coredev.sistema_fichajes.dto.UsuarioDTO;
 import coredev.sistema_fichajes.mapper.UsuarioMapper;
 import coredev.sistema_fichajes.model.Usuario;
+import coredev.sistema_fichajes.service.HistorialActividadService;
 import coredev.sistema_fichajes.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +18,23 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
+    private final HistorialActividadService historialActividadService;
 
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuarioController(UsuarioService usuarioService, HistorialActividadService historialActividadService) {
         this.usuarioService = usuarioService;
+        this.historialActividadService = historialActividadService;
     }
-
 
     @PostMapping("/add")
     public ResponseEntity<UsuarioDTO> addUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
         Usuario creado = usuarioService.agregarUsuario(usuario);
+        historialActividadService.registrar(
+            "ALTA",
+            "Se ha creado un nuevo usuario",
+            "USUARIO",
+            usuario
+        );
         return new ResponseEntity<>(UsuarioMapper.toDTO(creado), HttpStatus.CREATED);
     }
     @GetMapping("/list/activos")
