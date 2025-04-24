@@ -14,11 +14,13 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PaginationComponent } from "../common/pagination/pagination.component";
 
 @Component({
   selector: 'app-usuarios-list',
   standalone: true,
   imports: [
+    PaginationComponent,
     CommonModule,
     RouterLink,
     MatTableModule,
@@ -26,12 +28,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSortModule,
     MatIconModule,
     MatButtonModule,
-    MatProgressSpinnerModule
-  ],
+    MatProgressSpinnerModule,
+    PaginationComponent
+],
 providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
   ],
-  templateUrl: './usuarios-list.component.html'
+  templateUrl: './usuarios-list.component.html',
+  styleUrl: './usuarios-list.component.css'
 })
 export class UsuariosListComponent implements OnInit, OnDestroy {
 

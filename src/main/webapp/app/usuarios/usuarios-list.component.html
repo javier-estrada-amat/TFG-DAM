@@ -2,8 +2,8 @@
     <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@usuarios.list.headline">Usuarios</h1>
     <div>
         <a routerLink="/usuarios/add"
-           class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2"
-           i18n="@@usuarios.list.createNew">Crear nuevo usuario</a>
+            class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2"
+            i18n="@@usuarios.list.createNew">Crear nuevo usuario</a>
     </div>
 </div>
 
@@ -12,13 +12,12 @@
 </div>
 
 <div class="overflow-x-auto mt-4">
-    <button
-        (click)="alternarFiltro()"
-        class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2 mr-2">
+    <button (click)="alternarFiltro()"
+        class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2 mr-2 mb-5">
         {{ mostrarSoloActivos ? 'Mostrar todos los usuarios' : 'Mostrar solo activos' }}
     </button>
 
-    <mat-table [dataSource]="dataSource" matSort class="min-w-full divide-y divide-gray-200">
+    <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
 
         <!-- ID -->
         <ng-container matColumnDef="id_usuario">
@@ -73,7 +72,7 @@
             <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
             <mat-cell *matCellDef="let usuario">
                 <a [routerLink]="['/usuarios/edit', usuario.id_usuario]"
-                   class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">
+                    class="inline-block text-white hover:text-black bg-indigo-500 hover:bg-indigo-300 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">
                     Editar
                 </a>
             </mat-cell>
@@ -82,7 +81,5 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
-
-
-    <mat-paginator [pageSize]="20" [pageSizeOptions]="[20, 40, 60]" showFirstLastButtons></mat-paginator>
+    <app-pagination></app-pagination>
 </div>

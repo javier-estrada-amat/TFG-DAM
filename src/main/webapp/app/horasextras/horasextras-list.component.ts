@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -6,18 +6,38 @@ import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { HorasextrasService } from 'app/horasextras/horasextras.service';
 import { HorasextrasDTO } from 'app/horasextras/horasextras.model';
 
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-horasextras-list',
-  imports: [CommonModule, RouterLink],
-  templateUrl: './horasextras-list.component.html'})
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule
+  ],
+  templateUrl: './horasextras-list.component.html'
+})
 export class HorasextrasListComponent implements OnInit, OnDestroy {
-
   horasextrasService = inject(HorasextrasService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
-  horasextrases?: HorasextrasDTO[];
+
+  dataSource = new MatTableDataSource<HorasextrasDTO>([]);
+  displayedColumns = ['id_hora_extra', 'usuario', 'fecha', 'horasSolicitadas', 'horasAprobadas', 'estado', 'aprobadoPor'];
   navigationSubscription?: Subscription;
+
+  isLoading = true;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit() {
     this.loadData();
@@ -33,22 +53,22 @@ export class HorasextrasListComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    this.horasextrasService.getAllHorasextras()
-      .subscribe({
-        next: (data) => {
-          this.horasextrases = data.filter((item, index, self) =>
-            item.id_hora_extra != null &&
-            index === self.findIndex(t => t.id_hora_extra === item.id_hora_extra)
-          );
-          // Si quieres filtrar por usuario logado, puedes hacerlo aquí
-          // const userId = localStorage.getItem('usuarioId');
-          // this.horasextrases = data.filter(h => h.usuarioid === Number(userId));
-        },
-        error: (error) => this.errorHandler.handleServerError(error.error)
-      });
-  }
-
-  trackByHoraExtra(index: number, item: HorasextrasDTO): any {
-    return item.id_hora_extra ?? index;
+    this.isLoading = true;
+    this.horasextrasService.getAllHorasextras().subscribe({
+      next: (data) => {
+        const unique = data.filter((item, index, self) =>
+          item.id_hora_extra != null &&
+          index === self.findIndex(t => t.id_hora_extra === item.id_hora_extra)
+        );
+        this.dataSource.data = unique;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorHandler.handleServerError(error.error);
+        this.isLoading = false;
+      }
+    });
   }
 }

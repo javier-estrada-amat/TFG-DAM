@@ -5,8 +5,8 @@ services:
     image: mysql:8
     container_name: mysql_container
     environment:
-      - MYSQL_DATABASE=sistemaFichajes
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=sistema_fichajes
+      - MYSQL_ROOT_PASSWORD=root
     ports:
       - "3307:3306"
     healthcheck:
@@ -15,15 +15,19 @@ services:
       retries: 10
 
   spring-app:
-    build: .
+    image: eclipse-temurin:17-jdk-alpine
     container_name: spring_container
     restart: always
     environment:
-      JDBC_DATABASE_URL: jdbc:mysql://mysql:3306/sistemaFichajes?serverTimezone=UTC
+      JDBC_DATABASE_URL: jdbc:mysql://mysql:3307/sistema_fichajes?serverTimezone=UTC
       JDBC_DATABASE_USERNAME: root
-      JDBC_DATABASE_PASSWORD: password
+      JDBC_DATABASE_PASSWORD: root
     depends_on:
       mysql:
         condition: service_healthy
     ports:
       - "8080:8080"
+    volumes:
+      - ./target:/app
+    working_dir: /app
+    command: ["java", "-jar", "tu-app.jar"]

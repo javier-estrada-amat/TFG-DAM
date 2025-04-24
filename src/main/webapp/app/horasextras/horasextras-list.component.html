@@ -1,45 +1,79 @@
 <div class="flex flex-wrap mb-6">
     <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@horasextras.list.headline">Horas extras</h1>
     <div>
-        <a routerLink="/horasextrass/add"
-           class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2"
-           i18n="@@horasextras.list.createNew">Crear nueva hora extra</a>
+      <a routerLink="/horasextrass/add"
+         class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2"
+         i18n="@@horasextras.list.createNew">Crear nueva hora extra</a>
     </div>
-</div>
-
-@if (!horasextrases || horasextrases.length === 0) {
-<div i18n="@@horasextras.list.empty">No se encontraron horas extras.</div>
-} @else {
-<div class="overflow-x-auto">
-    <table class="w-full border border-gray-200 rounded-lg shadow-sm">
-        <thead class="bg-gray-100">
-        <tr>
-            <th class="text-left p-3" i18n="@@horasextras.idhoraextra.label">ID</th>
-            <th class="text-left p-3" i18n="@@horasextras.usuarioid.label">Usuario</th>
-            <th class="text-left p-3" i18n="@@horasextras.fecha.label">Fecha</th>
-            <th class="text-left p-3" i18n="@@horasextras.horassolicitadas.label">Horas solicitadas</th>
-            <th class="text-left p-3" i18n="@@horasextras.horasaprobadas.label">Horas aprobadas</th>
-            <th class="text-left p-3" i18n="@@horasextras.estado.label">Estado</th>
-            <th class="text-left p-3" i18n="@@horasextras.aprobadopor.label">Aprobado por</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-        <tr *ngFor="let horasextras of horasextrases; trackBy: trackByHoraExtra" class="odd:bg-gray-50">
-            <td class="p-3">{{ horasextras.id_hora_extra }}</td>
-            <td class="p-3">{{ horasextras.usuario?.nombre || 'Desconocido' }} {{ horasextras.usuario?.apellidos }}</td>
-            <td class="p-3">{{ horasextras.fecha }}</td>
-            <td class="p-3">{{ horasextras.horasSolicitadas }}</td>
-            <td class="p-3">{{ horasextras.horasAprobadas }}</td>
-            <td class="p-3">
-        <span [ngClass]="{
-            'text-yellow-600 font-medium': horasextras.estado === 'PENDIENTE',
-            'text-green-600 font-semibold': horasextras.estado === 'APROBADA',
-            'text-red-600 font-semibold': horasextras.estado === 'RECHAZADA'
-        }">{{ horasextras.estado }}</span>
-            </td>
-            <td class="p-3">{{ horasextras.aprobadoPor ? horasextras.aprobadoPor.nombre + ' ' + horasextras.aprobadoPor.apellidos : '—' }}</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-}
+  </div>
+  
+  <div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
+    Cargando horas extras...
+  </div>
+  
+  <div *ngIf="dataSource?.data?.length === 0 && !isLoading" i18n="@@horasextras.list.empty">
+    No se encontraron horas extras.
+  </div>
+  
+  <div *ngIf="(dataSource?.data?.length ?? 0) > 0" class="overflow-x-auto mt-4">
+    <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
+  
+      <!-- ID -->
+      <ng-container matColumnDef="id_hora_extra">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.id_hora_extra }}</mat-cell>
+      </ng-container>
+  
+      <!-- Usuario -->
+      <ng-container matColumnDef="usuario">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</mat-header-cell>
+        <mat-cell *matCellDef="let item">
+          {{ item.usuario?.nombre || 'Desconocido' }} {{ item.usuario?.apellidos }}
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Fecha -->
+      <ng-container matColumnDef="fecha">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.fecha | date: 'short' }}</mat-cell>
+      </ng-container>
+  
+      <!-- Horas Solicitadas -->
+      <ng-container matColumnDef="horasSolicitadas">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Horas solicitadas</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.horasSolicitadas }}</mat-cell>
+      </ng-container>
+  
+      <!-- Horas Aprobadas -->
+      <ng-container matColumnDef="horasAprobadas">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Horas aprobadas</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{ item.horasAprobadas }}</mat-cell>
+      </ng-container>
+  
+      <!-- Estado -->
+      <ng-container matColumnDef="estado">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Estado</mat-header-cell>
+        <mat-cell *matCellDef="let item">
+          <span [ngClass]="{
+              'text-yellow-600 font-medium': item.estado === 'PENDIENTE',
+              'text-green-600 font-semibold': item.estado === 'APROBADA',
+              'text-red-600 font-semibold': item.estado === 'RECHAZADA'
+            }">{{ item.estado }}</span>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Aprobado por -->
+      <ng-container matColumnDef="aprobadoPor">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Aprobado por</mat-header-cell>
+        <mat-cell *matCellDef="let item">
+          {{ item.aprobadoPor?.nombre + ' ' + item.aprobadoPor?.apellidos || '—' }}
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+  
