@@ -4,27 +4,42 @@
     </h1>
 </div>
 
-@if (!registrocambioscontrasenias || registrocambioscontrasenias.length === 0) {
-<div class="text-gray-600 italic" i18n="@@registrocambioscontrasenia.list.empty">
+<div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
+    Cargando registros de cambios de contraseña...
+</div>
+
+<div *ngIf="!isLoading && (!dataSource.data || dataSource.data.length === 0)" class="text-gray-600 italic">
     No se encontraron registros de cambios de contraseña.
 </div>
-} @else {
-<div class="overflow-x-auto rounded-lg shadow-md">
-    <table class="min-w-full bg-white border border-gray-200">
-        <thead class="bg-blue-600 text-white">
-        <tr>
-            <th class="text-left px-4 py-2" i18n="@@registrocambioscontrasenia.idRegistro.label">Id registro</th>
-            <th class="text-left px-4 py-2" i18n="@@registrocambioscontrasenia.usuarioId.label">Id usuario</th>
-            <th class="text-left px-4 py-2" i18n="@@registrocambioscontrasenia.fechaCambio.label">Fecha de cambio</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let registro of registrocambioscontrasenias; trackBy: trackById" class="odd:bg-gray-100 even:bg-white hover:bg-gray-50 transition-colors">
-            <td class="px-4 py-2 font-medium text-gray-800">{{ registro.idRegistro }}</td>
-            <td class="px-4 py-2 text-gray-700">{{ registro.usuarioId }}</td>
-            <td class="px-4 py-2 text-gray-700">{{ registro.fechaCambio }}</td>
-        </tr>
-        </tbody>
-    </table>
+
+<div class="overflow-x-auto mt-4" *ngIf="!isLoading && dataSource.data.length > 0">
+    <button (click)="loadData()"
+        class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2 mr-2 mb-5">
+        Cargar nuevamente
+    </button>
+
+    <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
+
+        <!-- ID Registro -->
+        <ng-container matColumnDef="idRegistro">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Id Registro </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{ registro.idRegistro }}</mat-cell>
+        </ng-container>
+
+        <!-- ID Usuario -->
+        <ng-container matColumnDef="usuarioId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Id Usuario </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{ registro.usuarioId }}</mat-cell>
+        </ng-container>
+
+        <!-- Fecha de Cambio -->
+        <ng-container matColumnDef="fechaCambio">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Cambio </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{ registro.fechaCambio | date: 'short' }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <app-pagination></app-pagination>
 </div>
-}
