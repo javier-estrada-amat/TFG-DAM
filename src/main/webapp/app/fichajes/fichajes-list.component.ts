@@ -1,30 +1,56 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { FichajesService } from 'app/fichajes/fichajes.service';
 import { FichajesDTO } from 'app/fichajes/fichajes.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorIntlEspañol } from 'app/shared/mat-paginator-intl-es';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { PaginationComponent } from 'app/common/pagination/pagination.component';
 
+// ... (importaciones iguales)
 
 @Component({
   selector: 'app-fichajes-list',
-  imports: [CommonModule, RouterLink],
-  templateUrl: './fichajes-list.component.html'})
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    PaginationComponent
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
+  ],
+  templateUrl: './fichajes-list.component.html'
+})
 export class FichajesListComponent implements OnInit, OnDestroy {
 
   fichajesService = inject(FichajesService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
-  fichajes?: FichajesDTO[];
+
+  dataSource = new MatTableDataSource<FichajesDTO>([]);
+  displayedColumns = ['usuario_id', 'fecha', 'hora_entrada', 'hora_salida', 'estado'];
+
+  isLoading = true;
   navigationSubscription?: Subscription;
 
-  getMessage(key: string, details?: any) {
-    const messages: Record<string, string> = {
-      confirm: $localize`:@@delete.confirm:Do you really want to delete this element? This cannot be undone.`,
-      deleted: $localize`:@@fichajes.delete.success:Fichajes was removed successfully.`    };
-    return messages[key];
-  }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit() {
     this.loadData();
@@ -36,29 +62,19 @@ export class FichajesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.navigationSubscription!.unsubscribe();
+    this.navigationSubscription?.unsubscribe();
   }
 
   loadData() {
-    this.fichajesService.getAllFichajes().subscribe(
-      (data: FichajesDTO[]) => this.fichajes = data,
-      (error: any) => this.errorHandler.handleServerError(error.error)
-    );
+    this.fichajesService.getAllFichajes().subscribe({
+      next: (data) => {
+        this.dataSource.data = data;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+      },
+      error: (error) => this.errorHandler.handleServerError(error.error)
+    });
   }
-
-  confirmDelete(idfichaje: number) {
-    if (!confirm(this.getMessage('confirm'))) {
-      return;
-    }
-    this.fichajesService.deleteFichajes(idfichaje)
-        .subscribe({
-          next: () => this.router.navigate(['/fichajess'], {
-            state: {
-              msgInfo: this.getMessage('deleted')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
-  }
-
 }
+
