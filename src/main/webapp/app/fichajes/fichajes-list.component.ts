@@ -23,7 +23,6 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,

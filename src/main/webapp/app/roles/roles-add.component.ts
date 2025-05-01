@@ -20,7 +20,7 @@ export class RolesAddComponent {
   errorHandler = inject(ErrorHandler);
 
   addForm = new FormGroup({
-    nombre: new FormControl(null, [Validators.maxLength(50)]),
+    nombre: new FormControl(null, [Validators.maxLength(50), Validators.required, Validators.minLength(3)]),
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
