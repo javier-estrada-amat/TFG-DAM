@@ -1,4 +1,4 @@
-# SistemaFichajes
+# Sistema de Fichajes
 
 
 # Desarrollo
