@@ -28,7 +28,7 @@ export class UsuariosAddComponent implements OnInit {
   addForm = new FormGroup({
     nombre: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
     apellidos: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-    email: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    email: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.email]),
     password: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
     activo: new FormControl(true, [Validators.required]),
     empresa: new FormControl(null, [Validators.required]),

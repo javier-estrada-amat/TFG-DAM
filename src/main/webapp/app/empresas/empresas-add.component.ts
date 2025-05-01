@@ -20,11 +20,11 @@ export class EmpresasAddComponent {
   errorHandler = inject(ErrorHandler);
 
   addForm = new FormGroup({
-    nombre: new FormControl(null, [Validators.maxLength(100)]),
-    cif: new FormControl(null, [Validators.maxLength(30)]),
-    direccion: new FormControl(null, [Validators.maxLength(255)]),
-    telefono: new FormControl(null, [Validators.maxLength(20)]),
-    email: new FormControl(null, [Validators.maxLength(100)])
+    nombre: new FormControl(null, [Validators.maxLength(100), Validators.required, Validators.minLength(4)]),
+    cif: new FormControl(null, [Validators.maxLength(30), Validators.required, Validators.minLength(9)]),
+    direccion: new FormControl(null, [Validators.maxLength(255), Validators.required, Validators.minLength(4)]),
+    telefono: new FormControl(null, [Validators.maxLength(20), Validators.required, Validators.minLength(4)]),
+    email: new FormControl(null, [Validators.maxLength(100), Validators.email, Validators.required]),
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {
