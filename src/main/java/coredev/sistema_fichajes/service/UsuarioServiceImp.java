@@ -41,18 +41,25 @@ public class UsuarioServiceImp implements UsuarioService {
     public Usuario actualizarUsuario(Usuario usuario) {
         Usuario original = usuarioRepository.findById(usuario.getId_usuario()).orElseThrow();
 
+        // Comprobamos si el correo está en uso por otro usuario
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+        if (usuarioExistente.isPresent() && usuarioExistente.get().getId_usuario() != usuario.getId_usuario()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ese correo ya ha sido usado por otro usuario.");
+        }
+
         if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
             if (passwordEncoder.matches(usuario.getPassword(), original.getPassword())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La nueva contraseña no puede ser igual a la actual.");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La nueva contraseña no puede ser igual a la actual.");
             }
-                original.setPassword(passwordEncoder.encode(usuario.getPassword()));
-                original.setPrimerAcceso(false);
+            original.setPassword(passwordEncoder.encode(usuario.getPassword()));
+            original.setPrimerAcceso(false);
 
-                HistorialCambioPassword registro = new HistorialCambioPassword();
-                registro.setUsuario(original);
-                registro.setFechaCambio(LocalDateTime.now());
-                historialCambioPasswordService.agregarRegistro(registro);
+            HistorialCambioPassword registro = new HistorialCambioPassword();
+            registro.setUsuario(original);
+            registro.setFechaCambio(LocalDateTime.now());
+            historialCambioPasswordService.agregarRegistro(registro);
         }
+
         original.setNombre(usuario.getNombre());
         original.setApellidos(usuario.getApellidos());
         original.setEmail(usuario.getEmail());
@@ -62,6 +69,7 @@ public class UsuarioServiceImp implements UsuarioService {
 
         return usuarioRepository.save(original);
     }
+
 
     @Override
     public void eliminarUsuario(int id) {
