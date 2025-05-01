@@ -4,7 +4,6 @@ import coredev.sistema_fichajes.dto.EmpresaDTO;
 import coredev.sistema_fichajes.mapper.EmpresaMapper;
 import coredev.sistema_fichajes.model.Empresa;
 import coredev.sistema_fichajes.service.EmpresaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +40,7 @@ public class EmpresaController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<EmpresaDTO> updateEmpresa(@PathVariable int id, @RequestBody EmpresaDTO empresaDto) {
-        empresaDto.setId_empresa(id); // aseguramos que coincida
+        empresaDto.setId_empresa(id);
         Empresa empresaActualizada = empresaService.actualizarEmpresa(EmpresaMapper.toEntity(empresaDto));
         return ResponseEntity.ok(EmpresaMapper.toDTO(empresaActualizada));
     }

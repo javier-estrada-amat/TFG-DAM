@@ -4,7 +4,6 @@ import coredev.sistema_fichajes.dto.HistorialCambioPasswordDTO;
 import coredev.sistema_fichajes.mapper.HistorialCambioPasswordMapper;
 import coredev.sistema_fichajes.model.HistorialCambioPassword;
 import coredev.sistema_fichajes.service.HistorialCambioPasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/registrocambioscontrasenias")
 public class HistorialCambioPasswordController {
 
-    @Autowired
-    private HistorialCambioPasswordService service;
+    private final HistorialCambioPasswordService service;
+
+    public HistorialCambioPasswordController(HistorialCambioPasswordService service) {
+        this.service = service;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<HistorialCambioPasswordDTO> addRegistro(@RequestBody HistorialCambioPassword registro) {

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class HistorialActividadDTO {
     private int idHistorial;
     private int usuarioId;
+    private String nombreUsuario;
     private String accion;
     private String entidadAfectada;
     private String descripcion;

@@ -10,7 +10,6 @@ import coredev.sistema_fichajes.service.HistorialActividadService;
 import coredev.sistema_fichajes.service.HoraExtraService;
 import coredev.sistema_fichajes.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
