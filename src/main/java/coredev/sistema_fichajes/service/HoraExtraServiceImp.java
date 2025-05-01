@@ -5,7 +5,6 @@ import coredev.sistema_fichajes.model.HoraExtra;
 import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.repository.HoraExtraRepository;
 import coredev.sistema_fichajes.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,15 +54,8 @@ public class HoraExtraServiceImp implements HoraExtraService {
     }
 
     @Override
-    public List<HoraExtra> obtenerPorUsuario(int idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return horaExtraRepository.findByUsuario(usuario);
-    }
-
-    @Override
-    public List<HoraExtra> obtenerTodas() {
-        return horaExtraRepository.findAll();
+    public List<HoraExtra> buscarPorUsuario(int idUsuario) {
+        return horaExtraRepository.findByUsuarioId(idUsuario);
     }
 
     @Override
@@ -75,4 +67,5 @@ public class HoraExtraServiceImp implements HoraExtraService {
     public List<HoraExtra> buscarPorEstado(HoraExtra.EstadoHoraExtra estado) {
         return horaExtraRepository.findByEstado(estado);
     }
+
 }
