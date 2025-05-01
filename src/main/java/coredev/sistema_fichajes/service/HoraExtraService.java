@@ -9,8 +9,7 @@ import java.util.List;
 public interface HoraExtraService {
     HoraExtra solicitarHoraExtra(int idUsuario, HoraExtraDTO dto);
     HoraExtra resolverHoraExtra(int idHoraExtra, ResolucionHoraExtraDTO dto, int idDireccion);
-    List<HoraExtra> obtenerPorUsuario(int idUsuario);
-    List<HoraExtra> obtenerTodas();
     List<HoraExtra> getAllHorasExtras();
     List<HoraExtra> buscarPorEstado(HoraExtra.EstadoHoraExtra estado);
+    List<HoraExtra> buscarPorUsuario(int idUsuario);
 }
