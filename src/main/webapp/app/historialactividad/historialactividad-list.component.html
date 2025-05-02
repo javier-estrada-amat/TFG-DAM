@@ -1,37 +1,52 @@
 <div class="flex flex-wrap items-center justify-between mb-6">
     <h1 class="text-3xl md:text-4xl font-semibold" i18n="@@historialactividad.list.headline">Historial de actividad</h1>
-    <a
-        routerLink="/historialactividads/add"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-        i18n="@@historialactividad.list.createNew"
-    >
-        Crear nuevo historial
-    </a>
 </div>
 
-<div *ngIf="!historialactividads || historialactividads.length === 0" class="text-gray-500 italic" i18n="@@historialactividad.list.empty">
+<!-- Mostrar mensaje solo si está vacío -->
+<div *ngIf="historialactividads && historialactividads.length === 0" class="text-gray-500 italic" i18n="@@historialactividad.list.empty">
     No se encontró ningún historial de actividad.
 </div>
 
-<div *ngIf="historialactividads && historialactividads.length > 0" class="overflow-x-auto">
-    <table class="min-w-full border border-gray-300 rounded-md shadow-sm">
-        <thead class="bg-gray-200 text-left text-sm font-semibold">
-        <tr>
-            <th class="p-3" i18n="@@historialactividad.idhistorial.label">ID</th>
-            <th class="p-3" i18n="@@historialactividad.usuarioid.label">Usuario</th>
-            <th class="p-3" i18n="@@historialactividad.accion.label">Acción</th>
-            <th class="p-3" i18n="@@historialactividad.entidadafectada.label">Entidad</th>
-            <th class="p-3" i18n="@@historialactividad.fecha.label">Fecha</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 text-sm">
-        <tr *ngFor="let h of historialactividads; trackBy: trackById" class="odd:bg-gray-100">
-            <td class="p-2">{{ h.idHistorial }}</td>
-            <td class="p-2">{{ h.nombreUsuario }}</td>
-            <td class="p-2">{{ h.accion }}</td>
-            <td class="p-2">{{ h.entidadAfectada }}</td>
-            <td class="p-2">{{ h.fecha }}</td>
-        </tr>
-        </tbody>
-    </table>
+<!-- SIEMPRE renderiza tabla y paginador -->
+<div class="overflow-x-auto">
+    <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
+
+        <!-- Columnas... -->
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Id usuario </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{registro.idHistorial}}</mat-cell>
+        </ng-container>
+
+        <!-- Usuario -->
+        <ng-container matColumnDef="usuario">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Usuario </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{registro.nombreUsuario}}</mat-cell>
+        </ng-container>
+
+        <!-- Acción -->
+        <ng-container matColumnDef="accion">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Acción </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{registro.accion}}</mat-cell>
+        </ng-container>
+
+        <!-- Entidad -->
+        <ng-container matColumnDef="entidad">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Entidad </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{registro.entidadAfectada}}</mat-cell>
+        </ng-container>
+
+        <!-- Fecha -->
+        <ng-container matColumnDef="fecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Registro </mat-header-cell>
+            <mat-cell *matCellDef="let registro">{{registro.fecha | date: 'short'}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+
+    <!-- Paginador debe estar siempre presente -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>

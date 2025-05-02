@@ -48,7 +48,15 @@
       <ng-container matColumnDef="aprobadas">
         <mat-header-cell *matHeaderCellDef>Aprobadas</mat-header-cell>
         <mat-cell *matCellDef="let h">
-          <input type="text" [(ngModel)]="h.horasAprobadas" class="border rounded p-1 w-16 text-center" />
+          <input 
+          [(ngModel)]="h.horasAprobadas" 
+          class="border rounded p-1 w-16 text-center" 
+          type="number"
+          step="0.5"
+          min="0.5"
+          max="99"
+          (ngModelChange)="validarInput(h)"
+        />
         </mat-cell>
       </ng-container>
   
@@ -57,7 +65,10 @@
         <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
         <mat-cell *matCellDef="let h">
           <div class="space-x-2">
-            <button (click)="aprobar(h, h.horasAprobadas!)" class="cursor-pointer text-white bg-green-500 hover:bg-green-600 rounded px-2.5 py-1.5 text-sm">
+            <button 
+              (click)="aprobar(h, h.horasAprobadas!)" 
+              [disabled]="!validarHorasAprobadas(h)" 
+              class="cursor-pointer text-white bg-green-500 hover:bg-green-600 rounded px-2.5 py-1.5 text-sm">
               Aprobar
             </button>
             <button (click)="rechazar(h)" class="cursor-pointer text-white bg-red-500 hover:bg-red-600 rounded px-2.5 py-1.5 text-sm">

@@ -14,13 +14,13 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PaginationComponent } from "../common/pagination/pagination.component";
+
 
 @Component({
   selector: 'app-usuarios-list',
   standalone: true,
   imports: [
-    PaginationComponent,
+    
     CommonModule,
     RouterLink,
     MatTableModule,
@@ -29,7 +29,7 @@ import { PaginationComponent } from "../common/pagination/pagination.component";
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    PaginationComponent
+    
 ],
 providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
@@ -37,19 +37,18 @@ providers: [
   templateUrl: './usuarios-list.component.html',
   styleUrl: './usuarios-list.component.css'
 })
+
+
 export class UsuariosListComponent implements OnInit, OnDestroy {
 
   usuariosService = inject(UsuariosService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
-
   dataSource = new MatTableDataSource<UsuariosDTO>([]);
   displayedColumns = ['id_usuario', 'nombre', 'apellidos', 'email', 'fecha_registro', 'empresa', 'acciones'];
-
   isLoading = true;
   mostrarSoloActivos: boolean = true;
   navigationSubscription?: Subscription;
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
