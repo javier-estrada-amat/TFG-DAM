@@ -1,29 +1,26 @@
 <div class="flex flex-wrap mb-6">
     <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@roles.list.headline">Roles</h1>
-    <div>
-      <a routerLink="/roles/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2" i18n="@@roles.list.createNew">Crear nuevo rol</a>
-    </div>
   </div>
-  
+
   <div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
     Cargando roles...
   </div>
-  
+
   <div class="overflow-x-auto mt-4">
     <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
-  
+
       <!-- ID Rol -->
       <ng-container matColumnDef="id_rol">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Id Rol </mat-header-cell>
         <mat-cell *matCellDef="let rol"> {{ rol.id_rol }} </mat-cell>
       </ng-container>
-  
+
       <!-- Nombre -->
       <ng-container matColumnDef="nombre">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
         <mat-cell *matCellDef="let rol"> {{ rol.nombre }} </mat-cell>
       </ng-container>
-  
+
       <!-- Acciones -->
       <ng-container matColumnDef="acciones">
         <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
@@ -33,10 +30,9 @@
           </a>
         </mat-cell>
       </ng-container>
-  
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
     <app-pagination></app-pagination>
   </div>
-  

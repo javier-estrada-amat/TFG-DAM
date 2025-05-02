@@ -26,11 +26,6 @@ public class RolController {
         this.rolService = rolService;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<RolDTO> addRol(@RequestBody RolDTO rolDto) {
-        Rol nuevo = rolService.agregarRol(RolMapper.toEntity(rolDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(RolMapper.toDTO(nuevo));
-    }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<RolDTO>> getAllRoles() {

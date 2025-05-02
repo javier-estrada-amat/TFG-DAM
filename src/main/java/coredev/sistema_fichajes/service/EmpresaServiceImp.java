@@ -5,7 +5,8 @@ import coredev.sistema_fichajes.repository.EmpresaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @Service
@@ -14,10 +15,19 @@ public class EmpresaServiceImp implements EmpresaService {
     @Autowired
     private EmpresaRepository empresaRepository;
 
+
+
     @Override
     public Empresa agregarEmpresa(Empresa empresa) {
+        if (empresaRepository.existsByCif(empresa.getCif())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ese CIF ya ha sido usado por otra empresa.");
+        }
+        if (empresaRepository.existsByNombreIgnoreCase(empresa.getNombre())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ese nombre de empresa ya existe.");
+        }
         return empresaRepository.save(empresa);
     }
+
 
     @Override
     @Transactional
