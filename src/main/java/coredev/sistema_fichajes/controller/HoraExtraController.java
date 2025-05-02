@@ -10,7 +10,6 @@ import coredev.sistema_fichajes.service.HistorialActividadService;
 import coredev.sistema_fichajes.service.HoraExtraService;
 import coredev.sistema_fichajes.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,9 +68,22 @@ public class HoraExtraController {
     @GetMapping("/getAll")
     public ResponseEntity<List<HoraExtra>> getAllHorasExtras(HttpServletRequest request) {
         String correo = jwtUtil.extraerCorreoDesdeRequest(request);
-        System.out.println("Correo extraído: " + correo);
-        return new ResponseEntity<>(horaExtraService.getAllHorasExtras(), HttpStatus.OK);
+        Usuario usuario = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        // Verificar si el usuario tiene rol EMPLEADO
+        boolean esEmpleado = usuario.getRoles().stream()
+            .anyMatch(rol -> rol.getNombre().equalsIgnoreCase("EMPLEADO"));
+        List<HoraExtra> horasExtras;
+        if (esEmpleado) {
+            // Solo ver las horas extra del usuario
+            horasExtras = horaExtraService.buscarPorUsuario(usuario.getId_usuario());
+        } else {
+            // Ver todas las horas extra
+            horasExtras = horaExtraService.getAllHorasExtras();
+        }
+        return ResponseEntity.ok(horasExtras);
     }
+
 
     @GetMapping("/search")
     public ResponseEntity<List<HoraExtra>> searchByEstado(@RequestParam HoraExtra.EstadoHoraExtra estado) {

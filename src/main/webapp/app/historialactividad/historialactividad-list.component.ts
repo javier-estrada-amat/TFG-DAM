@@ -47,7 +47,7 @@ export class HistorialactividadListComponent implements OnInit, OnDestroy {
   }
 
   trackById(index: number, item: HistorialactividadDTO): number {
-    return item.idhistorial ?? index;
+    return item.idHistorial ?? index;
   }
 
 }
