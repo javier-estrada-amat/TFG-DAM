@@ -1,4 +1,3 @@
-// src/app/interceptors/error.interceptor.ts
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -14,6 +13,13 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         const status = error.status || 0;
+
+        // No redirigir si es un error esperable
+        if ([400, 409].includes(status)) {
+          return throwError(() => error);
+        }
+
+        // Redirigir si es un error grave
         const message = getReasonPhrase(status) || 'Error';
         this.router.navigate(['/error'], {
           state: {
@@ -21,7 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             errorMessage: message
           }
         });
-        
+
         return throwError(() => error);
       })
     );

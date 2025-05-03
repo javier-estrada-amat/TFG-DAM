@@ -29,7 +29,7 @@ import { PaginationComponent } from "../common/pagination/pagination.component";
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    PaginationComponent
+    
   ],
   providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
