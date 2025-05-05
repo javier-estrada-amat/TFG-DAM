@@ -5,7 +5,7 @@ services:
     image: mysql:8
     container_name: mysql_container
     environment:
-      - MYSQL_DATABASE=sistema_fichajes
+      - MYSQL_DATABASE=sistemaFichajes
       - MYSQL_ROOT_PASSWORD=root
     ports:
       - "3307:3306"
@@ -19,7 +19,7 @@ services:
     container_name: spring_container
     restart: always
     environment:
-      JDBC_DATABASE_URL: jdbc:mysql://mysql:3307/sistema_fichajes?serverTimezone=UTC
+      JDBC_DATABASE_URL: jdbc:mysql://mysql:3307/sistemaFichajes?serverTimezone=UTC
       JDBC_DATABASE_USERNAME: root
       JDBC_DATABASE_PASSWORD: root
     depends_on:
