@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { EmpresasDTO } from 'app/empresas/empresas.model';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { transformRecordToMap } from 'app/common/utils';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -39,9 +40,15 @@ export class EmpresasService {
     );
   }
 
-  createEmpresas(empresasDTO: EmpresasDTO) {
-    return this.http.post<number>(`${this.resourcePath}/add`, empresasDTO, this.getAuthHeaders());
+  
+  createEmpresa(empresa: EmpresasDTO): Observable<any> {
+    return this.http.post(`${this.resourcePath}/add`, empresa,this.getAuthHeaders()).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => error);
+      })
+    );
   }
+
 
   updateEmpresas(idempresa: number, empresasDTO: EmpresasDTO) {
     return this.http.put<number>(`${this.resourcePath}/update/${idempresa}`, empresasDTO, this.getAuthHeaders());

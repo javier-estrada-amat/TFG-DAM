@@ -2,12 +2,14 @@
   <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@fichajes.list.headline">Fichajes</h1>
 </div>
 
-<div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
-  Cargando fichajes...
-</div>
+<div class="overflow-x-auto mt-4">
+  <!-- Indicador de carga -->
+  <div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
+    Cargando fichajes...
+  </div>
 
-<div class="overflow-x-auto mt-4" *ngIf="!isLoading">
-  <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
+  <!-- Tabla de fichajes -->
+  <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas" [hidden]="isLoading">
 
     <!-- Usuario ID -->
     <ng-container matColumnDef="usuario_id">
@@ -39,9 +41,11 @@
       <mat-cell *matCellDef="let fichaje"> {{ fichaje.estado }} </mat-cell>
     </ng-container>
 
+    <!-- Filas -->
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <app-pagination></app-pagination>
+  <!-- Paginador -->
+  <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons [hidden]="isLoading"></mat-paginator>
 </div>

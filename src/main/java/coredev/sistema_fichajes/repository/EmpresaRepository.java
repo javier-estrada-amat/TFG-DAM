@@ -10,5 +10,4 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Integer> {
     List<Empresa> findByNombreContainingIgnoreCase(String nombre);
     boolean existsByCif(String cif);
     boolean existsByNombreIgnoreCase(String nombre);
-
 }

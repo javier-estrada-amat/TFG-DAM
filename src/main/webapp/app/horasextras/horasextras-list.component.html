@@ -15,7 +15,7 @@
     No se encontraron horas extras.
   </div>
   
-  <div *ngIf="(dataSource?.data?.length ?? 0) > 0" class="overflow-x-auto mt-4">
+  <div class="overflow-x-auto mt-4">
     <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
   
       <!-- ID -->
@@ -72,8 +72,9 @@
   
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      
     </mat-table>
-  
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    
   </div>
   

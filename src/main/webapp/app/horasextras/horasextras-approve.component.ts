@@ -58,11 +58,18 @@ export class HorasextrasApproveComponent implements OnInit {
   }
 
   aprobar(hora: HorasextrasDTO, horasAprobadas: string) {
+    hora.horasAprobadas = horasAprobadas;
+  
+    if (!this.validarHorasAprobadas(hora)) {
+      this.mostrarMensaje('Error: Las horas aprobadas deben ser menores o iguales a las solicitadas y deben terminar en .0 o .5.');
+      return;
+    }
+  
     const payload = {
       horasAprobadas: horasAprobadas,
       estado: 'APROBADA'
     };
-
+  
     this.horasextrasService.resolverHoraExtra(hora.id_hora_extra!, payload).subscribe({
       next: () => {
         this.removeFromList(hora);
@@ -93,4 +100,31 @@ export class HorasextrasApproveComponent implements OnInit {
     this.mensaje = texto;
     setTimeout(() => (this.mensaje = null), 3000);
   }
+
+  validarHorasAprobadas(hora: HorasextrasDTO): boolean {
+    const solicitadas = parseFloat(hora.horasSolicitadas ?? '0');
+    const aprobadas = parseFloat(hora.horasAprobadas ?? '0');
+  
+    const parteDecimalValida = aprobadas % 1 === 0 || aprobadas % 1 === 0.5;
+    const noExcedeSolicitadas = aprobadas <= solicitadas;
+    
+    if (!parteDecimalValida || !noExcedeSolicitadas) {
+      hora.horasAprobadas = '';
+      this.mostrarMensaje('Las horas aprobadas deben ser menores o iguales a las solicitadas y deben terminar en .0 o .5.');
+    }
+
+    return parteDecimalValida && noExcedeSolicitadas;
+  }
+  
+  validarInput(hora: HorasextrasDTO) {
+    const valor = parseFloat(hora.horasAprobadas ?? '0');
+  
+    const esValido = valor % 1 === 0 || valor % 1 === 0.5;
+  
+    if (!esValido) {
+      hora.horasAprobadas = '';
+      this.mostrarMensaje('Solo se permiten valores terminados en .0 o .5');
+    }
+  }
+
 }

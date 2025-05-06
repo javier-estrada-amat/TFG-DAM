@@ -28,7 +28,12 @@ export class UsuariosAddComponent implements OnInit {
   addForm = new FormGroup({
     nombre: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
     apellidos: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-    email: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.email]),
+    email: new FormControl(null, [
+      Validators.required,
+      Validators.maxLength(100),
+      Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    ]),
+    telefono: new FormControl(null, [Validators.maxLength(20), Validators.pattern(/^[0-9]+$/)]),
     password: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
     activo: new FormControl(true, [Validators.required]),
     empresa: new FormControl(null, [Validators.required]),
@@ -67,6 +72,7 @@ export class UsuariosAddComponent implements OnInit {
     if (!this.addForm.valid) {
       return;
     }
+   
 
     const rawData = this.addForm.value;
     const empresaId = rawData.empresa;
