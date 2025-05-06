@@ -3,12 +3,14 @@ import { AfterViewInit, Component, ElementRef, HostListener, inject, Input, OnCh
 import { AbstractControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputErrorsComponent } from 'app/common/input-row/input-errors.component';
 import flatpickr from 'flatpickr';
+import { CommonModule } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
   selector: 'app-input-row',
   templateUrl: './input-row.component.html',
-  imports: [ReactiveFormsModule, InputErrorsComponent, KeyValuePipe]
+  imports: [ReactiveFormsModule, InputErrorsComponent, KeyValuePipe, CommonModule]
 })
 export class InputRowComponent implements AfterViewInit, OnChanges, OnInit {
 
@@ -30,15 +32,26 @@ export class InputRowComponent implements AfterViewInit, OnChanges, OnInit {
   @Input({ required: true })
   label = '';
 
+  control!: AbstractControl;
+
   datepicker?: 'datepicker'|'timepicker'|'datetimepicker';
 
-  control?: AbstractControl;
   optionsMap?: Map<string|number,string>;
 
   elRef = inject(ElementRef);
 
   ngOnInit() {
-    this.control = this.group!.get(this.field)!;
+    if (!this.group || !this.field) {
+      throw new Error('El "group" y "field" son obligatorios.');
+    }
+
+    const control = this.group.get(this.field);
+    if (!control) {
+      throw new Error(`No se encontró el control con nombre '${this.field}' en el FormGroup.`);
+    }
+
+    this.control = control;
+
     if (this.rowType === 'datepicker' || this.rowType === 'timepicker' || this.rowType === 'datetimepicker') {
       this.datepicker = this.rowType;
       this.rowType = 'text';
