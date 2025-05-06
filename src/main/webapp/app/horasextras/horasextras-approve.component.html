@@ -17,7 +17,7 @@
     No hay solicitudes pendientes de aprobación.
   </div>
   
-  <div *ngIf="dataSource.data.length > 0" class="overflow-x-auto">
+  <div  class="overflow-x-auto">
     <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
   
       <!-- Usuario -->
@@ -79,9 +79,12 @@
       </ng-container>
   
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row
+      *matRowDef="let row; let i = index; columns: displayedColumns;"
+      [ngClass]="i % 2 === 0 ? 'fila-par' : 'fila-impar'">
+    </mat-row>
     </mat-table>
   
-    <app-pagination></app-pagination>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
   </div>
   

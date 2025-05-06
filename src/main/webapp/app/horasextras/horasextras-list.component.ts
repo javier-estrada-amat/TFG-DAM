@@ -23,7 +23,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSortModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './horasextras-list.component.html'
+  templateUrl: './horasextras-list.component.html',
+  styleUrl: './horasextras-list.component.css'
 })
 export class HorasextrasListComponent implements OnInit, OnDestroy {
   horasextrasService = inject(HorasextrasService);
