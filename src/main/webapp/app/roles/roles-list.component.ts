@@ -19,7 +19,7 @@ import { MatSortModule } from '@angular/material/sort';
   imports: [
     CommonModule,
     RouterLink,
-    PaginationComponent,
+    
     MatTableModule,
     MatPaginatorModule,
     MatSortModule
