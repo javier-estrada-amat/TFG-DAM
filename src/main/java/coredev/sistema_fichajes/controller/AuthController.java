@@ -46,12 +46,12 @@ public class AuthController {
                 .map(rol -> "ROLE_" + rol.getNombre())
                 .toList();
             String token = jwtUtil.generarToken(u.getEmail(), roles);
-            historialActividadService.registrar(
-                "LOGIN",
-                "Inicio de sesión exitoso",
-                "USUARIO",
-                u
-            );
+//            historialActividadService.registrar(
+//                "LOGIN",
+//                "Inicio de sesión exitoso",
+//                "USUARIO",
+//                u
+//            );
             return ResponseEntity.ok(new LoginResponseDTO(1, token, u.isPrimerAcceso()));
         }
         usuarioService.buscarPorEmail(usuario.getEmail()).ifPresent(uFallido ->

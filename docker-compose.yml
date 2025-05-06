@@ -14,20 +14,3 @@ services:
       timeout: 20s
       retries: 10
 
-  spring-app:
-    image: eclipse-temurin:17-jdk-alpine
-    container_name: spring_container
-    restart: always
-    environment:
-      JDBC_DATABASE_URL: jdbc:mysql://mysql:3307/sistema_fichajes?serverTimezone=UTC
-      JDBC_DATABASE_USERNAME: root
-      JDBC_DATABASE_PASSWORD: root
-    depends_on:
-      mysql:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./target:/app
-    working_dir: /app
-    command: ["java", "-jar", "tu-app.jar"]

@@ -17,6 +17,12 @@ export class ErrorHandler {
    */
   handleServerError(error: ErrorResponse | null | undefined, group?: FormGroup, getMessage?: (key: string) => string) {
     // Si el error es nulo o no tiene campo `status`, muestra error 503 genérico
+     if (typeof error === 'string' && group && getMessage) {
+        if (error === 'USUARIOS_EMAIL_UNIQUE') {
+          group.get('email')?.setErrors({ custom: getMessage(error) });
+          return;
+        }
+      }
     if (!error || typeof error.status === 'undefined') {
       this.router.navigate(['/error'], {
         state: {
