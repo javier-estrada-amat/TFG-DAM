@@ -21,17 +21,6 @@ public class EmpresaServiceImp implements EmpresaService {
     private EmpresaRepository empresaRepository;
 
     @Override
-    public Empresa agregarEmpresa(Empresa empresa) {
-        if (empresaRepository.existsByCif(empresa.getCif())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ese CIF ya ha sido usado por otra empresa.");
-        }
-        if (empresaRepository.existsByNombreIgnoreCase(empresa.getNombre())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ese nombre de empresa ya existe.");
-        }
-        return empresaRepository.save(empresa);
-    }
-
-    @Override
     @Transactional
     public List<Empresa> getAllEmpresas() {
         return empresaRepository.findAll();

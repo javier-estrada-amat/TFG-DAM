@@ -70,23 +70,40 @@ public class HoraExtraController {
         String correo = jwtUtil.extraerCorreoDesdeRequest(request);
         Usuario usuario = usuarioService.buscarPorEmail(correo)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        // Verificar si el usuario tiene rol EMPLEADO
-        boolean esEmpleado = usuario.getRoles().stream()
-            .anyMatch(rol -> rol.getNombre().equalsIgnoreCase("EMPLEADO"));
+
         List<HoraExtra> horasExtras;
-        if (esEmpleado) {
-            // Solo ver las horas extra del usuario
+        // Verificar si el usuario tiene rol EMPLEADO
+        if (usuario.getRoles().stream().anyMatch(rol -> rol.getNombre().equalsIgnoreCase("EMPLEADO"))) {
+            // Empleado: solo sus horas extra
             horasExtras = horaExtraService.buscarPorUsuario(usuario.getId_usuario());
+        } else if (usuario.getRoles().stream().anyMatch(rol ->
+            rol.getNombre().equalsIgnoreCase("ADMIN") || rol.getNombre().equalsIgnoreCase("DIRECCION"))) {
+            // Dirección/Admin: horas extra de su empresa
+            int idEmpresa = usuario.getEmpresa().getId_empresa();
+            horasExtras = horaExtraService.buscarPorEmpresa(idEmpresa);
         } else {
-            // Ver todas las horas extra
-            horasExtras = horaExtraService.getAllHorasExtras();
+            // Otros: nada o excepción si no tienen permisos
+            horasExtras = List.of(); // o lanzar excepción si lo prefieres
         }
         return ResponseEntity.ok(horasExtras);
     }
 
-
     @GetMapping("/search")
-    public ResponseEntity<List<HoraExtra>> searchByEstado(@RequestParam HoraExtra.EstadoHoraExtra estado) {
-        return new ResponseEntity<>(horaExtraService.buscarPorEstado(estado), HttpStatus.OK);
+    public ResponseEntity<List<HoraExtra>> searchByEstado(@RequestParam HoraExtra.EstadoHoraExtra estado, HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuario = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<HoraExtra> horasExtras;
+
+        if (usuario.getRoles().stream().anyMatch(rol -> rol.getNombre().equalsIgnoreCase("ADMIN") || rol.getNombre().equalsIgnoreCase("DIRECCION"))) {
+            horasExtras = horaExtraService.buscarPorEmpresaYEstado(usuario.getEmpresa().getId_empresa(), estado);
+        } else if (usuario.getRoles().stream().anyMatch(rol -> rol.getNombre().equalsIgnoreCase("EMPLEADO"))) {
+            horasExtras = horaExtraService.buscarPorUsuario(usuario.getId_usuario())
+                .stream().filter(h -> h.getEstado() == estado).toList();
+        } else {
+            horasExtras = List.of();
+        }
+        return ResponseEntity.ok(horasExtras);
     }
 }
