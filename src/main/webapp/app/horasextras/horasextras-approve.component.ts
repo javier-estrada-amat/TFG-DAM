@@ -31,7 +31,8 @@ import { ChangeDetectorRef } from '@angular/core';
     MatProgressSpinnerModule,
     PaginationComponent
   ],
-  templateUrl: './horasextras-approve.component.html'
+  templateUrl: './horasextras-approve.component.html',
+  styleUrl: './horasextras-approve.component.css'
 })
 export class HorasextrasApproveComponent implements OnInit {
   horasextrasService = inject(HorasextrasService);

@@ -4,15 +4,8 @@ import coredev.sistema_fichajes.model.Empresa;
 import coredev.sistema_fichajes.repository.EmpresaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EmpresaServiceImp implements EmpresaService {

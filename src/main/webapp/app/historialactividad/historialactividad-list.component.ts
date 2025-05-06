@@ -29,7 +29,9 @@ import { MatPaginatorIntlEspañol } from 'app/shared/mat-paginator-intl-es';
   providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
   ],
-  templateUrl: './historialactividad-list.component.html'})
+  templateUrl: './historialactividad-list.component.html',
+  styleUrl: './historialactividad-list.component.css'
+})
 
 
 export class HistorialactividadListComponent implements OnInit, OnDestroy {
