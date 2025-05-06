@@ -13,7 +13,6 @@ import { UsuariosEditComponent } from './usuarios/usuarios-edit.component';
 
 // --- ROLES ---
 import { RolesListComponent } from './roles/roles-list.component';
-import { RolesAddComponent } from './roles/roles-add.component';
 import { RolesEditComponent } from './roles/roles-edit.component';
 
 // --- EMPRESAS ---
@@ -66,7 +65,6 @@ export const routes: Routes = [
 
   // --- ROLES ---
   { path: 'roles', component: RolesListComponent, title: $localize`:@@roles.list.headline:Roleses` },
-  { path: 'roles/add', component: RolesAddComponent, title: $localize`:@@roles.add.headline:Add Roles` },
   { path: 'roles/edit/:idrol', component: RolesEditComponent, title: $localize`:@@roles.edit.headline:Edit Roles` },
 
   // --- EMPRESAS ---
