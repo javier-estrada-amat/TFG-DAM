@@ -33,7 +33,10 @@ export class HorasextrasService {
   }
 
   getHorasextrasPendientes() {
-    return this.http.get<HorasextrasDTO[]>(this.resourcePath + '/search?estado=PENDIENTE');
+    return this.http.get<HorasextrasDTO[]>(
+      `${this.resourcePath}/search?estado=PENDIENTE`,
+      this.getAuthHeaders() // <-- AÑADE ESTA LÍNEA
+    );
   }
 
   createHorasextras(horasextrasDTO: HorasextrasDTO) {
