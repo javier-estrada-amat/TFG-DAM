@@ -19,7 +19,7 @@ services:
     container_name: spring_container
     restart: always
     environment:
-      JDBC_DATABASE_URL: jdbc:mysql://mysql:3306/sistema_fichajes?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      JDBC_DATABASE_URL: jdbc:mysql://mysql:3307/sistema_fichajes?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
       JDBC_DATABASE_USERNAME: root
       JDBC_DATABASE_PASSWORD: root
     depends_on:
