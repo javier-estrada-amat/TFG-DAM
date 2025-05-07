@@ -27,9 +27,11 @@ export class EmpresasAddComponent {
     email: new FormControl(null, [Validators.maxLength(100), Validators.email, Validators.required]),
   }, { updateOn: 'submit' });
 
-  getMessage(key: string) {
+  getMessage(key: string, details?: any) {
     const messages: Record<string, string> = {
-      created: $localize`:@@empresas.create.success:Empresa creada correctamente.`
+      created: $localize`:@@empresas.create.success:Empresa creada correctamente.`,
+      EMPRESAS_CIF_UNIQUE: $localize`:@@empresas.cif.unique:Ya existe una empresa con ese CIF.`,
+      EMPRESAS_NOMBRE_UNIQUE: $localize`:@@empresas.nombre.unique:Ya existe una empresa con ese nombre.`
     };
     return messages[key];
   }
@@ -47,18 +49,7 @@ export class EmpresasAddComponent {
             msgSuccess: this.getMessage('created')
           }
         }),
-        error: (error: HttpErrorResponse) => {
-          if (error.status === 400 || error.status === 409) {
-            const serverErrors = error.error?.errors || {};
-            Object.keys(serverErrors).forEach(field => {
-              const control = this.addForm.get(field);
-              if (control) {
-                control.setErrors({ server: serverErrors[field] });
-                control.markAsTouched(); // Muy importante para que aparezca el error
-              }
-            });
-          }
-        }
+        error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
       });
   }
 }

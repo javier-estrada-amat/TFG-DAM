@@ -28,18 +28,59 @@
                             <span class="text-[9px] align-[3px] pl-0.5">&#9660;</span>
                         </button>
                         <ul class="hidden absolute right-0 bg-white border border-gray-300 rounded min-w-[12rem] py-2 shadow-md z-50" aria-labelledby="navbarEntitiesLink">
-                            <li><a routerLink="/usuarios" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@usuarios.list.headline">Usuarios</a></li>
-                            <li><a routerLink="/roles" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@roles.list.headline">Roles</a></li>
-                            <li><a routerLink="/empresas" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@empresas.list.headline">Empresas</a></li>
-                            <li><a routerLink="/fichajes/control" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@fichajes.control.headline">Control de fichajes</a></li>
-                            <li><a routerLink="/fichajes" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@fichajes.list.headline">Ver historial de fichajes</a></li>
-                            <li><a routerLink="/horasextras/add" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@horasextras.add.headline">Solicitar horas extras</a></li>
-                            <li><a routerLink="/horasextras/aprobar" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@horasextras.aprobar.headline">Aprobar horas extras</a></li>
-                            <li><a routerLink="/horasextras/historial" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@horasextras.historial.headline">Ver historial de horas extras</a></li>
-                            <li><a routerLink="/registrocambioscontrasenia" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@registrocambioscontrasenia.list.headline">Registro cambios contraseñas</a></li>
-                            <!-- <li><a routerLink="/configuracionautenticacion" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@configuracionautenticacion.list.headline">Configuración autenticación</a></li> -->
-                            <li><a routerLink="/historialactividad" class="block w-full hover:bg-gray-100 px-4 py-2" i18n="@@historialactividad.list.headline">Historial actividad</a></li>
+
+                            <!-- Usuarios - ADMIN o DIRECCION -->
+                            <li *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])">
+                                <a routerLink="/usuarios" class="block w-full hover:bg-gray-100 px-4 py-2">Usuarios</a>
+                            </li>
+
+                            <!-- Roles - Solo ADMIN -->
+                            <li *ngIf="auth.hasRole('ADMIN')">
+                                <a routerLink="/roles" class="block w-full hover:bg-gray-100 px-4 py-2">Roles</a>
+                            </li>
+
+                            <!-- Empresas - Solo ADMIN -->
+                            <li *ngIf="auth.hasRole('ADMIN')">
+                                <a routerLink="/empresas" class="block w-full hover:bg-gray-100 px-4 py-2">Empresas</a>
+                            </li>
+
+                            <!-- Control de fichajes - Todos -->
+                            <li>
+                                <a routerLink="/fichajes/control" class="block w-full hover:bg-gray-100 px-4 py-2">Control de fichajes</a>
+                            </li>
+
+                            <!-- Ver historial de fichajes - Todos -->
+                            <li>
+                                <a routerLink="/fichajes" class="block w-full hover:bg-gray-100 px-4 py-2">Ver historial de fichajes</a>
+                            </li>
+
+                            <!-- Solicitar horas extras - Todos -->
+                            <li>
+                                <a routerLink="/horasextras/add" class="block w-full hover:bg-gray-100 px-4 py-2">Solicitar horas extras</a>
+                            </li>
+
+                            <!-- Aprobar horas extras - ADMIN o DIRECCION -->
+                            <li *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])">
+                                <a routerLink="/horasextras/aprobar" class="block w-full hover:bg-gray-100 px-4 py-2">Aprobar horas extras</a>
+                            </li>
+
+                            <!-- Ver historial de horas extras - Todos -->
+                            <li>
+                                <a routerLink="/horasextras/historial" class="block w-full hover:bg-gray-100 px-4 py-2">Ver historial de horas extras</a>
+                            </li>
+
+                            <!-- Registro cambios contraseñas - ADMIN o DIRECCION -->
+                            <li *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])">
+                                <a routerLink="/registrocambioscontrasenia" class="block w-full hover:bg-gray-100 px-4 py-2">Registro cambios contraseñas</a>
+                            </li>
+
+                            <!-- Historial actividad - ADMIN o DIRECCION -->
+                            <li *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])">
+                                <a routerLink="/historialactividad" class="block w-full hover:bg-gray-100 px-4 py-2">Historial actividad</a>
+                            </li>
+
                         </ul>
+
                     </li>
                 </ul>
             </div>

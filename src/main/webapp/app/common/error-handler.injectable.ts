@@ -15,14 +15,24 @@ export class ErrorHandler {
    * from the server response to the matching form fields. Resolves the error message from the
    * errorMessages map if available.
    */
-  handleServerError(error: ErrorResponse | null | undefined, group?: FormGroup, getMessage?: (key: string) => string) {
-    // Si el error es nulo o no tiene campo `status`, muestra error 503 genérico
-     if (typeof error === 'string' && group && getMessage) {
-        if (error === 'USUARIOS_EMAIL_UNIQUE') {
-          group.get('email')?.setErrors({ custom: getMessage(error) });
-          return;
-        }
+  handleServerError(error: any, group?: FormGroup, getMessage?: (key: string) => string) {
+    const extractedError = typeof error === 'object' && error?.error ? error.error : error;
+
+    if (typeof extractedError === 'string' && group && getMessage) {
+      if (extractedError === 'USUARIOS_EMAIL_UNIQUE') {
+        group.get('email')?.setErrors({ custom: getMessage(extractedError) });
+        return;
       }
+      if (extractedError === 'EMPRESAS_CIF_UNIQUE') {
+        group.get('cif')?.setErrors({ custom: getMessage(extractedError) });
+        return;
+      }
+      if (extractedError === 'EMPRESAS_NOMBRE_UNIQUE') {
+        group.get('nombre')?.setErrors({ custom: getMessage(extractedError) });
+        return;
+      }
+    }
+
     if (!error || typeof error.status === 'undefined') {
       this.router.navigate(['/error'], {
         state: {
@@ -32,7 +42,6 @@ export class ErrorHandler {
       return;
     }
 
-    // Si no hay fieldErrors, también redirigimos con status del error
     if (!error.fieldErrors) {
       this.router.navigate(['/error'], {
         state: {
@@ -42,38 +51,26 @@ export class ErrorHandler {
       return;
     }
 
-    // collect errors for each field
     const errorsMap: Record<string, ValidationErrors> = {};
     for (const fieldError of error.fieldErrors) {
       const fieldName = fieldError.property;
       if (!errorsMap[fieldName]) {
         errorsMap[fieldName] = {};
       }
-      // look for message under key <fieldName>.<code> or <code>
-      // use global error message or error code as fallback
+
       let errorMessage = getGlobalErrorMessage(fieldError.code) || fieldError.code;
       if (getMessage) {
         errorMessage = getMessage(fieldError.property + '.' + fieldError.code) ||
-            getMessage(fieldError.code) || errorMessage;
+          getMessage(fieldError.code) || errorMessage;
       }
       errorsMap[fieldName][fieldError.code] = errorMessage;
     }
-    // write errors to fields
+
     for (const [key, value] of Object.entries(errorsMap)) {
       group?.get(key)?.setErrors(value);
     }
   }
 
-  /**
-   * Update all controls of the provided form group with the given data.
-   */
-  updateForm(group: FormGroup, data: any) {
-    for (const field in group.controls) {
-      const control = group.get(field)!;
-      const value = data[field] || null;
-      control.setValue(value);
-    }
-  }
 
 }
 

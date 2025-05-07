@@ -60,6 +60,7 @@
             <span *ngIf="control?.errors?.['email']">El e-mail no tiene un formato válido.</span>
             <span *ngIf="control?.errors?.['maxlength']">Has superado el número máximo de caracteres.</span>
             <span *ngIf="control?.errors?.['custom']">{{ control?.errors?.['custom'] }}</span>
+            <span *ngIf="control?.errors?.['server']">{{ control?.errors?.['server'] }}</span>
         </div>
     </div>
     }
