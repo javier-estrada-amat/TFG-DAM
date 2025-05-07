@@ -1,110 +1,116 @@
-<h1 class="text-3xl md:text-4xl font-medium mb-8 text-center text-blue-600 transition-transform transform hover:scale-105">
-    Bienvenido
-</h1>
 
-<p class="mb-12 text-center text-lg text-gray-600">
-    <strong class="text-blue-500">ESTA ES LA PÁGINA PRINCIPAL DE NUESTRO PROYECTO</strong>
-</p>
-
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto px-4 pt-4 max-w-screen-lg min-h-screen overflow-hidden">
-    <!-- Usuarios - ADMIN o DIRECCION -->
-    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/usuarios" class="block p-6 text-center bg-blue-500 text-white hover:bg-blue-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">people</mat-icon><h2 class="text-xl font-semibold inline">Usuarios</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Gestiona a los usuarios del sistema.</p>
+<div class="container mt-4 mx-auto px-4 md:px-6">
+    <h1 class="text-3xl md:text-4xl font-medium mb-8 text-center text-blue-600 transition-transform transform hover:scale-105">
+        Bienvenido
+    </h1>
+    
+    <p class="mb-12 text-center text-lg text-gray-600">
+        <strong class="text-blue-500">ESTA ES LA PÁGINA PRINCIPAL DE NUESTRO PROYECTO</strong>
+    </p>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto px-4 pt-4 max-w-screen-lg min-h-screen overflow-hidden">
+        <!-- Usuarios - ADMIN o DIRECCION -->
+        <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/usuarios" class="block p-6 text-center bg-blue-500 text-white hover:bg-blue-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">people</mat-icon><h2 class="text-xl font-semibold inline">Usuarios</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Gestiona a los usuarios del sistema.</p>
+            </div>
+        </div>
+    
+        <!-- Roles - solo ADMIN -->
+        <div *ngIf="auth.hasRole('ADMIN')" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/roles" class="block p-6 text-center bg-green-500 text-white hover:bg-green-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">security</mat-icon><h2 class="text-xl font-semibold inline">Roles</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Administra los roles dentro de la aplicación.</p>
+            </div>
+        </div>
+    
+        <!-- Empresas - solo ADMIN -->
+        <div *ngIf="auth.hasRole('ADMIN')" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/empresas" class="block p-6 text-center bg-indigo-500 text-white hover:bg-indigo-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">business</mat-icon><h2 class="text-xl font-semibold inline">Empresas</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Gestiona la información de las empresas.</p>
+            </div>
+        </div>
+    
+        <!-- Control de fichajes - TODOS -->
+        <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/fichajes/control" class="block p-6 text-center bg-red-500 text-white hover:bg-red-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">access_time</mat-icon><h2 class="text-xl font-semibold inline">Fichajes</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Controla y administra los fichajes de los empleados.</p>
+            </div>
+        </div>
+    
+        <!-- Ver historial de fichajes - TODOS -->
+        <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/fichajes" class="block p-6 text-center bg-yellow-500 text-white hover:bg-yellow-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">history</mat-icon><h2 class="text-xl font-semibold inline">Ver historial de fichajes</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Consulta el historial de fichajes realizados.</p>
+            </div>
+        </div>
+    
+        <!-- Solicitar horas extras - TODOS -->
+        <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/horasextras/add" class="block p-6 text-center bg-purple-500 text-white hover:bg-purple-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">access_alarm</mat-icon><h2 class="text-xl font-semibold inline">Solicitar horas extras</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Solicita horas extras para ti o para tu equipo.</p>
+            </div>
+        </div>
+    
+        <!-- Aprobar horas extras - ADMIN o DIRECCION -->
+        <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/horasextras/aprobar" class="block p-6 text-center bg-teal-500 text-white hover:bg-teal-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">check_circle</mat-icon><h2 class="text-xl font-semibold inline">Aprobar horas extras</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Aprobar las solicitudes de horas extras de los empleados.</p>
+            </div>
+        </div>
+    
+        <!-- Ver historial de horas extras - TODOS -->
+        <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/horasextras/historial" class="block p-6 text-center bg-orange-500 text-white hover:bg-orange-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">history_toggle_off</mat-icon><h2 class="text-xl font-semibold inline">Ver historial de horas extras</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Consulta el historial de horas extras realizadas.</p>
+            </div>
+        </div>
+    
+        <!-- Registro cambios contraseñas - ADMIN o DIRECCION -->
+        <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/registrocambioscontrasenia" class="block p-6 text-center bg-pink-500 text-white hover:bg-pink-600 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">vpn_key</mat-icon><h2 class="text-xl font-semibold inline">Registro cambios contraseñas</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Visualiza el registro de cambios de contraseñas.</p>
+            </div>
+        </div>
+    
+        <!-- Historial actividad - ADMIN o DIRECCION -->
+        <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+            <a routerLink="/historialactividad" class="block p-6 text-center bg-gray-800 text-white hover:bg-gray-900 rounded-t-lg transition-colors">
+                <mat-icon class="mr-2">timeline</mat-icon><h2 class="text-xl font-semibold inline">Historial actividad</h2>
+            </a>
+            <div class="p-6 bg-gray-50 rounded-b-lg text-center">
+                <p class="text-gray-700">Consulta el historial de actividades realizadas.</p>
+            </div>
         </div>
     </div>
 
-    <!-- Roles - solo ADMIN -->
-    <div *ngIf="auth.hasRole('ADMIN')" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/roles" class="block p-6 text-center bg-green-500 text-white hover:bg-green-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">security</mat-icon><h2 class="text-xl font-semibold inline">Roles</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Administra los roles dentro de la aplicación.</p>
-        </div>
-    </div>
-
-    <!-- Empresas - solo ADMIN -->
-    <div *ngIf="auth.hasRole('ADMIN')" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/empresas" class="block p-6 text-center bg-indigo-500 text-white hover:bg-indigo-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">business</mat-icon><h2 class="text-xl font-semibold inline">Empresas</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Gestiona la información de las empresas.</p>
-        </div>
-    </div>
-
-    <!-- Control de fichajes - TODOS -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/fichajes/control" class="block p-6 text-center bg-red-500 text-white hover:bg-red-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">access_time</mat-icon><h2 class="text-xl font-semibold inline">Fichajes</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Controla y administra los fichajes de los empleados.</p>
-        </div>
-    </div>
-
-    <!-- Ver historial de fichajes - TODOS -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/fichajes" class="block p-6 text-center bg-yellow-500 text-white hover:bg-yellow-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">history</mat-icon><h2 class="text-xl font-semibold inline">Ver historial de fichajes</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Consulta el historial de fichajes realizados.</p>
-        </div>
-    </div>
-
-    <!-- Solicitar horas extras - TODOS -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/horasextras/add" class="block p-6 text-center bg-purple-500 text-white hover:bg-purple-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">access_alarm</mat-icon><h2 class="text-xl font-semibold inline">Solicitar horas extras</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Solicita horas extras para ti o para tu equipo.</p>
-        </div>
-    </div>
-
-    <!-- Aprobar horas extras - ADMIN o DIRECCION -->
-    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/horasextras/aprobar" class="block p-6 text-center bg-teal-500 text-white hover:bg-teal-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">check_circle</mat-icon><h2 class="text-xl font-semibold inline">Aprobar horas extras</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Aprobar las solicitudes de horas extras de los empleados.</p>
-        </div>
-    </div>
-
-    <!-- Ver historial de horas extras - TODOS -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/horasextras/historial" class="block p-6 text-center bg-orange-500 text-white hover:bg-orange-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">history_toggle_off</mat-icon><h2 class="text-xl font-semibold inline">Ver historial de horas extras</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Consulta el historial de horas extras realizadas.</p>
-        </div>
-    </div>
-
-    <!-- Registro cambios contraseñas - ADMIN o DIRECCION -->
-    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/registrocambioscontrasenia" class="block p-6 text-center bg-pink-500 text-white hover:bg-pink-600 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">vpn_key</mat-icon><h2 class="text-xl font-semibold inline">Registro cambios contraseñas</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Visualiza el registro de cambios de contraseñas.</p>
-        </div>
-    </div>
-
-    <!-- Historial actividad - ADMIN o DIRECCION -->
-    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
-        <a routerLink="/historialactividad" class="block p-6 text-center bg-gray-800 text-white hover:bg-gray-900 rounded-t-lg transition-colors">
-            <mat-icon class="mr-2">timeline</mat-icon><h2 class="text-xl font-semibold inline">Historial actividad</h2>
-        </a>
-        <div class="p-6 bg-gray-50 rounded-b-lg text-center">
-            <p class="text-gray-700">Consulta el historial de actividades realizadas.</p>
-        </div>
-    </div>
 </div>
+
+
 
