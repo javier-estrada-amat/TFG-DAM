@@ -22,7 +22,7 @@ public class JwtUtil {
     public String generarToken(String email, List<String> roles) {
         return Jwts.builder()
             .setSubject(email)
-            .claim("roles", roles.stream().map(r -> "ROLE_" + r).toList())
+            .claim("roles", roles)
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
             .signWith(getSigningKey(), SignatureAlgorithm.HS256)

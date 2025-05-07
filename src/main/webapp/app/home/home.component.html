@@ -7,8 +7,8 @@
 </p>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto px-4 pt-4 max-w-screen-lg min-h-screen overflow-hidden">
-    <!-- Card 1 -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+    <!-- Usuarios - ADMIN o DIRECCION -->
+    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/usuarios" class="block p-6 text-center bg-blue-500 text-white hover:bg-blue-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">people</mat-icon><h2 class="text-xl font-semibold inline">Usuarios</h2>
         </a>
@@ -17,8 +17,8 @@
         </div>
     </div>
 
-    <!-- Card 2 -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+    <!-- Roles - solo ADMIN -->
+    <div *ngIf="auth.hasRole('ADMIN')" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/roles" class="block p-6 text-center bg-green-500 text-white hover:bg-green-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">security</mat-icon><h2 class="text-xl font-semibold inline">Roles</h2>
         </a>
@@ -27,8 +27,8 @@
         </div>
     </div>
 
-    <!-- Card 3 -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+    <!-- Empresas - solo ADMIN -->
+    <div *ngIf="auth.hasRole('ADMIN')" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/empresas" class="block p-6 text-center bg-indigo-500 text-white hover:bg-indigo-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">business</mat-icon><h2 class="text-xl font-semibold inline">Empresas</h2>
         </a>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <!-- Card 4 -->
+    <!-- Control de fichajes - TODOS -->
     <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/fichajes/control" class="block p-6 text-center bg-red-500 text-white hover:bg-red-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">access_time</mat-icon><h2 class="text-xl font-semibold inline">Fichajes</h2>
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <!-- Card 5 -->
+    <!-- Ver historial de fichajes - TODOS -->
     <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/fichajes" class="block p-6 text-center bg-yellow-500 text-white hover:bg-yellow-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">history</mat-icon><h2 class="text-xl font-semibold inline">Ver historial de fichajes</h2>
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <!-- Card 6 -->
+    <!-- Solicitar horas extras - TODOS -->
     <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/horasextras/add" class="block p-6 text-center bg-purple-500 text-white hover:bg-purple-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">access_alarm</mat-icon><h2 class="text-xl font-semibold inline">Solicitar horas extras</h2>
@@ -67,8 +67,8 @@
         </div>
     </div>
 
-    <!-- Card 7 -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+    <!-- Aprobar horas extras - ADMIN o DIRECCION -->
+    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/horasextras/aprobar" class="block p-6 text-center bg-teal-500 text-white hover:bg-teal-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">check_circle</mat-icon><h2 class="text-xl font-semibold inline">Aprobar horas extras</h2>
         </a>
@@ -77,7 +77,7 @@
         </div>
     </div>
 
-    <!-- Card 8 -->
+    <!-- Ver historial de horas extras - TODOS -->
     <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/horasextras/historial" class="block p-6 text-center bg-orange-500 text-white hover:bg-orange-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">history_toggle_off</mat-icon><h2 class="text-xl font-semibold inline">Ver historial de horas extras</h2>
@@ -87,8 +87,8 @@
         </div>
     </div>
 
-    <!-- Card 9 -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+    <!-- Registro cambios contraseñas - ADMIN o DIRECCION -->
+    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/registrocambioscontrasenia" class="block p-6 text-center bg-pink-500 text-white hover:bg-pink-600 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">vpn_key</mat-icon><h2 class="text-xl font-semibold inline">Registro cambios contraseñas</h2>
         </a>
@@ -97,8 +97,8 @@
         </div>
     </div>
 
-    <!-- Card 10 -->
-    <div class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
+    <!-- Historial actividad - ADMIN o DIRECCION -->
+    <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
         <a routerLink="/historialactividad" class="block p-6 text-center bg-gray-800 text-white hover:bg-gray-900 rounded-t-lg transition-colors">
             <mat-icon class="mr-2">timeline</mat-icon><h2 class="text-xl font-semibold inline">Historial actividad</h2>
         </a>
