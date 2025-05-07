@@ -13,4 +13,5 @@ export class HorasextrasDTO {
   motivo?: string | null;
   estado?: string | null;
   aprobadoPor?: UsuariosDTO | null;
+  editado?: boolean;
 }

@@ -72,7 +72,6 @@ export class UsuariosAddComponent implements OnInit {
     if (!this.addForm.valid) {
       return;
     }
-   
 
     const rawData = this.addForm.value;
     const empresaId = rawData.empresa;
