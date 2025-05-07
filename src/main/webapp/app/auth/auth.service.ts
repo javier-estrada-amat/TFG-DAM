@@ -36,4 +36,25 @@ export class AuthService {
     const url = `${environment.apiPath}auth/cambiar-password`;
     return this.http.post(url, { email, nuevaPassword });
   }
+
+getUserRoles(): string[] {
+  const token = this.getToken();
+  if (!token) return [];
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const roles: string[] = payload.roles || [];
+    return roles.map(r => r.replace(/^ROLE_/, ''));
+  } catch {
+    return [];
+  }
+}
+
+  hasRole(rol: string): boolean {
+    return this.getUserRoles().includes(rol);
+  }
+
+  hasAnyRole(roles: string[]): boolean {
+    const userRoles = this.getUserRoles();
+    return roles.some(r => userRoles.includes(r));
+  }
 }
