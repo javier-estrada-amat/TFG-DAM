@@ -34,7 +34,8 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
   providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
   ],
-  templateUrl: './fichajes-list.component.html'
+  templateUrl: './fichajes-list.component.html',
+  styleUrl: './fichajes-list.component.css'
 })
 export class FichajesListComponent implements OnInit, OnDestroy {
 

@@ -25,6 +25,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatSortModule
   ],
   templateUrl: './roles-list.component.html',
+   styleUrl: './roles-list.component.css'
 })
 export class RolesListComponent implements OnInit, OnDestroy {
 
