@@ -24,9 +24,10 @@ import { PaginationComponent } from "../common/pagination/pagination.component";
     MatSortModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    PaginationComponent
+    
 ],
-  templateUrl: './registrocambioscontrasenia-list.component.html'
+  templateUrl: './registrocambioscontrasenia-list.component.html',
+  styleUrl: './registrocambioscontrasenia-list.component.css'
 })
 export class RegistrocambioscontraseniaListComponent implements OnInit, OnDestroy {
 

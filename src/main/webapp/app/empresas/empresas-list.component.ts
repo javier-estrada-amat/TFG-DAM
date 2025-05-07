@@ -34,7 +34,8 @@ import { PaginationComponent } from "../common/pagination/pagination.component";
   providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
   ],
-  templateUrl: './empresas-list.component.html'
+  templateUrl: './empresas-list.component.html',
+  styleUrl: './empresas-list-component.css'
 })
 export class EmpresasListComponent implements OnInit, OnDestroy {
 
