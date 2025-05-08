@@ -8,7 +8,7 @@
         <strong class="text-blue-500">ESTA ES LA PÁGINA PRINCIPAL DE NUESTRO PROYECTO</strong>
     </p>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto px-4 pt-4 max-w-screen-lg min-h-screen overflow-hidden">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto px-4 pt-4 max-w-screen-lg  overflow-hidden">
         <!-- Usuarios - ADMIN o DIRECCION -->
         <div *ngIf="auth.hasAnyRole(['ADMIN', 'DIRECCION'])" class="bg-white shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 rounded-lg overflow-hidden w-full max-w-xs mx-auto">
             <a routerLink="/usuarios" class="block p-6 text-center bg-blue-500 text-white hover:bg-blue-600 rounded-t-lg transition-colors">

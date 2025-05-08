@@ -2,11 +2,12 @@ import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'app/auth/auth.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, RouterLink],
+  imports: [CommonModule, NgOptimizedImage, RouterLink, MatIcon],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent {
