@@ -1,10 +1,11 @@
 <app-header></app-header>
+<div class="container mx-auto px-4 md:px-6"></div>
+<router-outlet ></router-outlet>
 
-<main class="my-12">
+<main *ngIf="msgSuccess || msgInfo || msgError" class="my-12 min-h-screen">
     <div class="container mx-auto px-4 md:px-6">
-        @if (msgSuccess) { <p class="bg-green-200 border-green-800 text-green-800 border rounded p-4 mb-6" role="alert">{{ msgSuccess }}</p> }
-        @if (msgInfo) { <p class="bg-blue-200 border-blue-800 text-blue-800 border rounded p-4 mb-6" role="alert">{{ msgInfo }}</p> }
-        @if (msgError) { <p class="bg-red-200 border-red-800 text-red-800 border rounded p-4 mb-6" role="alert">{{ msgError }}</p> }
-        <router-outlet />
+        <p *ngIf="msgSuccess" class="bg-green-200 border-green-800 text-green-800 border rounded p-4 mb-6" role="alert">{{ msgSuccess }}</p>
+        <p *ngIf="msgInfo" class="bg-blue-200 border-blue-800 text-blue-800 border rounded p-4 mb-6" role="alert">{{ msgInfo }}</p>
+        <p *ngIf="msgError" class="bg-red-200 border-red-800 text-red-800 border rounded p-4 mb-6" role="alert">{{ msgError }}</p>
     </div>
 </main>

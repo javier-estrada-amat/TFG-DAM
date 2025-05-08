@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import coredev.sistema_fichajes.mapper.UsuarioMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,14 @@ public class AuthController {
 //                "USUARIO",
 //                u
 //            );
-            return ResponseEntity.ok(new LoginResponseDTO(1, token, u.isPrimerAcceso()));
+            LoginResponseDTO response = LoginResponseDTO.builder()
+                .code(1)
+                .token(token)
+                .primerAcceso(u.isPrimerAcceso())
+                .usuario(UsuarioMapper.toDTO(u))
+                .build();
+
+            return ResponseEntity.ok(response);
         }
         usuarioService.buscarPorEmail(usuario.getEmail()).ifPresent(uFallido ->
             historialActividadService.registrar(

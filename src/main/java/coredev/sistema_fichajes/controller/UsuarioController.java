@@ -1,10 +1,12 @@
 package coredev.sistema_fichajes.controller;
 
+import coredev.sistema_fichajes.config.JwtUtil;
 import coredev.sistema_fichajes.dto.UsuarioDTO;
 import coredev.sistema_fichajes.mapper.UsuarioMapper;
 import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.service.HistorialActividadService;
 import coredev.sistema_fichajes.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +21,12 @@ import java.util.stream.Collectors;
 public class UsuarioController {
     private final UsuarioService usuarioService;
     private final HistorialActividadService historialActividadService;
+    private final JwtUtil jwtUtil;
 
-    public UsuarioController(UsuarioService usuarioService, HistorialActividadService historialActividadService) {
+    public UsuarioController(UsuarioService usuarioService, HistorialActividadService historialActividadService, JwtUtil jwtUtil) {
         this.usuarioService = usuarioService;
         this.historialActividadService = historialActividadService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/add")
@@ -38,8 +42,16 @@ public class UsuarioController {
         return new ResponseEntity<>(UsuarioMapper.toDTO(creado), HttpStatus.CREATED);
     }
     @GetMapping("/list/activos")
-    public ResponseEntity<List<UsuarioDTO>> getUsuariosActivos() {
-        List<Usuario> usuarios = usuarioService.getAllUsuariosActivos();
+    public ResponseEntity<List<UsuarioDTO>> getAllUsuariosActivos(HttpServletRequest request) {
+        String email = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(email)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        List<Usuario> usuarios = usuarioService
+            .getUsuariosPorEmpresa(usuarioActual.getEmpresa().getId_empresa())
+            .stream()
+            .filter(Usuario::isActivo)
+            .toList();
+
         List<UsuarioDTO> usuariosDTO = usuarios.stream()
             .map(UsuarioMapper::toDTO)
             .collect(Collectors.toList());
@@ -47,8 +59,11 @@ public class UsuarioController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<UsuarioDTO>> getAllUsuarios() {
-        List<Usuario> usuarios = usuarioService.getAllUsuarios();
+    public ResponseEntity<List<UsuarioDTO>> getAllUsuarios(HttpServletRequest request) {
+        String email = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(email)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        List<Usuario> usuarios = usuarioService.getUsuariosPorEmpresa(usuarioActual.getEmpresa().getId_empresa());
         List<UsuarioDTO> usuariosDTO = usuarios.stream()
             .map(UsuarioMapper::toDTO)
             .collect(Collectors.toList());
