@@ -30,11 +30,22 @@ public class FichajeController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<FichajeDTO>> obtenerTodosFichajes() {
-        List<FichajeDTO> fichajes = fichajeService.obtenerTodosFichajes().stream()
+    public ResponseEntity<List<FichajeDTO>> obtenerFichajes(HttpServletRequest request) {
+        String email = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuario = usuarioService.buscarPorEmail(email)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        List<Fichaje> fichajes;
+        boolean esAdminODireccion = usuario.getRoles().stream()
+            .anyMatch(rol -> rol.getNombre().equalsIgnoreCase("ADMIN") || rol.getNombre().equalsIgnoreCase("DIRECCION"));
+        if (esAdminODireccion) {
+            fichajes = fichajeService.obtenerFichajesPorEmpresa(usuario.getEmpresa().getId_empresa());
+        } else {
+            fichajes = fichajeService.obtenerFichajesPorUsuario(usuario.getId_usuario());
+        }
+        List<FichajeDTO> fichajesDTO = fichajes.stream()
             .map(FichajeMapper::toDTO)
             .collect(Collectors.toList());
-        return ResponseEntity.ok(fichajes);
+        return ResponseEntity.ok(fichajesDTO);
     }
 
     @PostMapping("/iniciar")

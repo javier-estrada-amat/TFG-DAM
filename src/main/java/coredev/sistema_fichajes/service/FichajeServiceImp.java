@@ -65,4 +65,9 @@ public class FichajeServiceImp implements FichajeService {
     public boolean tieneFichajeEnCurso(int usuarioId) {
         return fichajeRepository.existsFichajeEnCurso(usuarioId, Fichaje.EstadoFichaje.EN_PROGRESO);
     }
+
+    @Override
+    public List<Fichaje> obtenerFichajesPorEmpresa(int idEmpresa) {
+        return fichajeRepository.findByEmpresaId(idEmpresa);
+    }
 }

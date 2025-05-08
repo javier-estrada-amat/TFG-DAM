@@ -7,4 +7,6 @@ public interface HistorialCambioPasswordService {
     HistorialCambioPassword agregarRegistro(HistorialCambioPassword registro);
     List<HistorialCambioPassword> getAllRegistros();
     void eliminarRegistro(int id);
+    List<HistorialCambioPassword> obtenerPorUsuario(int idUsuario);
+    List<HistorialCambioPassword> obtenerPorEmpresa(int idEmpresa);
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface HistorialActividadService {
     void registrar(String accion, String descripcion, String entidadAfectada, Usuario usuario);
     List<HistorialActividad> getAll();
+    List<HistorialActividad> obtenerPorUsuario(int idUsuario);
+    List<HistorialActividad> obtenerPorEmpresa(int idEmpresa);
 }
