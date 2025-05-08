@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { LoginResponse } from './models/login-response.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<{ code: number, token: string, primerAcceso: boolean }> {
-      const url = `${environment.apiPath}auth/login`;
-      return this.http.post<{ code: number, token: string, primerAcceso: boolean }>(url, { email, password });
-    }
+  login(email: string, password: string): Observable<LoginResponse> {
+    const url = `${environment.apiPath}auth/login`;
+    return this.http.post<LoginResponse>(url, { email, password });
+  }
 
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);

@@ -14,6 +14,12 @@ export class HeaderComponent {
   constructor(public auth: AuthService) {}
   elRef = inject(ElementRef);
 
+  get nombreCompleto(): string {
+    const nombre = localStorage.getItem('nombre') || '';
+    const apellidos = localStorage.getItem('apellidos') || '';
+    return `${nombre} ${apellidos}`.trim();
+  }
+
   @HostListener('document:click', ['$event'])
   handleDropdown(event: Event) {
     // close any open dropdown

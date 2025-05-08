@@ -83,6 +83,9 @@
 
                     </li>
                 </ul>
+                <div *ngIf="nombreCompleto" class="text-black font-medium ml-4 flex items-center gap-2">
+                    <span class="hidden sm:inline">👤 {{ nombreCompleto }}</span>
+                </div>
             </div>
         </nav>
     </div>
