@@ -9,11 +9,14 @@ import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.service.HistorialActividadService;
 import coredev.sistema_fichajes.service.HoraExtraService;
 import coredev.sistema_fichajes.service.UsuarioService;
+import coredev.sistema_fichajes.util.HoraExtraExcelExporter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -106,4 +109,15 @@ public class HoraExtraController {
         }
         return ResponseEntity.ok(horasExtras);
     }
+
+    @GetMapping("/horas-extra/exportar/excel")
+    public void exportarHorasExtrasExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=horas_extras.xlsx");
+
+        List<HoraExtra> horasExtras = horaExtraService.getAllHorasExtras(); // Ajusta según tu servicio
+        HoraExtraExcelExporter exporter = new HoraExtraExcelExporter(horasExtras);
+        exporter.export(response);
+    }
+
 }

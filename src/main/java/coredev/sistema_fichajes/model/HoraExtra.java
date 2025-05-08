@@ -47,6 +47,10 @@ public class HoraExtra implements Serializable {
     @JoinColumn(name = "aprobado_por")
     private Usuario aprobadoPor;
 
+    public double getId() {
+        return id_hora_extra;
+    }
+
     public enum EstadoHoraExtra {
         PENDIENTE,
         APROBADA,
