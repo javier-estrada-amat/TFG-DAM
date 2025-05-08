@@ -32,4 +32,14 @@ public class HistorialActividadServiceImp implements HistorialActividadService {
     public List<HistorialActividad> getAll() {
         return repository.findAll();
     }
+
+    @Override
+    public List<HistorialActividad> obtenerPorUsuario(int idUsuario) {
+        return repository.findByUsuarioId(idUsuario);
+    }
+
+    @Override
+    public List<HistorialActividad> obtenerPorEmpresa(int idEmpresa) {
+        return repository.findByEmpresaId(idEmpresa);
+    }
 }

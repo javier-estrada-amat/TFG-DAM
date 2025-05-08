@@ -15,4 +15,6 @@ public interface FichajeRepository extends JpaRepository<Fichaje, Integer> {
     Optional<Fichaje> findPrimerFichajeEnCurso(@Param("usuarioId") int usuarioId, @Param("estado") Fichaje.EstadoFichaje estado);
     @Query("SELECT COUNT(f) > 0 FROM Fichaje f WHERE f.usuario.id_usuario = :usuarioId AND f.estado = :estado")
     boolean existsFichajeEnCurso(@Param("usuarioId") int usuarioId, @Param("estado") Fichaje.EstadoFichaje estado);
+    @Query("SELECT f FROM Fichaje f WHERE f.usuario.empresa.id_empresa = :idEmpresa")
+    List<Fichaje> findByEmpresaId(@Param("idEmpresa") int idEmpresa);
 }

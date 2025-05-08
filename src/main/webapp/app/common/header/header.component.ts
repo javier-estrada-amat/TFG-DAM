@@ -15,6 +15,12 @@ export class HeaderComponent {
 
   constructor(public auth: AuthService, private router: Router) {}
 
+  get nombreCompleto(): string {
+    const nombre = localStorage.getItem('nombre') || '';
+    const apellidos = localStorage.getItem('apellidos') || '';
+    return `${nombre} ${apellidos}`.trim();
+  }
+
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event) {
     const target = event.target as HTMLElement;
