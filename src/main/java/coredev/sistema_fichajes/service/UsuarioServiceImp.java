@@ -102,4 +102,9 @@ public class UsuarioServiceImp implements UsuarioService {
         usuario.setPrimerAcceso(true);
         usuarioRepository.save(usuario);
     }
+
+    @Override
+    public List<Usuario> getUsuariosPorEmpresa(int idEmpresa) {
+        return usuarioRepository.findUsuariosByEmpresaId(idEmpresa);
+    }
 }
