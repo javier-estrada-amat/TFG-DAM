@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { LoginResponse } from './models/login-response.model';
@@ -11,7 +12,7 @@ import { LoginResponse } from './models/login-response.model';
 export class AuthService {
   private tokenKey = 'token';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string): Observable<LoginResponse> {
     const url = `${environment.apiPath}auth/login`;
@@ -28,10 +29,6 @@ export class AuthService {
 
   clearToken(): void {
     localStorage.removeItem(this.tokenKey);
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
   }
 
   cambiarPassword(email: string, nuevaPassword: string): Observable<any> {
@@ -58,5 +55,14 @@ getUserRoles(): string[] {
   hasAnyRole(roles: string[]): boolean {
     const userRoles = this.getUserRoles();
     return roles.some(r => userRoles.includes(r));
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  logout(): void {
+    this.clearToken();
+    this.router.navigate(['/login']);
   }
 }
