@@ -14,9 +14,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorIntlEspañol } from 'app/shared/mat-paginator-intl-es';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ExcelExportService } from 'app/shared/excel-export.service';
 import { PaginationComponent } from 'app/common/pagination/pagination.component';
-
-// ... (importaciones iguales)
 
 @Component({
   selector: 'app-fichajes-list',
@@ -29,7 +28,6 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-
   ],
   providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
@@ -38,10 +36,10 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
   styleUrl: './fichajes-list.component.css'
 })
 export class FichajesListComponent implements OnInit, OnDestroy {
-
   fichajesService = inject(FichajesService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
+  excelService = inject(ExcelExportService);
 
   dataSource = new MatTableDataSource<FichajesDTO>([]);
   displayedColumns = ['usuario_id', 'fecha', 'hora_entrada', 'hora_salida', 'estado'];
@@ -77,6 +75,16 @@ export class FichajesListComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Método para exportar a Excel
+  exportarExcel() {
+    const datos = this.dataSource.data.map(f => ({
+      'ID Usuario': f.usuario_id,
+      Fecha: f.fecha,
+      'Hora Entrada': f.hora_entrada,
+      'Hora Salida': f.hora_salida,
+      Estado: f.estado
+    }));
 
+    this.excelService.exportAsExcelFile(datos, 'fichajes');
+  }
 }
-
