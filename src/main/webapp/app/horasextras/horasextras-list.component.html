@@ -2,6 +2,12 @@
 <div class="flex flex-wrap mb-6">
     <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@horasextras.list.headline">Historial de horas extras</h1>
     <div>
+        <button
+            (click)="exportarExcel()"
+            class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 rounded px-5 py-2"
+            i18n="@@horasextras.list.exportExcel">
+            Exportar a Excel
+        </button>
       <a routerLink="/horasextras/add"
          class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2"
          i18n="@@horasextras.list.createNew">Solicitar hora extra</a>

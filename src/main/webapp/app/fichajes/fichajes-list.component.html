@@ -4,7 +4,10 @@
             Historial de Fichajes
         </h1>
         <!-- Botón Exportar -->
-        <button mat-raised-button color="primary" (click)="exportarExcel()">
+        <button
+            (click)="exportarExcel()"
+            class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 rounded px-5 py-2"
+            i18n="@@historialFichajes.list.exportExcel">
             Exportar a Excel
         </button>
     </div>
