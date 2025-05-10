@@ -29,7 +29,7 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    
+
   ],
   providers: [
     { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
@@ -76,5 +76,7 @@ export class FichajesListComponent implements OnInit, OnDestroy {
       error: (error) => this.errorHandler.handleServerError(error.error)
     });
   }
+
+
 }
 
