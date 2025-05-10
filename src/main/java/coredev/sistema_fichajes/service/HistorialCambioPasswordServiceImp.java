@@ -27,4 +27,14 @@ public class HistorialCambioPasswordServiceImp implements HistorialCambioPasswor
     public void eliminarRegistro(int id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public List<HistorialCambioPassword> obtenerPorUsuario(int idUsuario) {
+        return repository.findByUsuarioId(idUsuario);
+    }
+
+    @Override
+    public List<HistorialCambioPassword> obtenerPorEmpresa(int idEmpresa) {
+        return repository.findByEmpresaId(idEmpresa);
+    }
 }

@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { LoginResponse } from './models/login-response.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +12,12 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private tokenKey = 'token';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  login(email: string, password: string): Observable<{ code: number, token: string, primerAcceso: boolean }> {
-      const url = `${environment.apiPath}auth/login`;
-      return this.http.post<{ code: number, token: string, primerAcceso: boolean }>(url, { email, password });
-    }
+  login(email: string, password: string): Observable<LoginResponse> {
+    const url = `${environment.apiPath}auth/login`;
+    return this.http.post<LoginResponse>(url, { email, password });
+  }
 
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
@@ -26,10 +29,6 @@ export class AuthService {
 
   clearToken(): void {
     localStorage.removeItem(this.tokenKey);
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
   }
 
   cambiarPassword(email: string, nuevaPassword: string): Observable<any> {
@@ -56,5 +55,14 @@ getUserRoles(): string[] {
   hasAnyRole(roles: string[]): boolean {
     const userRoles = this.getUserRoles();
     return roles.some(r => userRoles.includes(r));
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  logout(): void {
+    this.clearToken();
+    this.router.navigate(['/login']);
   }
 }

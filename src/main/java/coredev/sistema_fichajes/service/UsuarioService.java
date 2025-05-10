@@ -15,5 +15,6 @@ public interface UsuarioService {
     Optional<Usuario> getUsuarioById(int id);
     List<Usuario> getAllUsuariosActivos();
     void resetearPassword(int id);
+    List<Usuario> getUsuariosPorEmpresa(int idEmpresa);
 }
 

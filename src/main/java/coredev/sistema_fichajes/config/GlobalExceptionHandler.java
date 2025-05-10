@@ -49,4 +49,5 @@ public class GlobalExceptionHandler {
         String mensaje = ex.getReason();
         return ResponseEntity.status(ex.getStatusCode()).body(Map.of("error", mensaje));
     }
+
 }

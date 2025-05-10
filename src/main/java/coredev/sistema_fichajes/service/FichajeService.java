@@ -10,4 +10,5 @@ public interface FichajeService {
     List<Fichaje> obtenerFichajesPorUsuario(int usuarioId);
     List<Fichaje> obtenerTodosFichajes();
     boolean tieneFichajeEnCurso(int usuarioId);
+    List<Fichaje> obtenerFichajesPorEmpresa(int idEmpresa);
 }

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from 'app/common/header/header.component';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,

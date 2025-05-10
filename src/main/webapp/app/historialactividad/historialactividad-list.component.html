@@ -1,3 +1,4 @@
+<div class="container mt-4 mx-auto px-4 md:px-6">
 <div class="flex flex-wrap items-center justify-between mb-6">
     <h1 class="text-3xl md:text-4xl font-semibold" i18n="@@historialactividad.list.headline">Historial de actividad</h1>
 </div>
@@ -14,7 +15,7 @@
         <!-- Columnas... -->
         <!-- ID -->
         <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Id usuario </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Id</mat-header-cell>
             <mat-cell *matCellDef="let registro">{{registro.idHistorial}}</mat-cell>
         </ng-container>
 
@@ -52,4 +53,5 @@
 
     <!-- Paginador debe estar siempre presente -->
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
 </div>
