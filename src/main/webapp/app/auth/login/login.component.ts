@@ -9,7 +9,7 @@ import { LoginResponse } from '../models/login-response.model';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule,NgOptimizedImage ],
+  imports: [CommonModule, FormsModule, NgOptimizedImage],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {

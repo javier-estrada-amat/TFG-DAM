@@ -83,4 +83,5 @@ public class Usuario implements Serializable {
         this.fecha_registro = LocalDateTime.now();
     }
 
+
 }

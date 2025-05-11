@@ -14,4 +14,6 @@ public interface HoraExtraService {
     List<HoraExtra> buscarPorUsuario(int idUsuario);
     List<HoraExtra> buscarPorEmpresa(int idEmpresa);
     List<HoraExtra> buscarPorEmpresaYEstado(int idEmpresa, HoraExtra.EstadoHoraExtra estado);
+
+
 }

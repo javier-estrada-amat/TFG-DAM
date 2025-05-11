@@ -12,6 +12,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-horasextras-list',
   standalone: true,
@@ -71,5 +73,13 @@ export class HorasextrasListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     });
+  }
+
+  // Método para exportar los datos a Excel
+  exportarExcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource.data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'HorasExtra');
+    XLSX.writeFile(wb, 'horas_extra.xlsx');
   }
 }

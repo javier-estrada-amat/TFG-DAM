@@ -56,7 +56,7 @@
         <ng-container matColumnDef="fecha_registro">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Registro </mat-header-cell>
             <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
-                {{ usuario.fecha_registro | date: 'short' }}
+                {{ usuario.fecha_registro | date: 'dd/MM/yyyy, HH:mm:ss' }}
             </mat-cell>
         </ng-container>
 

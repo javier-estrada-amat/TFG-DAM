@@ -14,6 +14,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorIntlEspañol } from 'app/shared/mat-paginator-intl-es';
 
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-historialactividad-list',
   standalone: true,
@@ -32,21 +35,18 @@ import { MatPaginatorIntlEspañol } from 'app/shared/mat-paginator-intl-es';
   templateUrl: './historialactividad-list.component.html',
   styleUrl: './historialactividad-list.component.css'
 })
-
-
 export class HistorialactividadListComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<HistorialactividadDTO>([]);
-  displayedColumns = ['id',	'usuario',	'accion', 'entidad',	'fecha'];
+  displayedColumns = ['id', 'usuario', 'accion', 'entidad', 'fecha'];
   historialactividadService = inject(HistorialactividadService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
   historialactividads?: HistorialactividadDTO[];
   navigationSubscription?: Subscription;
 
- 
   ngOnInit() {
     this.loadData();
     this.navigationSubscription = this.router.events.subscribe((event) => {
@@ -55,13 +55,14 @@ export class HistorialactividadListComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   ngOnDestroy() {
-    this.navigationSubscription!.unsubscribe();
+    this.navigationSubscription?.unsubscribe();
   }
 
   loadData() {
@@ -80,9 +81,26 @@ export class HistorialactividadListComponent implements OnInit, OnDestroy {
   }
 
   getMessage(key: string, details?: any) {
-    const messages: Record<string, string> = {
-   };
+    const messages: Record<string, string> = {};
     return messages[key];
+  }
+
+  exportarExcel() {
+    const datosParaExcel = this.dataSource.data.map(item => ({
+      ID: item.idHistorial,
+      Usuario: item.nombreUsuario ?? '—', // Aquí accedes a nombreUsuario en lugar de usuario.nombre
+      Acción: item.accion,
+      Entidad: item.entidadAfectada,
+      Fecha: item.fecha ? new Date(item.fecha).toLocaleString() : ''
+    }));
+
+    const hoja: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaExcel);
+    const libro: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, 'Historial');
+
+    const bufferExcel: any = XLSX.write(libro, { bookType: 'xlsx', type: 'array' });
+    const blob: Blob = new Blob([bufferExcel], { type: 'application/octet-stream' });
+    FileSaver.saveAs(blob, `HistorialActividades_${new Date().toISOString().slice(0, 10)}.xlsx`);
   }
 
 }

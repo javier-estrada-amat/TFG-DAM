@@ -60,7 +60,8 @@ export class HorasextrasApproveComponent implements OnInit {
   }
 
   aprobar(hora: HorasextrasDTO, horasAprobadas: string) {
-    hora.horasAprobadas = horasAprobadas;
+    const horas = parseFloat(horasAprobadas);
+    hora.horasAprobadas = horas;
 
     if (!this.validarHorasAprobadas(hora)) {
       this.mostrarMensaje('Error: Las horas aprobadas deben ser menores o iguales a las solicitadas y deben terminar en .0 o .5.');
@@ -68,7 +69,7 @@ export class HorasextrasApproveComponent implements OnInit {
     }
 
     const payload = {
-      horasAprobadas: horasAprobadas,
+      horasAprobadas: horas,
       estado: 'APROBADA'
     };
 
@@ -82,7 +83,7 @@ export class HorasextrasApproveComponent implements OnInit {
 
   rechazar(hora: HorasextrasDTO) {
     const payload = {
-      horasAprobadas: '0',
+      horasAprobadas: 0,
       estado: 'RECHAZADA'
     };
 
@@ -92,9 +93,9 @@ export class HorasextrasApproveComponent implements OnInit {
         this.mostrarMensaje('Solicitud rechazada correctamente.');
       },
       error: (err) => {
-          const mensaje = err?.error || 'Error al aprobar horas extras.';
-          this.mostrarMensaje(mensaje);
-        }
+        const mensaje = err?.error || 'Error al rechazar horas extras.';
+        this.mostrarMensaje(mensaje);
+      }
     });
   }
 
@@ -114,8 +115,8 @@ export class HorasextrasApproveComponent implements OnInit {
   }
 
   validarHorasAprobadas(hora: HorasextrasDTO): boolean {
-    const solicitadas = parseFloat(hora.horasSolicitadas ?? '0');
-    const aprobadas = parseFloat(hora.horasAprobadas ?? '0');
+    const solicitadas = Number(hora.horasSolicitadas ?? 0);
+    const aprobadas = Number(hora.horasAprobadas ?? 0);
 
     const parteDecimalValida = aprobadas % 1 === 0 || aprobadas % 1 === 0.5;
     const noExcedeSolicitadas = aprobadas <= solicitadas;
@@ -124,8 +125,8 @@ export class HorasextrasApproveComponent implements OnInit {
   }
 
   validarInput(hora: HorasextrasDTO) {
-    const solicitadas = parseFloat(hora.horasSolicitadas ?? '0');
-    const aprobadas = parseFloat(hora.horasAprobadas ?? '0');
+    const solicitadas = Number(hora.horasSolicitadas ?? 0);
+    const aprobadas = Number(hora.horasAprobadas ?? 0);
 
     const parteDecimalValida = aprobadas % 1 === 0 || aprobadas % 1 === 0.5;
     const noExcedeSolicitadas = aprobadas <= solicitadas;
@@ -133,7 +134,7 @@ export class HorasextrasApproveComponent implements OnInit {
     const esValido = parteDecimalValida && noExcedeSolicitadas;
 
     if (!esValido) {
-      hora.horasAprobadas = '';
+      hora.horasAprobadas = null;
       this.mostrarMensaje('Valor inválido. Debe ser menor o igual a las solicitadas.');
     }
   }

@@ -25,7 +25,6 @@ import java.util.List;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-
     private final JwtUtil jwtUtil;
 
     public JwtAuthFilter(JwtUtil jwtUtil) {
@@ -62,7 +61,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             List<GrantedAuthority> authorities;
             if (roles != null) {
                 authorities = roles.stream()
-                    .map(SimpleGrantedAuthority::new)
+                    .map(rol -> new SimpleGrantedAuthority("ROLE_" + rol))
                     .collect(Collectors.toList());
             } else {
                 authorities = Collections.emptyList();

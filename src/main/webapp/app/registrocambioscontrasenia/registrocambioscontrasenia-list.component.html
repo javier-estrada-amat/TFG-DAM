@@ -36,7 +36,7 @@
         <!-- Fecha de Cambio -->
         <ng-container matColumnDef="fechaCambio">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Cambio </mat-header-cell>
-            <mat-cell *matCellDef="let registro">{{ registro.fechaCambio | date: 'short' }}</mat-cell>
+            <mat-cell *matCellDef="let registro">{{ registro.fechaCambio | date: 'dd/MM/yyyy, HH:mm:ss' }}</mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

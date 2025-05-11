@@ -1,56 +1,61 @@
 <div class="container mt-4 mx-auto px-4 md:px-6">
-<div class="flex flex-wrap mb-6">
-  <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@fichajes.list.headline">Historial de Fichajes</h1>
-</div>
+    <div class="flex flex-wrap mb-6 items-center justify-between">
+        <h1 class="text-3xl md:text-4xl font-medium mb-2" i18n="@@fichajes.list.headline">
+            Historial de Fichajes
+        </h1>
+        <!-- Botón Exportar -->
+        <button
+            (click)="exportarExcel()"
+            class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 rounded px-5 py-2"
+            i18n="@@historialFichajes.list.exportExcel">
+            Exportar a Excel
+        </button>
+    </div>
 
-<div class="overflow-x-auto mt-4">
-  <!-- Indicador de carga -->
-  <div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
-    Cargando fichajes...
-  </div>
+    <div class="overflow-x-auto mt-4">
+        <!-- Indicador de carga -->
+        <div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
+            Cargando fichajes...
+        </div>
 
-  <!-- Tabla de fichajes -->
-  <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas" [hidden]="isLoading">
+        <!-- Tabla de fichajes -->
+        <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas" [hidden]="isLoading">
 
-    <!-- Usuario ID -->
-    <ng-container matColumnDef="usuario_id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID Usuario </mat-header-cell>
-      <mat-cell *matCellDef="let fichaje"> {{ fichaje.usuario_id }} </mat-cell>
-    </ng-container>
+            <!-- Columnas -->
+            <ng-container matColumnDef="usuario_id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> ID Usuario </mat-header-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.usuario_id }} </mat-cell>
+            </ng-container>
 
-    <!-- Fecha -->
-    <ng-container matColumnDef="fecha">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let fichaje"> {{ fichaje.fecha }} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="fecha">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.fecha | date: 'dd/MM/yyyy' }} </mat-cell>
+            </ng-container>
 
-    <!-- Hora Entrada -->
-    <ng-container matColumnDef="hora_entrada">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Hora Entrada </mat-header-cell>
-      <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_entrada }} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="hora_entrada">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Hora Entrada </mat-header-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_entrada | date: 'dd/MM/yyyy, HH:mm:ss' }} </mat-cell>
+            </ng-container>
 
-    <!-- Hora Salida -->
-    <ng-container matColumnDef="hora_salida">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Hora Salida </mat-header-cell>
-      <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_salida }} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="hora_salida">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Hora Salida </mat-header-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_salida | date: 'dd/MM/yyyy, HH:mm:ss' }} </mat-cell>
+            </ng-container>
 
-    <!-- Estado -->
-    <ng-container matColumnDef="estado">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Estado </mat-header-cell>
-      <mat-cell *matCellDef="let fichaje"> {{ fichaje.estado }} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="estado">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Estado </mat-header-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.estado }} </mat-cell>
+            </ng-container>
 
-    <!-- Filas -->
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row
-    *matRowDef="let row; let i = index; columns: displayedColumns;"
-    [ngClass]="i % 2 === 0 ? 'fila-par' : 'fila-impar'">
-  </mat-row>
-  </mat-table>
+            <!-- Filas -->
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row
+                *matRowDef="let row; let i = index; columns: displayedColumns;"
+                [ngClass]="i % 2 === 0 ? 'fila-par' : 'fila-impar'">
+            </mat-row>
+        </mat-table>
 
-  <!-- Paginador -->
-  <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons [hidden]="isLoading"></mat-paginator>
-</div>
+        <!-- Paginador -->
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons [hidden]="isLoading"></mat-paginator>
+    </div>
 </div>

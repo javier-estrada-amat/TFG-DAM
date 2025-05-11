@@ -8,8 +8,8 @@ export class HorasextrasDTO {
   id_hora_extra?: number | null;
   usuario?: UsuariosDTO | null;
   fecha?: string | null;
-  horasSolicitadas?: string | null;
-  horasAprobadas?: string | null;
+  horasSolicitadas?: number | null;
+  horasAprobadas?: number | null;
   motivo?: string | null;
   estado?: string | null;
   aprobadoPor?: UsuariosDTO | null;
