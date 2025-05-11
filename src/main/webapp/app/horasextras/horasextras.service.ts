@@ -44,7 +44,7 @@ export class HorasextrasService {
 
   }
 
-  resolverHoraExtra(id: number, dto: { horasAprobadas: string, estado: string }) {
+  resolverHoraExtra(id: number, dto: { horasAprobadas: number; estado: string }) {
     return this.http.put<HorasextrasDTO>(`${this.resourcePath}/resolver/${id}`, dto);
   }
 

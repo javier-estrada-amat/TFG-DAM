@@ -22,11 +22,9 @@ export class HorasextrasAddComponent implements OnInit {
 
   horasextras = new HorasextrasDTO({
     fecha: '',
-    horasSolicitadas: '',
+    horasSolicitadas: null,
     motivo: '',
   });
-
-
 
   isFechaValida(): boolean {
     if (!this.horasextras.fecha) return true; // Si no hay fecha aún
@@ -36,11 +34,11 @@ export class HorasextrasAddComponent implements OnInit {
     seleccionada.setHours(0, 0, 0, 0);
     return seleccionada <= hoy;
   }
-  
+
   // isHorasSolicitadasValida(): boolean {
   //   const valor = this.horasextras.horasSolicitadas;
   //   if (valor === null || valor === undefined || valor === '') return false;
-  
+
   //   const regex = /^(?:[0-9]|[1-9][0-9])(?:\.(0|5))?$/;
   //   return regex.test(String(valor));
   // }
@@ -57,7 +55,7 @@ export class HorasextrasAddComponent implements OnInit {
     //   alert('Introduce un número válido de horas (entre 0 y 99, con decimales .0 o .5 solamente).');
     //   return;
     // }
-  
+
     this.horasextrasService.createHorasextras(this.horasextras).subscribe({
       next: () => this.router.navigate(['/horasextras'], {
         state: { msgInfo: 'Solicitud de horas extras enviada correctamente.' }
@@ -65,5 +63,5 @@ export class HorasextrasAddComponent implements OnInit {
       error: (err) => console.error('Error al crear horas extras', err)
     });
   }
-  
+
 }

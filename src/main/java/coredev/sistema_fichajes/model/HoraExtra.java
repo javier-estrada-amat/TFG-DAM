@@ -30,10 +30,10 @@ public class HoraExtra implements Serializable {
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @Column(name = "horas_solicitadas", nullable = false)
+    @Column(name = "horas_solicitadas", nullable = false, columnDefinition = "DECIMAL(4,2)")
     private BigDecimal horasSolicitadas;
 
-    @Column(name = "horas_aprobadas")
+    @Column(name = "horas_aprobadas", columnDefinition = "DECIMAL(4,2)")
     private BigDecimal horasAprobadas;
 
     @Column

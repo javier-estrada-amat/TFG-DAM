@@ -56,7 +56,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 .getBody();
 
             List<String> roles = claims.get("roles", List.class);
-            System.out.println("Roles del token: " + roles);
+//            System.out.println("Roles del token: " + roles);
 
             List<GrantedAuthority> authorities;
             if (roles != null) {
