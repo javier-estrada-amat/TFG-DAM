@@ -50,7 +50,7 @@
             <!-- Fecha -->
             <ng-container matColumnDef="fecha">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Registro </mat-header-cell>
-                <mat-cell *matCellDef="let registro">{{registro.fecha | date: 'short'}}</mat-cell>
+                <mat-cell *matCellDef="let registro">{{registro.fecha | date: 'dd/MM/yyyy, HH:mm:ss' }}</mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

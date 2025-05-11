@@ -29,17 +29,17 @@
 
             <ng-container matColumnDef="fecha">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
-                <mat-cell *matCellDef="let fichaje"> {{ fichaje.fecha }} </mat-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.fecha | date: 'dd/MM/yyyy' }} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="hora_entrada">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Hora Entrada </mat-header-cell>
-                <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_entrada }} </mat-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_entrada | date: 'dd/MM/yyyy, HH:mm:ss' }} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="hora_salida">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Hora Salida </mat-header-cell>
-                <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_salida }} </mat-cell>
+                <mat-cell *matCellDef="let fichaje"> {{ fichaje.hora_salida | date: 'dd/MM/yyyy, HH:mm:ss' }} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="estado">

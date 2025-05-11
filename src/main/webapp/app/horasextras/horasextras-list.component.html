@@ -42,7 +42,7 @@
       <!-- Fecha -->
       <ng-container matColumnDef="fecha">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{ item.fecha | date: 'short' }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.fecha | date: 'dd/MM/yyyy'}}</mat-cell>
       </ng-container>
 
       <!-- Horas Solicitadas -->
