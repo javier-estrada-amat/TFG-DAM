@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class FichajeDTO {
-    private int idFichaje;
-    private UsuarioDTO usuario;
+    private int id_fichaje;
+    private int usuario_id;
     private LocalDate fecha;
-    private LocalDateTime horaEntrada;
-    private LocalDateTime horaSalida;
+    private LocalDateTime hora_entrada;
+    private LocalDateTime hora_salida;
     private String estado;
 }

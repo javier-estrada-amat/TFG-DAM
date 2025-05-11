@@ -11,6 +11,7 @@ public class HistorialActividadMapper {
         HistorialActividadDTO dto = new HistorialActividadDTO();
         dto.setIdHistorial(entity.getId_historial());
         dto.setUsuarioId(entity.getUsuario().getId_usuario());
+        dto.setNombreUsuario(entity.getUsuario().getNombre() + " " + entity.getUsuario().getApellidos());
         dto.setAccion(entity.getAccion());
         dto.setEntidadAfectada(entity.getEntidadAfectada());
         dto.setDescripcion(entity.getDescripcion());

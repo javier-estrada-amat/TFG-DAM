@@ -23,7 +23,6 @@ public class HoraExtra implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_hora_extra;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -31,10 +30,10 @@ public class HoraExtra implements Serializable {
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @Column(name = "horas_solicitadas", nullable = false)
+    @Column(name = "horas_solicitadas", nullable = false, columnDefinition = "DECIMAL(4,2)")
     private BigDecimal horasSolicitadas;
 
-    @Column(name = "horas_aprobadas")
+    @Column(name = "horas_aprobadas", columnDefinition = "DECIMAL(4,2)")
     private BigDecimal horasAprobadas;
 
     @Column
@@ -44,10 +43,13 @@ public class HoraExtra implements Serializable {
     @Column(nullable = false)
     private EstadoHoraExtra estado;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "aprobado_por")
     private Usuario aprobadoPor;
+
+    public double getId() {
+        return id_hora_extra;
+    }
 
     public enum EstadoHoraExtra {
         PENDIENTE,

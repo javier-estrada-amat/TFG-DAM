@@ -1,44 +1,123 @@
 package coredev.sistema_fichajes.controller;
 
+import coredev.sistema_fichajes.config.JwtUtil;
+import coredev.sistema_fichajes.dto.HoraExtraDTO;
+import coredev.sistema_fichajes.dto.ResolucionHoraExtraDTO;
+import coredev.sistema_fichajes.mapper.HoraExtraMapper;
 import coredev.sistema_fichajes.model.HoraExtra;
+import coredev.sistema_fichajes.model.Usuario;
+import coredev.sistema_fichajes.service.HistorialActividadService;
 import coredev.sistema_fichajes.service.HoraExtraService;
-import org.springframework.beans.factory.annotation.Autowired;
+import coredev.sistema_fichajes.service.UsuarioService;
+import coredev.sistema_fichajes.util.HoraExtraExcelExporter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/horas-extras")
+@RequestMapping("/api/horasextras")
 public class HoraExtraController {
 
-    @Autowired
-    private HoraExtraService horaExtraService;
+    private final HoraExtraService horaExtraService;
+    private final JwtUtil jwtUtil;
+    private final UsuarioService usuarioService;
+    private final HistorialActividadService historialActividadService;
 
-    @PostMapping("/add")
-    public ResponseEntity<HoraExtra> addHoraExtra(@RequestBody HoraExtra horaExtra) {
-        return new ResponseEntity<>(horaExtraService.agregarHoraExtra(horaExtra), HttpStatus.CREATED);
+    public HoraExtraController(HoraExtraService horaExtraService, JwtUtil jwtUtil, UsuarioService usuarioService, HistorialActividadService historialActividadService) {
+        this.horaExtraService = horaExtraService;
+        this.jwtUtil = jwtUtil;
+        this.usuarioService = usuarioService;
+        this.historialActividadService = historialActividadService;
+    }
+
+    @PostMapping("/crear")
+    public ResponseEntity<HoraExtraDTO> crearHoraExtra(@RequestBody HoraExtraDTO dto, HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuario = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        HoraExtra nueva = horaExtraService.solicitarHoraExtra(usuario.getId_usuario(), dto);
+        historialActividadService.registrar(
+            "MODIFICACION",
+            "Solicitud de horas extra",
+            "HORAS_EXTRA",
+            usuario
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(HoraExtraMapper.toDTO(nueva));
+    }
+
+    @PutMapping("/resolver/{id}")
+    public ResponseEntity<HoraExtraDTO> resolverHoraExtra(@PathVariable int id, @RequestBody ResolucionHoraExtraDTO dto, HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario aprobador = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        HoraExtra actualizada = horaExtraService.resolverHoraExtra(id, dto, aprobador.getId_usuario());
+        String accion = dto.getEstado() == HoraExtra.EstadoHoraExtra.APROBADA ? "APROBACION" : "RECHAZO";
+        historialActividadService.registrar(
+            accion,
+            "Resolución de horas extra (estado: " + dto.getEstado() + ")",
+            "HORAS_EXTRA",
+            aprobador
+        );
+        return ResponseEntity.ok(HoraExtraMapper.toDTO(actualizada));
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<HoraExtra>> getAllHorasExtras() {
-        return new ResponseEntity<>(horaExtraService.getAllHorasExtras(), HttpStatus.OK);
-    }
+    public ResponseEntity<List<HoraExtra>> getAllHorasExtras(HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuario = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-    @PutMapping("/update")
-    public ResponseEntity<HoraExtra> updateHoraExtra(@RequestBody HoraExtra horaExtra) {
-        return new ResponseEntity<>(horaExtraService.actualizarHoraExtra(horaExtra), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteHoraExtra(@PathVariable int id) {
-        horaExtraService.eliminarHoraExtra(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        List<HoraExtra> horasExtras;
+        // Verificar si el usuario tiene rol EMPLEADO
+        if (usuario.getRoles().stream().anyMatch(rol -> rol.getNombre().equalsIgnoreCase("EMPLEADO"))) {
+            // Empleado: solo sus horas extra
+            horasExtras = horaExtraService.buscarPorUsuario(usuario.getId_usuario());
+        } else if (usuario.getRoles().stream().anyMatch(rol ->
+            rol.getNombre().equalsIgnoreCase("ADMIN") || rol.getNombre().equalsIgnoreCase("DIRECCION"))) {
+            // Dirección/Admin: horas extra de su empresa
+            int idEmpresa = usuario.getEmpresa().getId_empresa();
+            horasExtras = horaExtraService.buscarPorEmpresa(idEmpresa);
+        } else {
+            // Otros: nada o excepción si no tienen permisos
+            horasExtras = List.of(); // o lanzar excepción si lo prefieres
+        }
+        return ResponseEntity.ok(horasExtras);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<HoraExtra>> searchByEstado(@RequestParam HoraExtra.EstadoHoraExtra estado) {
-        return new ResponseEntity<>(horaExtraService.buscarPorEstado(estado), HttpStatus.OK);
+    public ResponseEntity<List<HoraExtra>> searchByEstado(@RequestParam HoraExtra.EstadoHoraExtra estado, HttpServletRequest request) {
+        String correo = jwtUtil.extraerCorreoDesdeRequest(request);
+        Usuario usuario = usuarioService.buscarPorEmail(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<HoraExtra> horasExtras;
+
+        if (usuario.getRoles().stream().anyMatch(rol -> rol.getNombre().equalsIgnoreCase("ADMIN") || rol.getNombre().equalsIgnoreCase("DIRECCION"))) {
+            horasExtras = horaExtraService.buscarPorEmpresaYEstado(usuario.getEmpresa().getId_empresa(), estado);
+        } else if (usuario.getRoles().stream().anyMatch(rol -> rol.getNombre().equalsIgnoreCase("EMPLEADO"))) {
+            horasExtras = horaExtraService.buscarPorUsuario(usuario.getId_usuario())
+                .stream().filter(h -> h.getEstado() == estado).toList();
+        } else {
+            horasExtras = List.of();
+        }
+        return ResponseEntity.ok(horasExtras);
     }
+
+    @GetMapping("/horas-extra/exportar/excel")
+    public void exportarHorasExtrasExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=horas_extras.xlsx");
+
+        List<HoraExtra> horasExtras = horaExtraService.getAllHorasExtras(); // Ajusta según tu servicio
+        HoraExtraExcelExporter exporter = new HoraExtraExcelExporter(horasExtras);
+        exporter.export(response);
+    }
+
 }

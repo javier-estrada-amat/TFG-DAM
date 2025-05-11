@@ -1,19 +1,19 @@
-<div class="flex flex-wrap mb-6">
-    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@usuarios.add.headline">Add Usuarios</h1>
-    <div>
-        <a routerLink="/usuarios" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@usuarios.add.back">Back to list</a>
+
+<div class="container mt-4 mx-auto px-4 md:px-6">
+    <div class="flex flex-wrap mb-6">
+        <h1 class="grow text-3xl md:text-4xl font-medium mb-2 text-center" i18n="@@usuarios.add.headline">Añadir Usuarios</h1>
+        <div>
+            <a routerLink="/usuarios" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@usuarios.add.back">Volver a la lista</a>
+        </div>
     </div>
+    <form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
+        <app-input-row [group]="addForm" field="nombre" i18n-label="@@usuarios.nombre.label" label="Nombre" />
+        <app-input-row [group]="addForm" field="apellidos" i18n-label="@@usuarios.apellidos.label" label="Apellidos" />
+        <app-input-row [group]="addForm" field="email" i18n-label="@@usuarios.email.label" label="Email"/>
+        <app-input-row [group]="addForm" field="password" i18n-label="@@usuarios.password.label" label="Password" />
+        <app-input-row [group]="addForm" field="activo" rowType="checkbox" i18n-label="@@usuarios.activo.label" label="Activo" />
+        <app-input-row [group]="addForm" field="empresa" rowType="select" [options]="empresasValues" i18n-label="@@usuarios.empresas.label" label="Empresas" />
+        <app-input-row [group]="addForm" field="roles" rowType="select" [options]="rolesValues" i18n-label="@@usuarios.roles.label" label="Roles" />
+        <input type="submit" i18n-value="@@usuarios.add.headline" value="Añadir Usuario" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+    </form>
 </div>
-<form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
-    <app-input-row [group]="addForm" field="nombre" i18n-label="@@usuarios.nombre.label" label="Nombre" />
-    <app-input-row [group]="addForm" field="apellidos" i18n-label="@@usuarios.apellidos.label" label="Apellidos" />
-    <app-input-row [group]="addForm" field="email" i18n-label="@@usuarios.email.label" label="Email" />
-    <app-input-row [group]="addForm" field="password" i18n-label="@@usuarios.password.label" label="Password" />
-    <app-input-row [group]="addForm" field="activo" rowType="checkbox" i18n-label="@@usuarios.activo.label" label="Activo" />
-    <app-input-row [group]="addForm" field="primeracceso" rowType="checkbox" i18n-label="@@usuarios.primeracceso.label" label="Primeracceso" />
-    <app-input-row [group]="addForm" field="empresas" rowType="select" [options]="empresasValues" i18n-label="@@usuarios.empresas.label" label="Empresas" />
-    <app-input-row [group]="addForm" field="roles" rowType="multiselect" [options]="rolesValues" i18n-label="@@usuarios.roles.label" label="Roles" />
-    <app-input-row [group]="addForm" field="configuracionautenticacion" rowType="select" [options]="configuracionautenticacionValues" i18n-label="@@usuarios.configuracionautenticacion.label" label="Configuracionautenticacion" />
-    <app-input-row [group]="addForm" field="horasextrasusuarios" rowType="select" [options]="horasextrasusuariosValues" i18n-label="@@usuarios.horasextrasusuarios.label" label="Horasextrasusuarios" />
-    <input type="submit" i18n-value="@@usuarios.add.headline" value="Add Usuarios" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
-</form>

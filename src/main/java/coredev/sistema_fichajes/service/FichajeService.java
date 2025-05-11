@@ -5,9 +5,10 @@ import coredev.sistema_fichajes.model.Fichaje;
 import java.util.List;
 
 public interface FichajeService {
-    Fichaje agregarFichaje(Fichaje fichaje);
-    List<Fichaje> getAllFichajes();
-    Fichaje actualizarFichaje(Fichaje fichaje);
-    void eliminarFichaje(int id);
-    List<Fichaje> buscarPorEstado(Fichaje.EstadoFichaje estado);
+    Fichaje iniciarFichaje(int usuarioId);
+    Fichaje finalizarFichaje(int usuarioId);
+    List<Fichaje> obtenerFichajesPorUsuario(int usuarioId);
+    List<Fichaje> obtenerTodosFichajes();
+    boolean tieneFichajeEnCurso(int usuarioId);
+    List<Fichaje> obtenerFichajesPorEmpresa(int idEmpresa);
 }

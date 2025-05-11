@@ -1,2 +1,26 @@
-<h1 class="grow text-3xl md:text-4xl font-medium mb-8">{{ status }} - {{ error }}</h1>
-<p i18n="@@error.message">The page you are looking for is not available right now.</p>
+<div class="flex flex-col items-center justify-start max-h-screen text-center px-4 pt-10">
+    <h1 class="text-3xl md:text-4xl font-medium mb-8">{{ status }} - {{ error }}</h1>
+  
+    <ng-container [ngSwitch]="status">
+      <p *ngSwitchCase="'503'" i18n="@@error.message">Primero debes de iniciar sesión para poder ver esta página</p>
+      <p *ngSwitchCase="'404'" i18n="@@error.message">La página que buscas no existe</p>
+      <p *ngSwitchCase="'403'" i18n="@@error.message">No tienes permiso para ver esta página</p>
+      <p *ngSwitchCase="'500'" i18n="@@error.message">Error interno del servidor</p>
+      <p *ngSwitchCase="'0'" i18n="@@error.message">Error de conexión al servidor</p>
+      <p *ngSwitchCase="'400'" i18n="@@error.message">Error de solicitud incorrecta</p>
+      <p *ngSwitchCase="'401'" i18n="@@error.message">No estás autorizado para ver esta página</p>
+      <p *ngSwitchCase="'408'" i18n="@@error.message">Tiempo de espera agotado</p>
+      <p *ngSwitchCase="'429'" i18n="@@error.message">Demasiadas solicitudes</p>
+      <p *ngSwitchCase="'502'" i18n="@@error.message">Error de puerta de enlace</p>
+      <p *ngSwitchCase="'504'" i18n="@@error.message">Tiempo de espera de puerta de enlace agotado</p>
+      <p *ngSwitchDefault i18n="@@error.message">Ha ocurrido un error inesperado.</p>
+    </ng-container>
+  
+    <div class="mt-6">
+      <button mat-raised-button color="primary" (click)="router.navigate(['/'])">
+        <mat-icon class="mr-2">undo</mat-icon>
+        Volver al inicio
+      </button>
+    </div>
+  </div>
+  

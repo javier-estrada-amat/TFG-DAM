@@ -1,10 +1,15 @@
 package coredev.sistema_fichajes.service;
 
+import coredev.sistema_fichajes.model.HistorialCambioPassword;
 import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +19,16 @@ public class UsuarioServiceImp implements UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private HistorialCambioPasswordService historialCambioPasswordService;
+
     @Override
     public Usuario agregarUsuario(Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setPrimerAcceso(true);
         return usuarioRepository.save(usuario);
     }
 
@@ -26,11 +39,41 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public Usuario actualizarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+        Usuario original = usuarioRepository.findById(usuario.getId_usuario()).orElseThrow();
+
+        // Comprobamos si el correo está en uso por otro usuario
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+        if (usuarioExistente.isPresent() && usuarioExistente.get().getId_usuario() != usuario.getId_usuario()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ese correo ya ha sido usado por otro usuario.");
+        }
+
+        if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
+            if (passwordEncoder.matches(usuario.getPassword(), original.getPassword())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La nueva contraseña no puede ser igual a la actual.");
+            }
+            original.setPassword(passwordEncoder.encode(usuario.getPassword()));
+            original.setPrimerAcceso(false);
+
+            HistorialCambioPassword registro = new HistorialCambioPassword();
+            registro.setUsuario(original);
+            registro.setFechaCambio(LocalDateTime.now());
+            historialCambioPasswordService.agregarRegistro(registro);
+        }
+
+        original.setNombre(usuario.getNombre());
+        original.setApellidos(usuario.getApellidos());
+        original.setEmail(usuario.getEmail());
+        original.setActivo(usuario.isActivo());
+        original.setEmpresa(usuario.getEmpresa());
+        original.setRoles(usuario.getRoles());
+
+        return usuarioRepository.save(original);
     }
+
 
     @Override
     public void eliminarUsuario(int id) {
+        System.out.println("Eliminando usuario con ID: " + id);
         usuarioRepository.deleteById(id);
     }
 
@@ -39,7 +82,29 @@ public class UsuarioServiceImp implements UsuarioService {
         return usuarioRepository.findByNombreContainingIgnoreCase(nombre);
     }
     @Override
-    public Optional<Usuario> findByEmail(String email) {
+    public Optional<Usuario> buscarPorEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<Usuario> getUsuarioById(int id) {
+        return usuarioRepository.findById(id);
+    }
+
+    @Override
+    public List<Usuario> getAllUsuariosActivos() {
+        return usuarioRepository.findByActivoTrue();
+    }
+
+    @Override
+    public void resetearPassword(int id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        usuario.setPrimerAcceso(true);
+        usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public List<Usuario> getUsuariosPorEmpresa(int idEmpresa) {
+        return usuarioRepository.findUsuariosByEmpresaId(idEmpresa);
     }
 }

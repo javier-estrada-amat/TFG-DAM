@@ -1,0 +1,22 @@
+.fila-par {
+    background-color: oklch(93.2% 0.032 255.585); /* azul celeste */
+    font-weight: bold;
+  }
+  
+  .fila-impar {
+    background-color: oklch(93% 0.034 272.788); /* lavanda suave / violeta claro */
+    font-weight: bold;
+  }
+  
+  .fila-par:hover {
+    background-color: oklch(96.8% 0.007 247.896); /* un poco más oscuro que el azul celeste */
+  }
+  
+  .fila-impar:hover {
+    background-color: oklch(96.8% 0.007 247.896); /* un poco más oscuro que el violeta claro */
+  }
+
+  .tablas {
+    background-color: oklch(80.9% 0.105 251.813);
+    border: black solid 1.5px;
+}

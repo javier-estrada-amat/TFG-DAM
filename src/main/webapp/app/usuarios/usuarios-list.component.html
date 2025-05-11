@@ -1,43 +1,91 @@
+<div class="container mt-4 mx-auto px-4 md:px-6">
 <div class="flex flex-wrap mb-6">
     <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@usuarios.list.headline">Usuarios</h1>
     <div>
-        <a routerLink="/usuarios/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@usuarios.list.createNew">Create new Usuarios</a>
+        <a routerLink="/usuarios/add"
+            class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2"
+            i18n="@@usuarios.list.createNew">Crear nuevo usuario</a>
     </div>
 </div>
-@if (!usuarios || usuarios.length === 0) {
-<div i18n="@@usuarios.list.empty">No se han encontrado usuarios.</div>
-} @else {
-<div class="overflow-x-auto">
-    <table class="w-full">
-        <thead>
-            <tr>
-                <th scope="col" class="text-left p-2" i18n="@@usuarios.idusuario.label">Idusuario</th>
-                <th scope="col" class="text-left p-2" i18n="@@usuarios.nombre.label">Nombre</th>
-                <th scope="col" class="text-left p-2" i18n="@@usuarios.apellidos.label">Apellidos</th>
-                <th scope="col" class="text-left p-2" i18n="@@usuarios.email.label">Email</th>
-                <th scope="col" class="text-left p-2" i18n="@@usuarios.password.label">Fecha Registro</th>
-                <th scope="col" class="text-left p-2" i18n="@@usuarios.empresas.label">Empresas</th>
-                <th><!-- --></th>
-            </tr>
-        </thead>
-        <tbody class="border-t-2 border-black">
-            @for (usuarios of usuarios; track usuarios.id_usuario) {
-            <tr class="odd:bg-gray-100">
-                <td class="p-2">{{ usuarios.id_usuario }}</td>
-                <td class="p-2">{{ usuarios.nombre }}</td>
-                <td class="p-2">{{ usuarios.apellidos }}</td>
-                <td class="p-2">{{ usuarios.email }}</td>
-                <td class="p-2">{{ usuarios.fechaRegistro }}</td>
-                <td class="p-2">{{ usuarios.empresas }}</td>
-                <td class="p-2">
-                    <div class="float-right whitespace-nowrap">
-                        <a [routerLink]="['/usuarioss/edit', usuarios.id_usuario]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.edit">Edit</a>
-                        <button type="button" (click)="confirmDelete(usuarios.id_usuario!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@usuarios.list.delete">Delete</button>
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+
+<div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
+    Cargando usuarios...
 </div>
-}
+
+<div class="overflow-x-auto mt-4">
+    <button (click)="alternarFiltro()"
+        class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 focus:ring-4 rounded px-5 py-2 mr-2 mb-5">
+        {{ mostrarSoloActivos ? 'Mostrar todos los usuarios' : 'Mostrar solo activos' }}
+    </button>
+
+    <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
+
+        <!-- ID -->
+        <ng-container matColumnDef="id_usuario">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Id usuario </mat-header-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.id_usuario }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Nombre -->
+        <ng-container matColumnDef="nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.nombre }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Apellidos -->
+        <ng-container matColumnDef="apellidos">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </mat-header-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.apellidos }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.email }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Fecha registro -->
+        <ng-container matColumnDef="fecha_registro">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Registro </mat-header-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.fecha_registro | date: 'dd/MM/yyyy, HH:mm:ss' }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Empresa -->
+        <ng-container matColumnDef="empresa">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </mat-header-cell>
+            <mat-cell *matCellDef="let usuario" [ngClass]="{ 'text-red-600': !usuario.activo }">
+                {{ usuario.empresa?.nombre }}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Acciones -->
+        <ng-container matColumnDef="acciones">
+            <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+            <mat-cell *matCellDef="let usuario">
+                <a [routerLink]="['/usuarios/edit', usuario.id_usuario]"
+                    class="inline-block text-white hover:text-black bg-indigo-500 hover:bg-indigo-300 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">
+                    Editar
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row
+            *matRowDef="let row; let i = index; columns: displayedColumns;"
+            [ngClass]="i % 2 === 0 ? 'fila-par' : 'fila-impar'">
+        </mat-row>
+    </mat-table>
+</div>
+    <mat-paginator class="mt-2" [pageSizeOptions]="[20, 30, 40, 50]" showFirstLastButtons></mat-paginator>
+</div>
+

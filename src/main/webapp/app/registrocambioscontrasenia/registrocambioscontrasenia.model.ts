@@ -4,9 +4,8 @@ export class RegistrocambioscontraseniaDTO {
     Object.assign(this, data);
   }
 
-  idregistro?: number|null;
-  usuarioid?: number|null;
-  fechacambio?: string|null;
-  usuarios?: number|null;
+  idRegistro?: number|null;
+  usuarioId?: number|null;
+  fechaCambio?: string|null;
 
 }

@@ -2,7 +2,6 @@ package coredev.sistema_fichajes.mapper;
 
 import coredev.sistema_fichajes.dto.FichajeDTO;
 import coredev.sistema_fichajes.model.Fichaje;
-import coredev.sistema_fichajes.model.Usuario;
 
 public class FichajeMapper {
 
@@ -10,12 +9,12 @@ public class FichajeMapper {
         if (fichaje == null) return null;
 
         FichajeDTO dto = new FichajeDTO();
-        dto.setIdFichaje(fichaje.getId_fichaje());
+        dto.setId_fichaje(fichaje.getId_fichaje());
         dto.setFecha(fichaje.getFecha());
-        dto.setHoraEntrada(fichaje.getHoraEntrada());
-        dto.setHoraSalida(fichaje.getHoraSalida());
+        dto.setHora_entrada(fichaje.getHora_entrada());
+        dto.setHora_salida(fichaje.getHora_salida());
         dto.setEstado(fichaje.getEstado().name());
-        dto.setUsuario(UsuarioMapper.toDTO(fichaje.getUsuario()));
+        dto.setUsuario_id(fichaje.getUsuario().getId_usuario());
         return dto;
     }
 
@@ -23,19 +22,13 @@ public class FichajeMapper {
         if (dto == null) return null;
 
         Fichaje fichaje = new Fichaje();
-        fichaje.setId_fichaje(dto.getIdFichaje());
-        fichaje.setFecha(dto.getFecha());
-        fichaje.setHoraEntrada(dto.getHoraEntrada());
-        fichaje.setHoraSalida(dto.getHoraSalida());
-
+        fichaje.setId_fichaje(dto.getId_fichaje());
         if (dto.getEstado() != null) {
             fichaje.setEstado(Fichaje.EstadoFichaje.valueOf(dto.getEstado()));
         }
-
-        if (dto.getUsuario() != null) {
-            Usuario usuario = UsuarioMapper.toEntity(dto.getUsuario());
-            fichaje.setUsuario(usuario);
-        }
+        fichaje.setFecha(dto.getFecha());
+        fichaje.setHora_entrada(dto.getHora_entrada());
+        fichaje.setHora_salida(dto.getHora_salida());
 
         return fichaje;
     }

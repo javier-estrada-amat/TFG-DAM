@@ -1,43 +1,64 @@
-<div class="flex flex-wrap mb-6">
-    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@historialactividad.list.headline">Historialactividads</h1>
-    <div>
-        <a routerLink="/historialactividads/add" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2" i18n="@@historialactividad.list.createNew">Create new Historialactividad</a>
+<div class="container mt-4 mx-auto px-4 md:px-6">
+    <div class="flex flex-wrap items-center justify-between mb-6">
+        <h1 class="text-3xl md:text-4xl font-semibold" i18n="@@historialactividad.list.headline">Historial de actividad</h1>
+    </div>
+
+    <!-- Mostrar mensaje solo si está vacío -->
+    <div *ngIf="historialactividads && historialactividads.length === 0" class="text-gray-500 italic" i18n="@@historialactividad.list.empty">
+        No se encontró ningún historial de actividad.
+    </div>
+
+    <!-- Botón de exportación a Excel -->
+    <div class="flex justify-end mb-4">
+        <button
+            (click)="exportarExcel()"
+            class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 rounded px-5 py-2"
+            i18n="@@historialactividad.list.exportExcel">
+            Exportar a Excel
+        </button>
+    </div>
+
+    <!-- SIEMPRE renderiza tabla y paginador -->
+    <div class="overflow-x-auto">
+        <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
+
+            <!-- Columnas... -->
+            <!-- ID -->
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Id</mat-header-cell>
+                <mat-cell *matCellDef="let registro">{{registro.idHistorial}}</mat-cell>
+            </ng-container>
+
+            <!-- Usuario -->
+            <ng-container matColumnDef="usuario">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Usuario </mat-header-cell>
+                <mat-cell *matCellDef="let registro">{{registro.nombreUsuario}}</mat-cell>
+            </ng-container>
+
+            <!-- Acción -->
+            <ng-container matColumnDef="accion">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Acción </mat-header-cell>
+                <mat-cell *matCellDef="let registro">{{registro.accion}}</mat-cell>
+            </ng-container>
+
+            <!-- Entidad -->
+            <ng-container matColumnDef="entidad">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Entidad </mat-header-cell>
+                <mat-cell *matCellDef="let registro">{{registro.entidadAfectada}}</mat-cell>
+            </ng-container>
+
+            <!-- Fecha -->
+            <ng-container matColumnDef="fecha">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Registro </mat-header-cell>
+                <mat-cell *matCellDef="let registro">{{registro.fecha | date: 'dd/MM/yyyy, HH:mm:ss' }}</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; let i = index; columns: displayedColumns;" [ngClass]="i % 2 === 0 ? 'fila-par' : 'fila-impar'"></mat-row>
+
+        </mat-table>
+
+        <!-- Paginador debe estar siempre presente -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
 </div>
-@if (!historialactividads || historialactividads.length === 0) {
-<div i18n="@@historialactividad.list.empty">No Historialactividads could be found.</div>
-} @else {
-<div class="overflow-x-auto">
-    <table class="w-full">
-        <thead>
-            <tr>
-                <th scope="col" class="text-left p-2" i18n="@@historialactividad.idhistorial.label">Idhistorial</th>
-                <th scope="col" class="text-left p-2" i18n="@@historialactividad.usuarioid.label">Usuarioid</th>
-                <th scope="col" class="text-left p-2" i18n="@@historialactividad.accion.label">Accion</th>
-                <th scope="col" class="text-left p-2" i18n="@@historialactividad.entidadafectada.label">Entidadafectada</th>
-                <th scope="col" class="text-left p-2" i18n="@@historialactividad.fecha.label">Fecha</th>
-                <th scope="col" class="text-left p-2" i18n="@@historialactividad.usuarios.label">Usuarios</th>
-                <th><!-- --></th>
-            </tr>
-        </thead>
-        <tbody class="border-t-2 border-black">
-            @for (historialactividad of historialactividads; track historialactividad.idhistorial) {
-            <tr class="odd:bg-gray-100">
-                <td class="p-2">{{ historialactividad.idhistorial }}</td>
-                <td class="p-2">{{ historialactividad.usuarioid }}</td>
-                <td class="p-2">{{ historialactividad.accion }}</td>
-                <td class="p-2">{{ historialactividad.entidadafectada }}</td>
-                <td class="p-2">{{ historialactividad.fecha }}</td>
-                <td class="p-2">{{ historialactividad.usuarios }}</td>
-                <td class="p-2">
-                    <div class="float-right whitespace-nowrap">
-                        <a [routerLink]="['/historialactividads/edit', historialactividad.idhistorial]" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@historialactividad.list.edit">Edit</a>
-                        <button type="button" (click)="confirmDelete(historialactividad.idhistorial!)" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm" i18n="@@historialactividad.list.delete">Delete</button>
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
-}

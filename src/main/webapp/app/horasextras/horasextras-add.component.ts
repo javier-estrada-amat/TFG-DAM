@@ -1,69 +1,67 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router} from '@angular/router';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { InputRowComponent } from 'app/common/input-row/input-row.component';
 import { HorasextrasService } from 'app/horasextras/horasextras.service';
 import { HorasextrasDTO } from 'app/horasextras/horasextras.model';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { validNumeric } from 'app/common/utils';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-horasextras-add',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, InputRowComponent],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './horasextras-add.component.html'
 })
 export class HorasextrasAddComponent implements OnInit {
 
   horasextrasService = inject(HorasextrasService);
   router = inject(Router);
-  errorHandler = inject(ErrorHandler);
 
-  usuariosValues?: Map<number,string>;
+  horasextras = new HorasextrasDTO({
+    fecha: '',
+    horasSolicitadas: null,
+    motivo: '',
+  });
 
-  addForm = new FormGroup({
-    usuarioid: new FormControl(null),
-    fecha: new FormControl(null),
-    horassolicitadas: new FormControl(null, [validNumeric(4, 2)]),
-    horasaprobadas: new FormControl(null, [validNumeric(4, 2)]),
-    motivo: new FormControl(null),
-    estado: new FormControl(null, [Validators.maxLength(255)]),
-    aprobadopor: new FormControl(null),
-    usuarios: new FormControl(null)
-  }, { updateOn: 'submit' });
-
-  getMessage(key: string, details?: any) {
-    const messages: Record<string, string> = {
-      created: $localize`:@@horasextras.create.success:Horasextras was created successfully.`
-    };
-    return messages[key];
+  isFechaValida(): boolean {
+    if (!this.horasextras.fecha) return true; // Si no hay fecha aún
+    const hoy = new Date();
+    const seleccionada = new Date(this.horasextras.fecha);
+    hoy.setHours(0, 0, 0, 0);
+    seleccionada.setHours(0, 0, 0, 0);
+    return seleccionada <= hoy;
   }
 
-  ngOnInit() {
-    this.horasextrasService.getUsuariosValues()
-        .subscribe({
-          next: (data) => this.usuariosValues = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
-  }
+  // isHorasSolicitadasValida(): boolean {
+  //   const valor = this.horasextras.horasSolicitadas;
+  //   if (valor === null || valor === undefined || valor === '') return false;
 
-  handleSubmit() {
-    window.scrollTo(0, 0);
-    this.addForm.markAllAsTouched();
-    if (!this.addForm.valid) {
+  //   const regex = /^(?:[0-9]|[1-9][0-9])(?:\.(0|5))?$/;
+  //   return regex.test(String(valor));
+  // }
+
+  ngOnInit(): void {}
+
+  onSubmit() {
+    if (!this.isFechaValida()) {
+      alert('La fecha no puede ser superior a hoy.');
       return;
     }
-    const data = new HorasextrasDTO(this.addForm.value);
-    this.horasextrasService.createHorasextras(data)
-        .subscribe({
-          next: () => this.router.navigate(['/horasextrass'], {
-            state: {
-              msgSuccess: this.getMessage('created')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error, this.addForm, this.getMessage)
-        });
+
+    // if (!this.isHorasSolicitadasValida()) {
+    //   alert('Introduce un número válido de horas (entre 0 y 99, con decimales .0 o .5 solamente).');
+    //   return;
+    // }
+
+    this.horasextrasService.createHorasextras(this.horasextras).subscribe({
+      next: () => this.router.navigate(['/horasextras'], {
+        state: { msgInfo: 'Solicitud de horas extras enviada correctamente.' }
+      }),
+      error: (err) => console.error('Error al crear horas extras', err)
+    });
   }
 
 }

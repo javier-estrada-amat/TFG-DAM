@@ -1,43 +1,66 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { EmpresasDTO } from 'app/empresas/empresas.model';
-import { map } from 'rxjs/operators';
-
+import { catchError, map } from 'rxjs/operators';
+import { transformRecordToMap } from 'app/common/utils';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmpresasService {
+  private resourcePath = environment.apiPath + 'empresas';
 
-  http = inject(HttpClient);
-  resourcePath = environment.apiPath + 'empresas';
+  constructor(
+    private http: HttpClient
+  ) {}
+
+  private getAuthHeaders() {
+        const token = localStorage.getItem('token');
+        return {
+          headers: new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+          })
+        };
+      }
 
   getAllEmpresas() {
-    return this.http.get<any[]>(this.resourcePath+'/getAll').pipe(
+    return this.http.get<any[]>(`${this.resourcePath}/getAll`, this.getAuthHeaders()).pipe(
       map(data => {
         console.log('Datos crudos desde API:', data);
         return data.map(item => new EmpresasDTO(item));
       })
     );
   }
-  
+
   getEmpresas(idempresa: number) {
-    return this.http.get<any>(this.resourcePath + '/' + idempresa).pipe(
+    return this.http.get<any>(`${this.resourcePath}/${idempresa}`, this.getAuthHeaders()).pipe(
       map(item => new EmpresasDTO(item))
     );
   }
 
-  createEmpresas(empresasDTO: EmpresasDTO) {
-    return this.http.post<number>(this.resourcePath, empresasDTO);
+  
+  createEmpresa(empresa: EmpresasDTO): Observable<any> {
+    return this.http.post(`${this.resourcePath}/add`, empresa,this.getAuthHeaders()).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => error);
+      })
+    );
   }
 
+
   updateEmpresas(idempresa: number, empresasDTO: EmpresasDTO) {
-    return this.http.put<number>(this.resourcePath + '/update' + idempresa, empresasDTO);
+    return this.http.put<number>(`${this.resourcePath}/update/${idempresa}`, empresasDTO, this.getAuthHeaders());
   }
 
   deleteEmpresas(idempresa: number) {
-    return this.http.delete(this.resourcePath + '/' + idempresa);
+    return this.http.delete(`${this.resourcePath}/${idempresa}`, this.getAuthHeaders());
+  }
+
+  getEmpresasValues() {
+    return this.http.get<Record<string, number>>(`${this.resourcePath}/values`, this.getAuthHeaders())
+        .pipe(map(transformRecordToMap));
   }
 
 }

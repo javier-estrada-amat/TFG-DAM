@@ -27,5 +27,9 @@ public class Rol implements Serializable {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+
     private List<Usuario> usuarios;
+    public Rol(String nombre) {
+        this.nombre = nombre;
+    }
 }

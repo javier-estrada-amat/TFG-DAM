@@ -1,8 +1,20 @@
+version: '3.8'
+
 services:
   mysql:
-    image: mysql:9.2
+    image: mysql:8
+    container_name: mysql_container
     environment:
-    - MYSQL_DATABASE=sistemaFichajes
-    - MYSQL_ROOT_PASSWORD=P4ssword!
+      - MYSQL_DATABASE=sistema_fichajes
+      - MYSQL_ROOT_PASSWORD=root
     ports:
-    - 3307:3306
+      - "3307:3306"
+    volumes:
+          - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  mysql_data:

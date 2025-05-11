@@ -1,30 +1,51 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ErrorHandler } from 'app/common/error-handler.injectable';
 import { HistorialactividadService } from 'app/historialactividad/historialactividad.service';
 import { HistorialactividadDTO } from 'app/historialactividad/historialactividad.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorIntlEspañol } from 'app/shared/mat-paginator-intl-es';
 
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-historialactividad-list',
-  imports: [CommonModule, RouterLink],
-  templateUrl: './historialactividad-list.component.html'})
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useFactory: MatPaginatorIntlEspañol }
+  ],
+  templateUrl: './historialactividad-list.component.html',
+  styleUrl: './historialactividad-list.component.css'
+})
 export class HistorialactividadListComponent implements OnInit, OnDestroy {
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  dataSource = new MatTableDataSource<HistorialactividadDTO>([]);
+  displayedColumns = ['id', 'usuario', 'accion', 'entidad', 'fecha'];
   historialactividadService = inject(HistorialactividadService);
   errorHandler = inject(ErrorHandler);
   router = inject(Router);
   historialactividads?: HistorialactividadDTO[];
   navigationSubscription?: Subscription;
-
-  getMessage(key: string, details?: any) {
-    const messages: Record<string, string> = {
-      confirm: $localize`:@@delete.confirm:Do you really want to delete this element? This cannot be undone.`,
-      deleted: $localize`:@@historialactividad.delete.success:Historialactividad was removed successfully.`    };
-    return messages[key];
-  }
 
   ngOnInit() {
     this.loadData();
@@ -35,31 +56,51 @@ export class HistorialactividadListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.navigationSubscription!.unsubscribe();
-  }
-  
-  loadData() {
-    this.historialactividadService.getAllHistorialactividads()
-        .subscribe({
-          next: (data) => this.historialactividads = data,
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  confirmDelete(idhistorial: number) {
-    if (!confirm(this.getMessage('confirm'))) {
-      return;
-    }
-    this.historialactividadService.deleteHistorialactividad(idhistorial)
-        .subscribe({
-          next: () => this.router.navigate(['/historialactividads'], {
-            state: {
-              msgInfo: this.getMessage('deleted')
-            }
-          }),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+  ngOnDestroy() {
+    this.navigationSubscription?.unsubscribe();
+  }
+
+  loadData() {
+    this.historialactividadService.getAllHistorialactividads()
+      .subscribe({
+        next: (data) => {
+          this.historialactividads = data;
+          this.dataSource.data = data;
+        },
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
+  }
+
+  trackById(index: number, item: HistorialactividadDTO): number {
+    return item.idHistorial ?? index;
+  }
+
+  getMessage(key: string, details?: any) {
+    const messages: Record<string, string> = {};
+    return messages[key];
+  }
+
+  exportarExcel() {
+    const datosParaExcel = this.dataSource.data.map(item => ({
+      ID: item.idHistorial,
+      Usuario: item.nombreUsuario ?? '—', // Aquí accedes a nombreUsuario en lugar de usuario.nombre
+      Acción: item.accion,
+      Entidad: item.entidadAfectada,
+      Fecha: item.fecha ? new Date(item.fecha).toLocaleString() : ''
+    }));
+
+    const hoja: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaExcel);
+    const libro: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, 'Historial');
+
+    const bufferExcel: any = XLSX.write(libro, { bookType: 'xlsx', type: 'array' });
+    const blob: Blob = new Blob([bufferExcel], { type: 'application/octet-stream' });
+    FileSaver.saveAs(blob, `HistorialActividades_${new Date().toISOString().slice(0, 10)}.xlsx`);
   }
 
 }

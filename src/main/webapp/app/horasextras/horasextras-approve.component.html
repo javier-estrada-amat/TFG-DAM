@@ -1,0 +1,96 @@
+<div class="container mt-4 mx-auto px-4 md:px-6">
+<div class="flex flex-wrap mb-6">
+    <h1 class="grow text-3xl md:text-4xl font-medium mb-2">Aprobación de Horas Extras</h1>
+  </div>
+
+  <div *ngIf="mensaje" class="fixed top-4 right-4 z-50">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg" role="alert">
+      <strong class="font-bold">✔</strong>
+      <span class="block sm:inline">{{ mensaje }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center w-full my-4 text-blue-600 font-semibold">
+    Cargando horas extras pendientes...
+  </div>
+
+  <div *ngIf="!isLoading && dataSource.data.length === 0" class="text-gray-500 mt-4">
+    No hay solicitudes pendientes de aprobación.
+  </div>
+
+  <div *ngIf="dataSource.data.length > 0" class="overflow-x-auto">
+
+  <div  class="overflow-x-auto">
+
+    <mat-table [dataSource]="dataSource" matSort class="min-w-full tablas">
+
+      <!-- Usuario -->
+      <ng-container matColumnDef="usuario">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</mat-header-cell>
+        <mat-cell *matCellDef="let h">{{ h.usuario?.nombre }} {{ h.usuario?.apellidos }}</mat-cell>
+      </ng-container>
+
+      <!-- Fecha -->
+      <ng-container matColumnDef="fecha">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+        <mat-cell *matCellDef="let h">{{ h.fecha }}</mat-cell>
+      </ng-container>
+
+      <!-- Solicitadas -->
+      <ng-container matColumnDef="solicitadas">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Solicitadas</mat-header-cell>
+        <mat-cell *matCellDef="let h">{{ h.horasSolicitadas }}</mat-cell>
+      </ng-container>
+
+      <!-- Motivo -->
+      <ng-container matColumnDef="motivo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</mat-header-cell>
+        <mat-cell *matCellDef="let h">{{ h.motivo }}</mat-cell>
+      </ng-container>
+
+      <!-- Aprobadas -->
+        <ng-container matColumnDef="aprobadas">
+            <mat-header-cell *matHeaderCellDef>Aprobadas</mat-header-cell>
+            <mat-cell *matCellDef="let h">
+                <input
+                    [(ngModel)]="h.horasAprobadas"
+                    class="border rounded p-1 w-16 text-center"
+                    type="number"
+                    step="0.5"
+                    min="0.5"
+                    max="99"
+                    (ngModelChange)="validarInput(h)"
+                />
+            </mat-cell>
+        </ng-container>
+
+      <!-- Acciones -->
+      <ng-container matColumnDef="acciones">
+        <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+        <mat-cell *matCellDef="let h">
+          <div class="space-x-2">
+            <button
+              (click)="aprobar(h, h.horasAprobadas!)"
+              [disabled]="!validarHorasAprobadas(h)"
+              class="cursor-pointer text-white bg-green-500 hover:bg-green-600 rounded px-2.5 py-1.5 text-sm">
+              Aprobar
+            </button>
+            <button (click)="rechazar(h)" class="cursor-pointer text-white bg-red-500 hover:bg-red-600 rounded px-2.5 py-1.5 text-sm">
+              Rechazar
+            </button>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+      *matRowDef="let row; let i = index; columns: displayedColumns;"
+      [ngClass]="i % 2 === 0 ? 'fila-par' : 'fila-impar'">
+    </mat-row>
+    </mat-table>
+    <app-pagination></app-pagination>
+
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+
+  </div>
+</div>

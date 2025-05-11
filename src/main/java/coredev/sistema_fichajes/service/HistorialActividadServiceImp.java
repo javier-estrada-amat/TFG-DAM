@@ -2,30 +2,44 @@ package coredev.sistema_fichajes.service;
 
 
 import coredev.sistema_fichajes.model.HistorialActividad;
+import coredev.sistema_fichajes.model.Usuario;
 import coredev.sistema_fichajes.repository.HistorialActividadRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class HistorialActividadServiceImp implements HistorialActividadService {
 
-    @Autowired
-    private HistorialActividadRepository repository;
+    private final HistorialActividadRepository repository;
 
     @Override
-    public HistorialActividad agregarHistorial(HistorialActividad historial) {
-        return repository.save(historial);
+    public void registrar(String accion, String descripcion, String entidadAfectada, Usuario usuario) {
+        HistorialActividad historial = new HistorialActividad();
+        historial.setAccion(accion);
+        historial.setDescripcion(descripcion);
+        historial.setEntidadAfectada(entidadAfectada);
+        historial.setFecha(LocalDateTime.now());
+        historial.setUsuario(usuario);
+        repository.save(historial);
     }
 
     @Override
-    public List<HistorialActividad> getAllHistoriales() {
+    public List<HistorialActividad> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public void eliminarHistorial(int id) {
-        repository.deleteById(id);
+    public List<HistorialActividad> obtenerPorUsuario(int idUsuario) {
+        return repository.findByUsuarioId(idUsuario);
+    }
+
+    @Override
+    public List<HistorialActividad> obtenerPorEmpresa(int idEmpresa) {
+        return repository.findByEmpresaId(idEmpresa);
     }
 }

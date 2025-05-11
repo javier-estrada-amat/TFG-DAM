@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3307/sistemaFichajes?serverTimezone=UTC}
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://mysql:3307/sistema_fichajes?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false}
     username: ${JDBC_DATABASE_USERNAME:root}
-    password: ${JDBC_DATABASE_PASSWORD:P4ssword!}
+    password: ${JDBC_DATABASE_PASSWORD:root}
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10

@@ -1,17 +1,39 @@
-<div class="flex flex-wrap mb-6">
-    <h1 class="grow text-3xl md:text-4xl font-medium mb-2" i18n="@@horasextras.add.headline">Add Horasextras</h1>
-    <div>
-        <a routerLink="/horasextrass" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded px-5 py-2" i18n="@@horasextras.add.back">Back to list</a>
-    </div>
+<div class="container mt-4 mx-auto px-4 md:px-6">
+<div class="max-w-xl mx-auto p-6 bg-white rounded shadow">
+    <h2 class="text-2xl font-bold mb-4">Solicitar Horas Extras</h2>
+
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+        <div class="mb-4">
+            <label for="fecha" class="block font-semibold">Fecha</label>
+            <input type="date" id="fecha" name="fecha" [(ngModel)]="horasextras.fecha" required class="w-full border p-2 rounded">
+            <div *ngIf="!isFechaValida()" class="text-red-600 mt-1">
+              La fecha no puede ser posterior a hoy.
+            </div>
+          </div>
+
+        <div class="mb-4">
+            <label for="horassolicitadas" class="block font-semibold">Horas solicitadas</label>
+            <p class="text-sm text-gray-500">Formato: 0.5, 1, 1.5, ..., 99</p>
+            <input
+            type="number"
+            step="0.5"
+            min="0.5"
+            max="99"
+            id="horassolicitadas"
+            name="horassolicitadas"
+            [(ngModel)]="horasextras.horasSolicitadas"
+            #horasSolicitadasModel="ngModel"
+            required
+            class="w-full border p-2 rounded">
+        </div>
+
+        <div class="mb-4">
+            <label for="motivo" class="block font-semibold">Motivo (opcional)</label>
+            <textarea id="motivo" name="motivo" [(ngModel)]="horasextras.motivo" class="w-full border p-2 rounded"></textarea>
+        </div>
+
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+            [disabled]="form.invalid || !isFechaValida()">Enviar Solicitud</button>
+    </form>
 </div>
-<form [formGroup]="addForm" (ngSubmit)="handleSubmit()">
-    <app-input-row [group]="addForm" field="usuarioid" rowType="number" i18n-label="@@horasextras.usuarioid.label" label="Usuarioid" />
-    <app-input-row [group]="addForm" field="fecha" rowType="datetimepicker" i18n-label="@@horasextras.fecha.label" label="Fecha" />
-    <app-input-row [group]="addForm" field="horassolicitadas" i18n-label="@@horasextras.horassolicitadas.label" label="Horassolicitadas" />
-    <app-input-row [group]="addForm" field="horasaprobadas" i18n-label="@@horasextras.horasaprobadas.label" label="Horasaprobadas" />
-    <app-input-row [group]="addForm" field="motivo" rowType="textarea" i18n-label="@@horasextras.motivo.label" label="Motivo" />
-    <app-input-row [group]="addForm" field="estado" i18n-label="@@horasextras.estado.label" label="Estado" />
-    <app-input-row [group]="addForm" field="aprobadopor" rowType="number" i18n-label="@@horasextras.aprobadopor.label" label="Aprobadopor" />
-    <app-input-row [group]="addForm" field="usuarios" rowType="select" [options]="usuariosValues" i18n-label="@@horasextras.usuarios.label" label="Usuarios" />
-    <input type="submit" i18n-value="@@horasextras.add.headline" value="Add Horasextras" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
-</form>
+</div>

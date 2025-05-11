@@ -11,6 +11,10 @@ public interface UsuarioService {
     Usuario actualizarUsuario(Usuario usuario);
     void eliminarUsuario(int id);
     List<Usuario> buscarPorNombre(String nombre);
-    Optional<Usuario> findByEmail(String email);
+    Optional<Usuario> buscarPorEmail(String email);
+    Optional<Usuario> getUsuarioById(int id);
+    List<Usuario> getAllUsuariosActivos();
+    void resetearPassword(int id);
+    List<Usuario> getUsuariosPorEmpresa(int idEmpresa);
 }
 

@@ -25,10 +25,9 @@ export class RegistrocambioscontraseniaEditComponent implements OnInit {
   currentIdregistro?: number;
 
   editForm = new FormGroup({
-    idregistro: new FormControl({ value: null, disabled: true }),
-    usuarioid: new FormControl(null),
-    fechacambio: new FormControl(null),
-    usuarios: new FormControl(null)
+    idRegistro: new FormControl({ value: null, disabled: true }),
+    usuarioId: new FormControl(null),
+    fechaCambio: new FormControl(null),
   }, { updateOn: 'submit' });
 
   getMessage(key: string, details?: any) {

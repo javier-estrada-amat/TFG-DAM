@@ -4,12 +4,12 @@ export class HistorialactividadDTO {
     Object.assign(this, data);
   }
 
-  idhistorial?: number|null;
-  usuarioid?: number|null;
+  idHistorial?: number|null;
+  usuarioId?: number|null;
   accion?: string|null;
-  entidadafectada?: string|null;
+  entidadAfectada?: string|null;
   descripcion?: string|null;
   fecha?: string|null;
-  usuarios?: number|null;
+  nombreUsuario?: string|null;
 
 }
